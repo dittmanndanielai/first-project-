@@ -134,10 +134,10 @@ Nichts geändert. Beobachtungen:
 ## Offen
 | # | Was | Wer |
 |---|---|---|
-| O1 | **Deutsche Stimme:** ElevenLabs → Voices → Library → „Silke - Relaxed & Friendly“ → „Add to My Voices“. Dann im Agent auswählen oder mir Bescheid geben. Alternative: Voice Design („leicht sexy, charmant, freundlich, aufgeweckt“) braucht einen Beispielsatz von Daniel. | Daniel |
-| O2 | **Post-Call-Webhook:** ElevenLabs → Agents → Settings → Post-call webhook → URL `…/postcall` (Transcription). Ohne das landet nichts in Notion. | Daniel |
-| O3 | Twilio-Konto + deutsche Nummer, dann Import + Agent zuweisen | Daniel, dann ich |
-| O4 | iPhone-Kurzbefehl „Daily-Check“ + Automationen (Anleitung unten) | Daniel |
+| O1 | Erledigt 12.10.: Daniel hat eine Stimme gesetzt (`ZvWcrHaSI2mBg4j0XUCH`). | – |
+| O2 | Erledigt 12.10.: Post-Call-Webhook eingetragen, drei Calls sind mit Änderungen in Notion gelandet. | – |
+| O3 | Twilio-Konto + deutsche Nummer, dann Import + Agent zuweisen. Optional: Weg 1 (Browser-Link im Kurzbefehl) ersetzt den Anruf und kostet halbe Credits. | Daniel, optional |
+| O4 | iPhone-Kurzbefehle „Agentin“ und „Daily-Check“ + Automation (Anleitung unten) | Daniel |
 | O5 | 12-Uhr-Fallback (Schedule im Workflow) wieder aktivieren, optional als Rückruf | ich, nach O3 |
 | O6 | **Workspace bestätigen:** In ElevenLabs prüfen, dass `agent_2601…` in „My Workspace“ liegt. | Daniel |
 | O7 | n8n `TEMP LG source probe` (`aZuPjAIYwf2Gd5TR`, inaktiv) archivieren, falls nicht mehr gebraucht | Daniel |
@@ -159,7 +159,11 @@ Nicht ändern (sonst bricht die Kette): Tool `todos_abrufen` (URL, Name, Body-Fe
 **Erste Nachricht (aktuell):**
 > Morgen Daniel! Moment, ich hol kurz deine Liste.
 
-**System-Prompt (aktuell, unverändert seit Session 1):**
+**Modell (seit 12.10.2026):** gpt-5.4-mini, Reasoning aus, Temperatur 0,3. Grund: gpt-5.4-nano (von Daniel wegen Latenz gesetzt) las alle Punkte mit wiederholter Frage am Stück vor. Nächste Stufe bei Bedarf: gemini-3.8-flash mit Denken aus.
+
+**System-Prompt v2 (12.10.2026, gilt auch als Kopie in Notion „Prompts“ unter `elevenlabs.todo_agent.system`):** Kern: pro Nachricht genau ein Punkt und eine Frage; Tempo-Regeln für „beeil dich“ und „stopp“; Sammelantworten übernehmen. Der frühere Prompt (v1) ist unten als Historie erhalten.
+
+**System-Prompt v1 (Session 1, abgelöst):**
 ```
 Du bist Daniels To-do-Agent. Ihr geht am Telefon in maximal 4 bis 5 Minuten seine To-do-Liste durch. Sprich Deutsch, kurz und direkt, wie ein guter Assistent. Keine langen Sätze, kein Vorlesen der ganzen Liste, keine Floskeln.
 
@@ -184,24 +188,34 @@ Regeln:
 - Nach etwa 4 Minuten aktiv zum Abschluss kommen.
 ```
 
-## iPhone-Kurzbefehl „Daily-Check“ (Daniel, ca. 3 Min.)
-Kurzbefehle-App → neuer Kurzbefehl „Daily-Check“ (`BASIS` = Webhook-Basis-URL aus dem n8n-Workflow):
-1. **URL:** `BASIS/status?action=check`
-2. **Inhalte von URL abrufen**
-3. **Wörterbuchwert abrufen:** Schlüssel `frage`
-4. **Wenn** Wörterbuchwert **ist** `ja`:
+## iPhone: Agentin ohne Anruf öffnen (Weg 1, seit 12.10.2026)
+
+Die Agentin läuft im Browser über die ElevenLabs-Gesprächsseite, kein Twilio nötig. Gespräche über diese Seite gelten bei ElevenLabs als Test und kosten den halben Credit-Preis (Flag `dev_discount`).
+
+**Link:** `https://elevenlabs.io/app/talk-to?agent_id=agent_2601m4p82ey6ew8bnejvezdmrt9x` (in Safari bei ElevenLabs eingeloggt sein).
+
+### Kurzbefehl „Agentin“ (Icon auf dem Homescreen, ca. 2 Min.)
+1. Kurzbefehle-App → „+“ → Name „Agentin“.
+2. Aktion **„URLs öffnen“** hinzufügen, URL = Link oben. (Nicht „Webseite anzeigen“, sonst läuft es im Mini-Browser ohne Login.)
+3. Oben auf den Namen tippen → **„Zum Home-Bildschirm“** → Icon und Farbe wählen → „Hinzufügen“.
+4. Erster Start: Safari fragt nach Mikrofon → „Erlauben“ und „Für diese Website merken“. Danach: Icon tippen → „Start“ tippen → sprechen.
+
+### Kurzbefehl „Daily-Check“ (mit Tagesstatus aus n8n, ca. 3 Min.)
+`BASIS` = Webhook-Basis-URL des Daily-Calls aus n8n (steht im Webhook-Node, geheim):
+1. **Inhalte von URL abrufen:** `BASIS/status?action=check`
+2. **Wörterbuchwert abrufen:** Schlüssel `frage`
+3. **Wenn** `frage` **ist** `ja`:
    - **Aus Menü auswählen** – Titel „Daily jetzt?“
-     - **Jetzt anrufen:** Inhalte von URL abrufen (`BASIS/status?action=call`) → **Anrufen** (Kontakt „To-do“)
+     - **Jetzt:** Inhalte von URL abrufen (`BASIS/status?action=call`) → **URLs öffnen** (Link oben)
      - **In 30 Min.:** Inhalte von URL abrufen (`BASIS/status?action=snooze`)
      - **Heute nicht:** Inhalte von URL abrufen (`BASIS/status?action=skip`)
-5. **Ende Wenn**
+4. **Ende Wenn**
 
-Automationen (jeweils „Sofort ausführen“, Kurzbefehl „Daily-Check“):
-- **App** → „Wird geöffnet“ → 3–5 Morgen-Apps (z. B. WhatsApp, Instagram, Mail)
-- **Ladegerät** → „Wird getrennt“
-- **Wecker** → „Wird gestoppt“ (Bonus)
+Automationen (Kurzbefehle → Automation → „Sofort ausführen“, Kurzbefehl „Daily-Check“):
+- **Tageszeit** 7:30, täglich (öffnet Safari, wenn das iPhone entsperrt ist, sonst Mitteilung)
+- optional **App** „Wird geöffnet“ (3–5 Morgen-Apps) oder **Ladegerät** „Wird getrennt“
 
-Fragt nur zwischen 7:30 und 12:00 und nur, solange der Daily offen ist. `action=reset` setzt Tagesstatus und Pause zurück.
+Fragt nur zwischen 7:30 und 12:00 und nur, solange der Daily offen ist. `action=reset` setzt Tagesstatus und Pause zurück. Twilio (O3) bleibt optional für echte Anrufe.
 
 ## Kosten (Schätzung, 150 Min./Monat)
 ElevenLabs Starter + Mehrminuten ca. 12,75 € · Twilio (überwiegend eingehend) ca. 3–4 € · Sprachmodelle ca. 1 € → **ca. 16–17 €/Monat**. Durch das 45-Sekunden-Stille-Limit (E9) fallen keine „vergessenen“ Call-Minuten mehr an.
