@@ -1,6 +1,6 @@
 # Daily To-do Call – Setup & Audit-Log
 
-Stand: 12.10.2026, 00:45 · Session 4 (ElevenLabs-Verbindung: Post-Call-Webhook angelegt und End-to-End getestet, Stimme Leela gesetzt; O1, O2 und O6 erledigt). Session 3 (Agent Log, Prompts in Notion, Config-Cache, debugbarer Zustand, Orchestrator, Meta-Routine), Session 2 (Struktur-Review) und Session 1 (Erstaufbau) sind unten als Historie erhalten.
+Stand: 12.10.2026, 01:00 · Session 4 (ElevenLabs-Verbindung: Post-Call-Webhook angelegt und End-to-End getestet, Stimme Leela, LLM auf Gemini 2.5 Flash Lite ohne Thinking wegen Latenz; O1, O2 und O6 erledigt). Session 3 (Agent Log, Prompts in Notion, Config-Cache, debugbarer Zustand, Orchestrator, Meta-Routine), Session 2 (Struktur-Review) und Session 1 (Erstaufbau) sind unten als Historie erhalten.
 
 ## Architektur (aktuell)
 
@@ -59,7 +59,7 @@ Rollenverteilung: Notion hält Wissen und Konfiguration, n8n führt aus und logg
 
 Hinweis: Die IDs aus Session 1 (`agent_9401…`, `tool_6401…`) tauchen im Connector nicht mehr auf. Der Connector sieht genau einen Agenten mit den neuen IDs, angelegt 11.10. 21:47 Uhr. Das ist sehr wahrscheinlich der Umzug nach „My Workspace“ aus einem anderen Chat. Bestätigt in Session 4 (E12): Der Agent liegt im Workspace, Daniel ist Creator und admin.
 
-## Audit-Log Session 4 (12.10.2026, 00:00–00:45)
+## Audit-Log Session 4 (12.10.2026, 00:00–01:00)
 
 Anlass: Daniel legt die ElevenLabs-Verbindung in der Oberfläche an. Parallel dazu Ist-Zustand von Agent, Tool, Stimme, Nummer und n8n-Empfangsseite per MCP geprüft, danach den ersten echten Post-Call verifiziert. Keine Änderungen an Agent oder Workflows durch Claude; Daniel hat den Webhook in der Oberfläche angelegt.
 
@@ -74,6 +74,7 @@ Anlass: Daniel legt die ElevenLabs-Verbindung in der Oberfläche an. Parallel da
 | E17 | **Post-Call-Webhook steht** | Workspace (Agents-Einstellungen) | Von Daniel in der Oberfläche angelegt (Agents Platform → Settings → Post-Call-Webhook). Beim ersten Anlegen wurde das Secret nicht kopiert, Webhook daraufhin gelöscht und neu angelegt; Secret liegt jetzt bei Daniel. Test-Call 00:25 Uhr (`conv_9001m4ph3n3jfv2scm579eadv2vc`, 19 s, per `end_call` beendet): ElevenLabs hat `/postcall` aufgerufen, Header `elevenlabs-signature` (`t=…,v0=…`) kommt mit. **O2 erledigt.** |
 | E18 | Stimme weiterhin Standard | Agent | Dritter Versuch Silke per MCP, wieder nicht übernommen (Connector antwortet mit einem fehlerhaften Ergebnis, Stimme bleibt `cjVigY5qzO86Huf0OWal`). Library-Stimmen (Silke, Laila) müssen zuerst in „My Voices“ liegen; der Connector hat dafür kein Tool, Daniel muss das in der Oberfläche machen → O1. |
 | E19 | **Stimme auf Leela gesetzt** | Agent, Version `agtvrsn_2401m4phvvedfmgbdjean19d1860` | Daniel hat „Leela – Sophisticated, Textured, Narration“ (`ZvWcrHaSI2mBg4j0XUCH`, Library, amerikanisches Englisch) in der Oberfläche als primäre Stimme gewählt und veröffentlicht. Im Entwurf war die Sprache auf „Englisch“ gesprungen, vor dem Veröffentlichen auf Deutsch zurückgestellt. Geprüft nach Veröffentlichung: `voice_id` Leela, `language: de`, TTS `eleven_v4_turbo`, Tool, erste Nachricht und Limits unverändert. Per MCP ließ sich die Stimme nie setzen (Library-Stimme war nicht in My Voices; Fehler kam als „malformed result“ zurück). **O1 erledigt.** |
+| E20 | **LLM gewechselt: Gemini 2.5 Flash Lite, Thinking aus** | Agent, Version `agtvrsn_5101m4pjagm3egx9fbtdh97wdmz6` | Daniel: Antworten zu langsam. Messung aus den Test-Calls: Gemini 3.8 Flash 1,7 s bis zum ersten Token, Turns als „reasoned“ markiert (Thinking aktiv). `reasoning_effort` wird für 3.8 Flash abgelehnt („not supported for this LLM“), `thinking_budget: 0` wird nicht gespeichert, Thinking ist dort nicht abschaltbar. Deshalb Modell auf `gemini-2.5-flash-lite` mit `thinking_budget: 0`; Prompt, Tool, Temperatur 0,3, Backup-LLM default unverändert. LLM-Kosten laut ElevenLabs-Rechner: 0,0011 $/Min. statt 0,0097 $/Min. (−88 %). **Test durch Daniel ausstehend**; Rückfall-Optionen bei schwacher Qualität: `gemini-3.5-flash-lite` (0,0042 $/Min.) oder `gpt-5.4-nano` (0,0024 $/Min.). |
 
 ### n8n
 | # | Befund | Objekt | Details |
@@ -234,6 +235,15 @@ Fragt nur zwischen 7:30 und 12:00 und nur, solange der Daily offen ist. `action=
 ## Kosten (Schätzung, 150 Min./Monat)
 ElevenLabs Starter + Mehrminuten ca. 12,75 € · Twilio (überwiegend eingehend) ca. 3–4 € · Sprachmodelle ca. 1 € → **ca. 16–17 €/Monat**. Durch das 45-Sekunden-Stille-Limit (E9) fallen keine „vergessenen“ Call-Minuten mehr an.
 Neu: PA_orchestrator mit gpt-5.1, ca. 2–3 k Tokens je Nachricht → bei 20 Nachrichten/Tag grob 2–4 €/Monat (Schätzung). Config-Cache spart je LLM-Aufruf zwei Notion-Abfragen.
+
+**Abrechnung ElevenLabs, gemessen an den Test-Calls (Tier „creator“):** Jeder Call hat zwei Posten in Credits. (1) Plattform (Gesprächsminuten inkl. TTS und Spracherkennung): 129 Credits für 43 s, also ca. 180 Credits/Min. (2) LLM: separat, zu Modellkosten in Credits umgerechnet (35 Credits für 0,0065 $, also ca. 5 400 Credits je $). Das LLM ist nicht in den Minuten enthalten, machte aber nur ca. 20 % der Call-Kosten aus.
+
+| Je 4-Minuten-Daily | Plattform | LLM | Summe |
+|---|---|---|---|
+| Gemini 3.8 Flash (bis 12.10.) | ca. 730 Credits | ca. 210 Credits | ca. 940 Credits |
+| Gemini 2.5 Flash Lite (ab 12.10.) | ca. 730 Credits | ca. 25 Credits | ca. 755 Credits |
+
+Bei 30 Dailys/Monat: ca. 28 000 → ca. 22 500 Credits. Zum Vergleich: Creator-Plan hat 100 000 Credits/Monat, der Daily nutzt davon also rund ein Viertel.
 
 ---
 
