@@ -1,6 +1,6 @@
 # Daily To-do Call – Setup & Audit-Log
 
-Stand: 12.10.2026, 01:00 · Session 4 (ElevenLabs-Verbindung: Post-Call-Webhook angelegt und End-to-End getestet, Stimme Leela, LLM auf Gemini 2.5 Flash Lite ohne Thinking wegen Latenz; O1, O2 und O6 erledigt). Session 3 (Agent Log, Prompts in Notion, Config-Cache, debugbarer Zustand, Orchestrator, Meta-Routine), Session 2 (Struktur-Review) und Session 1 (Erstaufbau) sind unten als Historie erhalten.
+Stand: 12.10.2026, 01:15 · Session 4 (ElevenLabs-Verbindung: Post-Call-Webhook angelegt und End-to-End getestet, Stimme Leela, LLM wegen Latenz auf GPT-5.4 Nano ohne Reasoning; O1, O2 und O6 erledigt). Session 3 (Agent Log, Prompts in Notion, Config-Cache, debugbarer Zustand, Orchestrator, Meta-Routine), Session 2 (Struktur-Review) und Session 1 (Erstaufbau) sind unten als Historie erhalten.
 
 ## Architektur (aktuell)
 
@@ -48,7 +48,7 @@ Rollenverteilung: Notion hält Wissen und Konfiguration, n8n führt aus und logg
 | n8n | `B_news_digest` | `WFN6F556tlRi5PSe` |
 | n8n | `C_todos_hygiene` (neu) | `iagFXTrUDqPQIiOH`, täglich 06:40 |
 | n8n | Webhook-Basis Daily | `https://danieldtmn.app.n8n.cloud/webhook/todo-…/` – vollständige URL im Webhook-Node, enthält geheimen Teil, nicht teilen |
-| ElevenLabs | Agent „To-do Agent (Daily)“ | `agent_2601m4p82ey6ew8bnejvezdmrt9x`, Stimme Leela `ZvWcrHaSI2mBg4j0XUCH`, Sprache de |
+| ElevenLabs | Agent „To-do Agent (Daily)“ | `agent_2601m4p82ey6ew8bnejvezdmrt9x`, Stimme Leela `ZvWcrHaSI2mBg4j0XUCH`, Sprache de, LLM `gpt-5.4-nano` (Reasoning none) |
 | ElevenLabs | Tool `todos_abrufen` | `tool_5101m4p81tejfw0vk83g53zsr748` |
 | Notion | TODOS | Data Source `b8065b38-5580-43fc-b022-e8708fc1b680` (Daniel’s Headquarters / AI Operating System) |
 | Notion | Agent Config | Data Source `d62ed4d7-a48d-4a49-9725-808dc6716138`, Zeile „Global“ (`model_fast`, `model_reasoning`, `model_orchestrator`) |
@@ -59,7 +59,7 @@ Rollenverteilung: Notion hält Wissen und Konfiguration, n8n führt aus und logg
 
 Hinweis: Die IDs aus Session 1 (`agent_9401…`, `tool_6401…`) tauchen im Connector nicht mehr auf. Der Connector sieht genau einen Agenten mit den neuen IDs, angelegt 11.10. 21:47 Uhr. Das ist sehr wahrscheinlich der Umzug nach „My Workspace“ aus einem anderen Chat. Bestätigt in Session 4 (E12): Der Agent liegt im Workspace, Daniel ist Creator und admin.
 
-## Audit-Log Session 4 (12.10.2026, 00:00–01:00)
+## Audit-Log Session 4 (12.10.2026, 00:00–01:15)
 
 Anlass: Daniel legt die ElevenLabs-Verbindung in der Oberfläche an. Parallel dazu Ist-Zustand von Agent, Tool, Stimme, Nummer und n8n-Empfangsseite per MCP geprüft, danach den ersten echten Post-Call verifiziert. Keine Änderungen an Agent oder Workflows durch Claude; Daniel hat den Webhook in der Oberfläche angelegt.
 
@@ -74,7 +74,8 @@ Anlass: Daniel legt die ElevenLabs-Verbindung in der Oberfläche an. Parallel da
 | E17 | **Post-Call-Webhook steht** | Workspace (Agents-Einstellungen) | Von Daniel in der Oberfläche angelegt (Agents Platform → Settings → Post-Call-Webhook). Beim ersten Anlegen wurde das Secret nicht kopiert, Webhook daraufhin gelöscht und neu angelegt; Secret liegt jetzt bei Daniel. Test-Call 00:25 Uhr (`conv_9001m4ph3n3jfv2scm579eadv2vc`, 19 s, per `end_call` beendet): ElevenLabs hat `/postcall` aufgerufen, Header `elevenlabs-signature` (`t=…,v0=…`) kommt mit. **O2 erledigt.** |
 | E18 | Stimme weiterhin Standard | Agent | Dritter Versuch Silke per MCP, wieder nicht übernommen (Connector antwortet mit einem fehlerhaften Ergebnis, Stimme bleibt `cjVigY5qzO86Huf0OWal`). Library-Stimmen (Silke, Laila) müssen zuerst in „My Voices“ liegen; der Connector hat dafür kein Tool, Daniel muss das in der Oberfläche machen → O1. |
 | E19 | **Stimme auf Leela gesetzt** | Agent, Version `agtvrsn_2401m4phvvedfmgbdjean19d1860` | Daniel hat „Leela – Sophisticated, Textured, Narration“ (`ZvWcrHaSI2mBg4j0XUCH`, Library, amerikanisches Englisch) in der Oberfläche als primäre Stimme gewählt und veröffentlicht. Im Entwurf war die Sprache auf „Englisch“ gesprungen, vor dem Veröffentlichen auf Deutsch zurückgestellt. Geprüft nach Veröffentlichung: `voice_id` Leela, `language: de`, TTS `eleven_v4_turbo`, Tool, erste Nachricht und Limits unverändert. Per MCP ließ sich die Stimme nie setzen (Library-Stimme war nicht in My Voices; Fehler kam als „malformed result“ zurück). **O1 erledigt.** |
-| E20 | **LLM gewechselt: Gemini 2.5 Flash Lite, Thinking aus** | Agent, Version `agtvrsn_5101m4pjagm3egx9fbtdh97wdmz6` | Daniel: Antworten zu langsam. Messung aus den Test-Calls: Gemini 3.8 Flash 1,7 s bis zum ersten Token, Turns als „reasoned“ markiert (Thinking aktiv). `reasoning_effort` wird für 3.8 Flash abgelehnt („not supported for this LLM“), `thinking_budget: 0` wird nicht gespeichert, Thinking ist dort nicht abschaltbar. Deshalb Modell auf `gemini-2.5-flash-lite` mit `thinking_budget: 0`; Prompt, Tool, Temperatur 0,3, Backup-LLM default unverändert. LLM-Kosten laut ElevenLabs-Rechner: 0,0011 $/Min. statt 0,0097 $/Min. (−88 %). **Test durch Daniel ausstehend**; Rückfall-Optionen bei schwacher Qualität: `gemini-3.5-flash-lite` (0,0042 $/Min.) oder `gpt-5.4-nano` (0,0024 $/Min.). |
+| E20 | **LLM-Latenz gemessen, erste Umstellung** | Agent | Daniel: Antworten zu langsam. Messung aus den Test-Calls mit Gemini 3.8 Flash: 1,2 bis 3,1 s bis zum ersten Token (Ø ca. 2 s über 10 Turns in `conv_3901m4pj057qfzp8s3py7f4afbvh`), Turns als „reasoned“ markiert. `reasoning_effort: minimal` wird für 3.8 Flash abgelehnt, `thinking_budget: 0` nicht gespeichert, Thinking dort also nicht abschaltbar. Wechsel auf `gemini-2.5-flash-lite` mit `thinking_budget: 0` gespeichert (Version `agtvrsn_5101…`). |
+| E21 | **UI-Publish hat MCP-Änderungen überschrieben, korrigiert** | Agent | Daniels Publish aus der Oberfläche (Version `agtvrsn_0501…`) hat einen älteren Entwurf veröffentlicht: LLM zurück auf 3.8 Flash, Temperatur 0,4, `reasoning_effort: low`, **Sprache en**. Korrektur per MCP: Sprache `de` (Version `agtvrsn_7701…`). Das einmal gesetzte Reasoning-Feld lässt sich per API nicht löschen (`null` wird abgelehnt), Gemini-Modelle akzeptieren es nicht, deshalb finaler Wechsel auf **`gpt-5.4-nano` mit `reasoning_effort: none`**, Temperatur 0,3 (Version `agtvrsn_0701m4pjh33jetvvf831a7ppa4rw`). Prompt, Tool, Backup-LLM, Timeouts unverändert. LLM-Kosten 0,0024 $/Min. statt 0,0097 $/Min. (−75 %). **Latenz-Test durch Daniel ausstehend.** Rückfall bei schwacher Qualität: `gpt-5.4-mini` (0,0090 $/Min.) mit Reasoning none. |
 
 ### n8n
 | # | Befund | Objekt | Details |
@@ -82,6 +83,7 @@ Anlass: Daniel legt die ElevenLabs-Verbindung in der Oberfläche an. Parallel da
 | W25 | Empfangsseite bereit | `D_daily_todo_call` → „Transkript extrahieren“ | Erwartet das echte ElevenLabs-Format (`type: post_call_transcription`, `data.transcript[].role/message`, `data.conversation_id`, `data.agent_id`); `post_call_audio` wird ignoriert; der Webhook antwortet sofort mit 200, die Verarbeitung läuft danach. Sobald der Webhook in ElevenLabs steht, wird jeder Call (auch Browser-Tests) voll verarbeitet: Notion, Mail, Agent Log. |
 | W26 | **Post-Call-Kette End-to-End grün** | `D_daily_todo_call` Exec 860 | 00:25 Uhr, 8 s: Transkript (3 Zeilen) extrahiert → kein Snapshot, weil der Agent `todos_abrufen` nicht aufgerufen hat (Daniel hat direkt nach der Begrüßung unterbrochen) → frische Liste (`todos_quelle: frisch`) → SUB_llm → 0 Aktionen → Notion unverändert (noop) → Mail „Daily Mo 12.10.: 0 Änderungen“ gesendet → Agent-Log-Zeile `3f682151-c6cc-810f-b639-c41d4f3359ab` (Sub-Execution 865) → Tagesstatus `day:2026-10-12` = done. |
 | W27 | Tagesstatus zurückgesetzt | `D_daily_todo_call` Exec 867 | `/status?action=reset` per MCP (Produktion): `day:2026-10-12` wieder `open`, damit der Montags-Daily nicht als erledigt gilt. Direkter Aufruf der Webhook-URL aus der Claude-Umgebung ist durch den Proxy gesperrt (403), der Weg über n8n `execute_workflow` funktioniert. |
+| W28 | Zweiter echter Post-Call grün | `D_daily_todo_call` Exec 874 | 00:43 Uhr, 13 s, Test-Call von 159 s: Snapshot genutzt (`todos_quelle: snapshot`), 2 Aktionen (WEWORK DOAC PODCAST → Heute, neu „Matratze besorgen Wohnung Muc“ auf Heute), Mail „Daily Mo 12.10.: 2 Änderungen“, Agent-Log-Zeile `3f682151-c6cc-81a0-bf87-d8f17b2c2921`. Tagesstatus für 12.10. steht wieder auf done; nicht zurückgesetzt, weil die Änderungen echt sind. |
 
 ### Claude
 | # | Aktion | Objekt |
@@ -182,7 +184,7 @@ Nichts geändert. Beobachtungen:
 Dashboard: https://elevenlabs.io/app/agents/agents/agent_2601m4p82ey6ew8bnejvezdmrt9x
 Browser-Test: https://elevenlabs.io/app/talk-to?agent_id=agent_2601m4p82ey6ew8bnejvezdmrt9x
 
-Frei änderbar: Stimme, Tempo, Prompt-Ton, erste Nachricht, Modell, max. Dauer. Achtung beim Stimmenwechsel in der Oberfläche: Die Karte „Sprache“ kann dabei auf Englisch springen, vor dem Veröffentlichen prüfen, dass Deutsch Standard ist.
+Frei änderbar: Stimme, Tempo, Prompt-Ton, erste Nachricht, Modell, max. Dauer. Achtung in der Oberfläche: „Veröffentlichen“ schreibt den kompletten Entwurf, auch alte Felder, und überschreibt damit Änderungen, die zwischenzeitlich per MCP gemacht wurden (passiert am 12.10., E21). Vor dem Veröffentlichen Seite neu laden bzw. Entwurf verwerfen und die Karten „Sprache“ (muss Deutsch sein) und „LLM“ prüfen.
 Nicht ändern (sonst bricht die Kette): Tool `todos_abrufen` (URL, Name, Body-Felder `quelle` und `conversation_id`) und die Prompt-Zeile „Rufe direkt nach deiner Begrüßung das Tool todos_abrufen auf“.
 
 **Erste Nachricht (aktuell):**
@@ -241,9 +243,9 @@ Neu: PA_orchestrator mit gpt-5.1, ca. 2–3 k Tokens je Nachricht → bei 20 Nac
 | Je 4-Minuten-Daily | Plattform | LLM | Summe |
 |---|---|---|---|
 | Gemini 3.8 Flash (bis 12.10.) | ca. 730 Credits | ca. 210 Credits | ca. 940 Credits |
-| Gemini 2.5 Flash Lite (ab 12.10.) | ca. 730 Credits | ca. 25 Credits | ca. 755 Credits |
+| GPT-5.4 Nano ohne Reasoning (ab 12.10.) | ca. 730 Credits | ca. 50 Credits | ca. 780 Credits |
 
-Bei 30 Dailys/Monat: ca. 28 000 → ca. 22 500 Credits. Zum Vergleich: Creator-Plan hat 100 000 Credits/Monat, der Daily nutzt davon also rund ein Viertel.
+Bei 30 Dailys/Monat: ca. 28 000 → ca. 23 500 Credits. Zum Vergleich: Creator-Plan hat 100 000 Credits/Monat, der Daily nutzt davon also rund ein Viertel.
 
 ---
 
