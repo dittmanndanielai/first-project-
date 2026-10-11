@@ -1,39 +1,102 @@
 # Daily To-do Call – Setup & Audit-Log
 
-Stand: 11.10.2026, 22:20 · Session 2 (Struktur-Review und Fixes). Session 1 (Erstaufbau) ist unten als Historie erhalten.
+Stand: 11.10.2026, 23:50 · Session 3 (Agent Log, Prompts in Notion, Config-Cache, debugbarer Zustand, Orchestrator, Meta-Routine). Session 2 (Struktur-Review) und Session 1 (Erstaufbau) sind unten als Historie erhalten.
 
 ## Architektur (aktuell)
 
 ```
-iPhone-Kurzbefehl ──GET /status──▶ D_daily_todo_call ─▶ ja/nein (7:30–12:00, 1× pro Tag)
+Notion = Gedächtnis und einzige Wahrheit
+   TODOS · Agent Config (Modelle, Flags) · Prompts (alle System-Prompts, versioniert, aktiv/inaktiv)
+   Agent Log (eine Zeile pro Lauf, mit Execution-Link) · Meta-Reviews (Wochen-Reviews)
 
-ElevenLabs "To-do Agent (Daily)"
-   └─ Tool todos_abrufen ──POST /context──▶ D_daily_todo_call ─▶ SUB_todos (Notion) ─▶ nummerierte Liste
-                                                                └─ Snapshot pro conversation_id (Static Data)
-   └─ Post-Call-Webhook ──POST /postcall──▶ D_daily_todo_call ─▶ Snapshot (oder SUB_todos) ─▶ SUB_llm ─▶ Notion ─▶ Bestätigungsmail
+n8n = Ausführung (Ordner „Personal AI Agent“)
+   Gemeinsame Bausteine
+   ├─ SUB_config       Agent Config + Prompts aus Notion lesen, 5-Minuten-Cache
+   ├─ SUB_llm          einziger LLM-Zugang (OpenAI); Prompt per prompt_key aus Notion, {{vars}} werden ersetzt
+   ├─ SUB_todos        nummerierte To-do-Liste aus Notion (serverseitig gefiltert)
+   ├─ SUB_todos_apply  Aktionen (erledigt, verschieben, neu, umbenennen, notiz, prio, datum, loeschen) auf Notion anwenden
+   ├─ SUB_state        Zustand in Data Table pa_state (Tagesstatus, Pause, Call-Snapshots), in n8n einsehbar
+   ├─ SUB_log          Zeile ins Agent Log schreiben (fällt nie hart aus)
+   └─ ERR_notify       bei jedem Workflow-Fehler: Fehlermail + Agent-Log-Zeile
 
-12:00 (deaktiviert) ─▶ Daily noch offen? ─▶ SUB_todos ─▶ Erinnerungsmail
-Jeder Fehler in D_daily_todo_call / B_news_digest ─▶ ERR_notify ─▶ Fehlermail
+   D_daily_todo_call   iPhone-Kurzbefehl (/status) · ElevenLabs-Agent (/context, /postcall) · 12-Uhr-Fallback (aus)
+   PA_orchestrator     Runtime-Orchestrator: n8n Chat (Chat Hub, n8n-Login) + Webhook → AI Agent (Modell aus Agent Config)
+                       Tools: todos_lesen · todos_aendern · notion_suchen · notion_lesen → Antwort → Agent Log
+   B_news_digest       täglicher Intelligence-Digest, Prompts aus Notion → Agent Log
+   C_todos_hygiene     täglich 06:40: fehlenden Status „offen“ und created_by „user“ nachtragen
+
+Claude = Bauen und Meta-Schicht
+   dieser Chat                 Builder und Wartung über MCP (n8n, Notion, ElevenLabs)
+   Routine „PA Meta-Review“    sonntags 17:47: Agent Log, To-dos, Prompts der Woche lesen → Review-Seite in Notion (schlägt vor, ändert nichts)
 ```
 
-Notion bleibt die einzige Wahrheit für To-dos. n8n hält nur Tagesstatus, Pause und die Call-Snapshots (Workflow Static Data).
+Rollenverteilung: Notion hält Wissen und Konfiguration, n8n führt aus und loggt, Claude baut und bewertet. Kein Workflow enthält mehr einen Prompt im Code; alle Prompts liegen in Notion „Prompts“ und werden über SUB_config gecacht geladen.
 
 ## IDs und Orte
 
 | System | Objekt | ID / Ort |
 |---|---|---|
-| n8n | `D_daily_todo_call` | `7RHkHLnrUrcwCndH`, Ordner „Personal AI Agent“, aktiv |
-| n8n | `SUB_todos` (neu) | `0JbiuOaUkaiGZZAp`, Ordner „Personal AI Agent“, veröffentlicht |
-| n8n | `ERR_notify` (neu) | `o6l8HeuZhUNK64IT`, Ordner „Personal AI Agent“, veröffentlicht |
-| n8n | `SUB_llm` | `SEPkupoYoj8yqV7p` (nur genutzt) |
-| n8n | Webhook-Basis | `https://danieldtmn.app.n8n.cloud/webhook/todo-…/` – vollständige URL steht im Webhook-Node, enthält geheimen Teil, nicht teilen |
+| n8n | `D_daily_todo_call` | `7RHkHLnrUrcwCndH`, aktiv |
+| n8n | `PA_orchestrator` (neu) | `nt84eGHOArJrKzuI`, veröffentlicht. Chat: n8n → Chat → Agent „Personal Agent“. Webhook POST `…/webhook/pa-chat-…` mit Body `{ "text": "…", "sessionId": "…" }`; Pfad enthält geheimen Teil, steht im Webhook-Node |
+| n8n | `SUB_todos` | `0JbiuOaUkaiGZZAp` |
+| n8n | `SUB_todos_apply` (neu) | `qLrDyIKIYwiwPwWY`, Input `{ aktionen }` |
+| n8n | `SUB_llm` | `SEPkupoYoj8yqV7p`, jetzt mit `prompt_key` + `vars` und Config aus SUB_config |
+| n8n | `SUB_config` (neu) | `qEclJGTzNoSm39MW`, Output `{ cache, config, prompts, prompt_meta }`, `force_refresh: true` leert den Cache |
+| n8n | `SUB_state` (neu) | `yz0jUkeTRNDp8jaQ`, Data Table `pa_state` (`BMm8ByfZHW5pgpbp`), Keys `day:YYYY-MM-DD`, `pause_until`, `snapshot:<conversation_id>` |
+| n8n | `SUB_log` (neu) | `zWvKLTujqGLN0yGG` |
+| n8n | `ERR_notify` | `o6l8HeuZhUNK64IT` |
+| n8n | `B_news_digest` | `WFN6F556tlRi5PSe` |
+| n8n | `C_todos_hygiene` (neu) | `iagFXTrUDqPQIiOH`, täglich 06:40 |
+| n8n | Webhook-Basis Daily | `https://danieldtmn.app.n8n.cloud/webhook/todo-…/` – vollständige URL im Webhook-Node, enthält geheimen Teil, nicht teilen |
 | ElevenLabs | Agent „To-do Agent (Daily)“ | `agent_2601m4p82ey6ew8bnejvezdmrt9x` |
 | ElevenLabs | Tool `todos_abrufen` | `tool_5101m4p81tejfw0vk83g53zsr748` |
-| Notion | TODOS Data Source | `b8065b38-5580-43fc-b022-e8708fc1b680` (Daniel’s Headquarters / AI Operating System) |
+| Notion | TODOS | Data Source `b8065b38-5580-43fc-b022-e8708fc1b680` (Daniel’s Headquarters / AI Operating System) |
+| Notion | Agent Config | Data Source `d62ed4d7-a48d-4a49-9725-808dc6716138`, Zeile „Global“ (`model_fast`, `model_reasoning`, `model_orchestrator`) |
+| Notion | Prompts (neu) | Data Source `c768fdf4-97f9-4465-a7ed-83b049d75207`. Keys: `daily_call.aktionen`, `digest.scoring`, `digest.redaktion`, `orchestrator.system`, `elevenlabs.todo_agent.system` (Kopie, ElevenLabs liest nicht aus Notion) |
+| Notion | Agent Log (neu) | Data Source `b3790be9-17d2-4368-8a57-09d171cd1622` |
+| Notion | Meta-Reviews (neu) | Seite `3f682151-c6cc-8182-a24e-c5f7f1f2b114` unter AI Operating System |
+| Claude | Routine „PA Meta-Review (wöchentlich)“ | `trig_01WukBfP8fHRGqVuKVaWsK4E`, `CRON_TZ=Europe/Berlin 47 17 * * 0`, erster Lauf So 18.10.2026, neue Session je Lauf, Push-Benachrichtigung |
 
 Hinweis: Die IDs aus Session 1 (`agent_9401…`, `tool_6401…`) tauchen im Connector nicht mehr auf. Der Connector sieht genau einen Agenten mit den neuen IDs, angelegt 11.10. 21:47 Uhr. Das ist sehr wahrscheinlich der Umzug nach „My Workspace“ aus einem anderen Chat. Bitte einmal in der ElevenLabs-Oberfläche bestätigen (siehe Offen O6).
 
-## Audit-Log Session 2 (11.10.2026, 21:55–22:20)
+## Audit-Log Session 3 (11.10.2026, 22:30–23:50)
+
+Reihenfolge wie von Daniel vorgegeben: 1 Agent Log, 2 Prompts nach Notion, 3 Cache, 4 Zustand debugbar, 5 HMAC nur registrieren, 6 TODOS-Struktur unverändert, 7 Status-Standard, 8 Orchestrator, 9 Meta-Schicht.
+
+### Notion
+| # | Aktion | Objekt | Details |
+|---|---|---|---|
+| N5 | DB neu | Agent Log | Eine Zeile pro Lauf: Workflow, Typ, Status, Titel, Input, Entscheidung, Ergebnis, Modell, conversation_id, Dauer, Notiz, Execution-Link. Geschrieben von D_daily_todo_call, B_news_digest, PA_orchestrator, ERR_notify. |
+| N6 | DB neu | Prompts | Key, Prompt, Version, Aktiv, Workflow, Ziel, Platzhalter, Beschreibung. Fünf Zeilen angelegt (siehe IDs). Inaktive oder fehlende Prompts lösen in SUB_llm einen klaren Fehler aus statt stiller Fallbacks. |
+| N7 | Zeile geändert | Prompts `orchestrator.system` | Version 2: To-dos per `id` (bevorzugt) oder `nr`, neuer Aktionstyp `datum`, nach jeder Änderung erneut `todos_lesen`. |
+| N8 | Spalte neu | Agent Config | `model_orchestrator` = `gpt-5.1` (Modell des Orchestrators, ohne Deploy änderbar). |
+| N9 | TODOS | Zeilen | Status „offen“ und created_by „user“ bei 4 Alt-Einträgen nachgetragen. HMAC-Prüfung als To-do registriert (`3f682151-c6cc-81a9-b949-de021bc95cce`, Prio niedrig, bewusst nicht umgesetzt). Test-To-do des Orchestrators angelegt und wieder gelöscht (Papierkorb). Struktur der drei TODOS-Datenbanken unverändert (Punkt 6). |
+| N10 | Seite neu | Meta-Reviews | Ablage der Wochen-Reviews der Claude-Routine. |
+
+### n8n
+| # | Aktion | Objekt | Details |
+|---|---|---|---|
+| W14 | Workflow neu | `SUB_log` | Schreibt eine Agent-Log-Zeile, Rich-Text in 2000-Zeichen-Blöcken, gibt `{ ok, page_id, error }` zurück, bricht nie den Aufrufer ab. |
+| W15 | Workflow neu | `SUB_config` | Lädt Agent Config und aktive Prompts aus Notion, 5-Minuten-Cache in Static Data; Output meldet `cache: hit/miss`. |
+| W16 | Workflow umgebaut | `SUB_llm` | Nimmt `prompt_key` + `vars` statt Prompt-Text; `system` nur noch als Zusatz. Config über SUB_config (vorher bei jedem Aufruf aus Notion). Fehlermeldung nennt den fehlenden Key. |
+| W17 | Workflow neu | `SUB_state` + Data Table `pa_state` | Operationen get / get_kind / set (mit TTL) / delete / cleanup. Ersetzt Workflow Static Data: Zustand ist in n8n → Data Tables sichtbar und editierbar. |
+| W18 | Workflow umgebaut | `D_daily_todo_call` | Tagesstatus, Pause und Call-Snapshots über SUB_state; Prompt `daily_call.aktionen` aus Notion; Agent-Log-Zeile nach jedem Call; Respond-Nodes antworten vor den Schreibvorgängen. Produktionsläufe 813, 818, 819, 823 grün. |
+| W19 | Workflow umgebaut | `B_news_digest` | Prompts `digest.scoring` und `digest.redaktion` aus Notion, Agent-Log-Zeile nach dem Schreiben. |
+| W20 | Workflow umgebaut | `ERR_notify` | Schreibt zusätzlich zur Fehlermail eine Agent-Log-Zeile (Typ fehler). |
+| W21 | Workflow neu | `C_todos_hygiene` | Täglich 06:40: Einträge ohne Status oder created_by bekommen „offen“ / „user“. Testlauf 830: 1 Eintrag korrigiert (die leere Zeile aus Session 2). Error Workflow = ERR_notify. |
+| W22 | Workflow neu | `SUB_todos_apply` | Gleiche Aktionslogik wie im Daily-Call, als Tool nutzbar: Input `{ aktionen }` (JSON-Array), lädt die Liste frisch, ordnet per `id` oder `nr`, Output `{ ok, log, fehler, anzahl, zusammenfassung }`. |
+| W23 | Workflow neu | `PA_orchestrator` | Chat Trigger (Chat Hub, n8n-Login, Streaming) + Webhook POST → Eingabe normalisieren → SUB_config → System-Prompt `orchestrator.system` mit {{heute}}/{{wochentag}} → AI Agent (OpenAI, Modell aus `model_orchestrator`, Simple Memory je sessionId, Tools todos_lesen / todos_aendern / notion_suchen / notion_lesen) → Webhook-Antwort → Agent-Log-Zeile. Zeitzone Europe/Berlin, Error Workflow = ERR_notify. |
+| W24 | Tests (Produktion) | `PA_orchestrator` | 831 Webhook „Was steht heute an?“ → todos_lesen, Antwort mit 3 Heute-Punkten, 6 s. 835 „neues To-do anlegen“ → todos_lesen + todos_aendern(neu), Seite in Notion angelegt. 845 gleiche Session „lösche das Test-To-do“ → Memory erkannte das To-do, Löschung per `id` in den Papierkorb. 838 Chat-Trigger (manuell) → 3 s, Log-Zeile ohne Webhook-Antwort. Jeder Lauf hat eine Agent-Log-Zeile mit Execution-Link. |
+
+Nicht verändert: Credentials, Webhook-Pfade des Daily-Calls, ElevenLabs-Agent (Prompt liegt nur als Kopie in Notion), die drei TODOS-Datenbanken.
+
+### Claude
+| # | Aktion | Objekt | Details |
+|---|---|---|---|
+| P3 | Routine angelegt | „PA Meta-Review (wöchentlich)“ | Sonntags 17:47 Berlin, neue Session je Lauf, Push-Benachrichtigung. Liest Agent Log, n8n-Fehler, TODOS und Prompts der Woche, schreibt Review-Seite unter Meta-Reviews und eine Agent-Log-Zeile, schlägt Verbesserungen vor, ändert nichts. **Connectoren (Notion, n8n) konnten per MCP nicht hinterlegt werden → O9.** Version 1, Erweiterung um Real-Life-Ziele nach Brainstorming (O13). |
+| P4 | Doc aktualisiert | `claude/daily-todo-call-setup.md` | Dieses Dokument. |
+
+## Historie: Audit-Log Session 2 (11.10.2026, 21:55–22:20)
 
 ### n8n
 | # | Aktion | Objekt | Details |
@@ -71,14 +134,20 @@ Nichts geändert. Beobachtungen:
 ## Offen
 | # | Was | Wer |
 |---|---|---|
-| O1 | **Deutsche Stimme:** ElevenLabs → Voices → Library → „Silke - Relaxed & Friendly“ → „Add to My Voices“. Dann entweder im Agent auswählen oder mir Bescheid geben, dann setze ich sie per Connector. Alternativen (alle Library, weiblich, Hochdeutsch): Nellie, Lola - Modern Agent, Nadine - Friendly Conversational, Mrs. Sophie. | Daniel |
-| O2 | **Post-Call-Webhook:** ElevenLabs → Agents → Settings → Post-call webhook → URL `…/postcall` (Transcription). Ohne das landet nichts in Notion. Nicht über den Connector möglich. | Daniel |
+| O1 | **Deutsche Stimme:** ElevenLabs → Voices → Library → „Silke - Relaxed & Friendly“ → „Add to My Voices“. Dann im Agent auswählen oder mir Bescheid geben. Alternative: Voice Design („leicht sexy, charmant, freundlich, aufgeweckt“) braucht einen Beispielsatz von Daniel. | Daniel |
+| O2 | **Post-Call-Webhook:** ElevenLabs → Agents → Settings → Post-call webhook → URL `…/postcall` (Transcription). Ohne das landet nichts in Notion. | Daniel |
 | O3 | Twilio-Konto + deutsche Nummer, dann Import + Agent zuweisen | Daniel, dann ich |
 | O4 | iPhone-Kurzbefehl „Daily-Check“ + Automationen (Anleitung unten) | Daniel |
 | O5 | 12-Uhr-Fallback (Schedule im Workflow) wieder aktivieren, optional als Rückruf | ich, nach O3 |
-| O6 | **Workspace bestätigen:** In ElevenLabs prüfen, dass `agent_2601…` in „My Workspace“ liegt und „To-do Agent (Daily)“ in Daniel’s Workspace gelöscht ist. | Daniel |
-| O7 | n8n `TEMP LG source probe` (`aZuPjAIYwf2Gd5TR`, inaktiv, seit 5.10.) archivieren, falls nicht mehr gebraucht | Daniel |
-| O8 | Optional: Audio-Aufbewahrung im Agent ist unbegrenzt (`retention_days: -1`). Für einen täglichen Privat-Call reichen 30 Tage. | Daniel oder ich |
+| O6 | **Workspace bestätigen:** In ElevenLabs prüfen, dass `agent_2601…` in „My Workspace“ liegt. | Daniel |
+| O7 | n8n `TEMP LG source probe` (`aZuPjAIYwf2Gd5TR`, inaktiv) archivieren, falls nicht mehr gebraucht | Daniel |
+| O8 | Optional: Audio-Aufbewahrung im Agent auf 30 Tage begrenzen (`retention_days: -1`). | Daniel oder ich |
+| O9 | **Routine-Connectoren:** claude.ai → Routines → „PA Meta-Review (wöchentlich)“ öffnen und Notion + n8n als Connectoren hinzufügen (per MCP nicht möglich). Ohne das hat der Sonntagslauf keinen Zugriff und legt nur eine Seite mit Fehlerhinweis an. | Daniel |
+| O10 | **Orchestrator ausprobieren:** n8n → Chat → Agent „Personal Agent“. Oder iPhone-Kurzbefehl: POST auf den Orchestrator-Webhook mit Body `{ "text": "…", "sessionId": "iphone" }`, Antwort steht in `antwort`. | Daniel |
+| O11 | HMAC-Prüfung Post-Call-Webhook (als To-do registriert, bewusst nicht umgesetzt). Der Orchestrator-Webhook ist ebenso nur durch den geheimen Pfad geschützt; Header-Auth wäre der nächste Schritt. | ich, wenn O2 steht |
+| O12 | Notion TODOS: Datenbank-Vorlage mit Status „offen“ als Standard-Vorlage setzen (die API kann keinen Select-Default). C_todos_hygiene fängt den Rest täglich 06:40 ab. | Daniel |
+| O13 | Meta-Schicht v2: Brainstorming-Session Real-Life-Ziele, danach Routine-Prompt erweitern (Ziele-DB, Wochenfokus, Bewertung gegen Ziele). | Daniel + ich |
+| O14 | n8n-Credential „Anthropic account“ (`4I2o0NaJ53VvT7bL`) liefert keine Modellliste, vermutlich ungültig. Orchestrator läuft deshalb auf OpenAI. Optional neu anlegen, dann `model_orchestrator` umstellen (Node-Tausch nötig). | Daniel |
 
 ## Agent selbst konfigurieren
 Dashboard: https://elevenlabs.io/app/agents/agents/agent_2601m4p82ey6ew8bnejvezdmrt9x
@@ -136,6 +205,7 @@ Fragt nur zwischen 7:30 und 12:00 und nur, solange der Daily offen ist. `action=
 
 ## Kosten (Schätzung, 150 Min./Monat)
 ElevenLabs Starter + Mehrminuten ca. 12,75 € · Twilio (überwiegend eingehend) ca. 3–4 € · Sprachmodelle ca. 1 € → **ca. 16–17 €/Monat**. Durch das 45-Sekunden-Stille-Limit (E9) fallen keine „vergessenen“ Call-Minuten mehr an.
+Neu: PA_orchestrator mit gpt-5.1, ca. 2–3 k Tokens je Nachricht → bei 20 Nachrichten/Tag grob 2–4 €/Monat (Schätzung). Config-Cache spart je LLM-Aufruf zwei Notion-Abfragen.
 
 ---
 
