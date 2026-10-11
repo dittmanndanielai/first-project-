@@ -1,6 +1,6 @@
 # Daily To-do Call – Setup & Audit-Log
 
-Stand: 12.10.2026, 00:35 · Session 4 (ElevenLabs-Verbindung: Post-Call-Webhook angelegt und End-to-End getestet, O2 und O6 erledigt). Session 3 (Agent Log, Prompts in Notion, Config-Cache, debugbarer Zustand, Orchestrator, Meta-Routine), Session 2 (Struktur-Review) und Session 1 (Erstaufbau) sind unten als Historie erhalten.
+Stand: 12.10.2026, 00:45 · Session 4 (ElevenLabs-Verbindung: Post-Call-Webhook angelegt und End-to-End getestet, Stimme Leela gesetzt; O1, O2 und O6 erledigt). Session 3 (Agent Log, Prompts in Notion, Config-Cache, debugbarer Zustand, Orchestrator, Meta-Routine), Session 2 (Struktur-Review) und Session 1 (Erstaufbau) sind unten als Historie erhalten.
 
 ## Architektur (aktuell)
 
@@ -48,7 +48,7 @@ Rollenverteilung: Notion hält Wissen und Konfiguration, n8n führt aus und logg
 | n8n | `B_news_digest` | `WFN6F556tlRi5PSe` |
 | n8n | `C_todos_hygiene` (neu) | `iagFXTrUDqPQIiOH`, täglich 06:40 |
 | n8n | Webhook-Basis Daily | `https://danieldtmn.app.n8n.cloud/webhook/todo-…/` – vollständige URL im Webhook-Node, enthält geheimen Teil, nicht teilen |
-| ElevenLabs | Agent „To-do Agent (Daily)“ | `agent_2601m4p82ey6ew8bnejvezdmrt9x` |
+| ElevenLabs | Agent „To-do Agent (Daily)“ | `agent_2601m4p82ey6ew8bnejvezdmrt9x`, Stimme Leela `ZvWcrHaSI2mBg4j0XUCH`, Sprache de |
 | ElevenLabs | Tool `todos_abrufen` | `tool_5101m4p81tejfw0vk83g53zsr748` |
 | Notion | TODOS | Data Source `b8065b38-5580-43fc-b022-e8708fc1b680` (Daniel’s Headquarters / AI Operating System) |
 | Notion | Agent Config | Data Source `d62ed4d7-a48d-4a49-9725-808dc6716138`, Zeile „Global“ (`model_fast`, `model_reasoning`, `model_orchestrator`) |
@@ -59,7 +59,7 @@ Rollenverteilung: Notion hält Wissen und Konfiguration, n8n führt aus und logg
 
 Hinweis: Die IDs aus Session 1 (`agent_9401…`, `tool_6401…`) tauchen im Connector nicht mehr auf. Der Connector sieht genau einen Agenten mit den neuen IDs, angelegt 11.10. 21:47 Uhr. Das ist sehr wahrscheinlich der Umzug nach „My Workspace“ aus einem anderen Chat. Bestätigt in Session 4 (E12): Der Agent liegt im Workspace, Daniel ist Creator und admin.
 
-## Audit-Log Session 4 (12.10.2026, 00:00–00:35)
+## Audit-Log Session 4 (12.10.2026, 00:00–00:45)
 
 Anlass: Daniel legt die ElevenLabs-Verbindung in der Oberfläche an. Parallel dazu Ist-Zustand von Agent, Tool, Stimme, Nummer und n8n-Empfangsseite per MCP geprüft, danach den ersten echten Post-Call verifiziert. Keine Änderungen an Agent oder Workflows durch Claude; Daniel hat den Webhook in der Oberfläche angelegt.
 
@@ -73,6 +73,7 @@ Anlass: Daniel legt die ElevenLabs-Verbindung in der Oberfläche an. Parallel da
 | E16 | Keine Nummer | Workspace | Keine Telefonnummer importiert → O3 unverändert. |
 | E17 | **Post-Call-Webhook steht** | Workspace (Agents-Einstellungen) | Von Daniel in der Oberfläche angelegt (Agents Platform → Settings → Post-Call-Webhook). Beim ersten Anlegen wurde das Secret nicht kopiert, Webhook daraufhin gelöscht und neu angelegt; Secret liegt jetzt bei Daniel. Test-Call 00:25 Uhr (`conv_9001m4ph3n3jfv2scm579eadv2vc`, 19 s, per `end_call` beendet): ElevenLabs hat `/postcall` aufgerufen, Header `elevenlabs-signature` (`t=…,v0=…`) kommt mit. **O2 erledigt.** |
 | E18 | Stimme weiterhin Standard | Agent | Dritter Versuch Silke per MCP, wieder nicht übernommen (Connector antwortet mit einem fehlerhaften Ergebnis, Stimme bleibt `cjVigY5qzO86Huf0OWal`). Library-Stimmen (Silke, Laila) müssen zuerst in „My Voices“ liegen; der Connector hat dafür kein Tool, Daniel muss das in der Oberfläche machen → O1. |
+| E19 | **Stimme auf Leela gesetzt** | Agent, Version `agtvrsn_2401m4phvvedfmgbdjean19d1860` | Daniel hat „Leela – Sophisticated, Textured, Narration“ (`ZvWcrHaSI2mBg4j0XUCH`, Library, amerikanisches Englisch) in der Oberfläche als primäre Stimme gewählt und veröffentlicht. Im Entwurf war die Sprache auf „Englisch“ gesprungen, vor dem Veröffentlichen auf Deutsch zurückgestellt. Geprüft nach Veröffentlichung: `voice_id` Leela, `language: de`, TTS `eleven_v4_turbo`, Tool, erste Nachricht und Limits unverändert. Per MCP ließ sich die Stimme nie setzen (Library-Stimme war nicht in My Voices; Fehler kam als „malformed result“ zurück). **O1 erledigt.** |
 
 ### n8n
 | # | Befund | Objekt | Details |
@@ -161,7 +162,7 @@ Nichts geändert. Beobachtungen:
 ## Offen
 | # | Was | Wer |
 |---|---|---|
-| O1 | **Deutsche Stimme:** ElevenLabs → Voices → Library → „Silke - Relaxed & Friendly“ → „Add to My Voices“. Dann im Agent auswählen oder mir Bescheid geben, ich setze sie per MCP. Stand 12.10.: noch nicht in My Voices (E15). Alternative: Voice Design („leicht sexy, charmant, freundlich, aufgeweckt“) braucht einen Beispielsatz von Daniel. | Daniel |
+| O1 | ~~Stimme~~ Erledigt (Session 4, E19): Leela, veröffentlicht. Englische Stimme, spricht Deutsch über das mehrsprachige Modell; falls der Akzent stört, ist „Silke - Relaxed & Friendly“ (`a9xTHeUqm2s31ct5pQck`, Deutsch) die Alternative, gleicher Weg über die Oberfläche. | – |
 | O2 | ~~Post-Call-Webhook~~ Erledigt (Session 4, E17/W26): Webhook angelegt, Test-Call 00:25 Uhr komplett durchgelaufen bis Mail und Agent Log. | – |
 | O3 | Twilio-Konto + deutsche Nummer, dann Import + Agent zuweisen | Daniel, dann ich |
 | O4 | iPhone-Kurzbefehl „Daily-Check“ + Automationen (Anleitung unten) | Daniel |
@@ -180,7 +181,7 @@ Nichts geändert. Beobachtungen:
 Dashboard: https://elevenlabs.io/app/agents/agents/agent_2601m4p82ey6ew8bnejvezdmrt9x
 Browser-Test: https://elevenlabs.io/app/talk-to?agent_id=agent_2601m4p82ey6ew8bnejvezdmrt9x
 
-Frei änderbar: Stimme, Tempo, Prompt-Ton, erste Nachricht, Modell, max. Dauer.
+Frei änderbar: Stimme, Tempo, Prompt-Ton, erste Nachricht, Modell, max. Dauer. Achtung beim Stimmenwechsel in der Oberfläche: Die Karte „Sprache“ kann dabei auf Englisch springen, vor dem Veröffentlichen prüfen, dass Deutsch Standard ist.
 Nicht ändern (sonst bricht die Kette): Tool `todos_abrufen` (URL, Name, Body-Felder `quelle` und `conversation_id`) und die Prompt-Zeile „Rufe direkt nach deiner Begrüßung das Tool todos_abrufen auf“.
 
 **Erste Nachricht (aktuell):**
