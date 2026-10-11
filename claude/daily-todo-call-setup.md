@@ -1,6 +1,6 @@
 # Daily To-do Call – Setup & Audit-Log
 
-Stand: 11.10.2026, 23:50 · Session 3 (Agent Log, Prompts in Notion, Config-Cache, debugbarer Zustand, Orchestrator, Meta-Routine). Session 2 (Struktur-Review) und Session 1 (Erstaufbau) sind unten als Historie erhalten.
+Stand: 12.10.2026, 00:10 · Session 4 (ElevenLabs-Verbindung: Ist-Zustand geprüft, Post-Call-Webhook ist das fehlende Stück). Session 3 (Agent Log, Prompts in Notion, Config-Cache, debugbarer Zustand, Orchestrator, Meta-Routine), Session 2 (Struktur-Review) und Session 1 (Erstaufbau) sind unten als Historie erhalten.
 
 ## Architektur (aktuell)
 
@@ -57,9 +57,32 @@ Rollenverteilung: Notion hält Wissen und Konfiguration, n8n führt aus und logg
 | Notion | Meta-Reviews (neu) | Seite `3f682151-c6cc-8182-a24e-c5f7f1f2b114` unter AI Operating System |
 | Claude | Routine „PA Meta-Review (wöchentlich)“ | `trig_01WukBfP8fHRGqVuKVaWsK4E`, `CRON_TZ=Europe/Berlin 47 17 * * 0`, erster Lauf So 18.10.2026, neue Session je Lauf, Push-Benachrichtigung |
 
-Hinweis: Die IDs aus Session 1 (`agent_9401…`, `tool_6401…`) tauchen im Connector nicht mehr auf. Der Connector sieht genau einen Agenten mit den neuen IDs, angelegt 11.10. 21:47 Uhr. Das ist sehr wahrscheinlich der Umzug nach „My Workspace“ aus einem anderen Chat. Bitte einmal in der ElevenLabs-Oberfläche bestätigen (siehe Offen O6).
+Hinweis: Die IDs aus Session 1 (`agent_9401…`, `tool_6401…`) tauchen im Connector nicht mehr auf. Der Connector sieht genau einen Agenten mit den neuen IDs, angelegt 11.10. 21:47 Uhr. Das ist sehr wahrscheinlich der Umzug nach „My Workspace“ aus einem anderen Chat. Bestätigt in Session 4 (E12): Der Agent liegt im Workspace, Daniel ist Creator und admin.
 
-## Audit-Log Session 3 (11.10.2026, 22:30–23:50)
+## Audit-Log Session 4 (12.10.2026, 00:00–00:10)
+
+Anlass: Daniel legt die ElevenLabs-Verbindung in der Oberfläche an. Parallel dazu Ist-Zustand von Agent, Tool, Stimme, Nummer und n8n-Empfangsseite per MCP geprüft. Keine Änderungen an Agent oder Workflows.
+
+### ElevenLabs
+| # | Befund | Objekt | Details |
+|---|---|---|---|
+| E12 | Workspace bestätigt | Agent `agent_2601…` | Der Connector sieht genau diesen Agenten, Creator dittmann.daniel@icloud.com, Rolle admin, 1 Call in 7 Tagen. **O6 erledigt.** |
+| E13 | **Post-Call-Webhook fehlt** | Agent | `workspace_overrides.webhooks` enthält nur die Event-Auswahl (`transcript`, JSON, kein Audio), aber keine Webhook-Zuordnung. Beleg: Browser-Test 23:53 Uhr (`conv_6101m4pf8yg8f7cvgvm51zq55z44`) hat `/context` erreicht (n8n Exec 851, grün, User-Agent `ElevenLabs/1.0`), danach kam **kein** `/postcall`. Der Connector hat kein Webhook-Tool, der Webhook muss in der Oberfläche angelegt werden → O2. |
+| E14 | Tool in Ordnung | `todos_abrufen` | Hängt am Agenten, POST `…/context`, Body `quelle` (konstant) + `conversation_id` (System-Variable), Timeout 15 s, 1 Aufruf mit 2,96 s. |
+| E15 | Stimme unverändert | Agent | Zweiter Versuch mit Silke (`a9xTHeUqm2s31ct5pQck`) griff nicht, Stimme bleibt `cjVigY5qzO86Huf0OWal`. Silke ist eine Library-Stimme und liegt noch nicht in „My Voices“ → O1 unverändert. |
+| E16 | Keine Nummer | Workspace | Keine Telefonnummer importiert → O3 unverändert. |
+
+### n8n
+| # | Befund | Objekt | Details |
+|---|---|---|---|
+| W25 | Empfangsseite bereit | `D_daily_todo_call` → „Transkript extrahieren“ | Erwartet das echte ElevenLabs-Format (`type: post_call_transcription`, `data.transcript[].role/message`, `data.conversation_id`, `data.agent_id`); `post_call_audio` wird ignoriert; der Webhook antwortet sofort mit 200, die Verarbeitung läuft danach. Sobald der Webhook in ElevenLabs steht, wird jeder Call (auch Browser-Tests) voll verarbeitet: Notion, Mail, Agent Log. |
+
+### Claude
+| # | Aktion | Objekt |
+|---|---|---|
+| P5 | Doc aktualisiert | `claude/daily-todo-call-setup.md` (dieses Dokument), Branch `claude/upbeat-knuth-cy7iv3` |
+
+## Historie: Audit-Log Session 3 (11.10.2026, 22:30–23:50)
 
 Reihenfolge wie von Daniel vorgegeben: 1 Agent Log, 2 Prompts nach Notion, 3 Cache, 4 Zustand debugbar, 5 HMAC nur registrieren, 6 TODOS-Struktur unverändert, 7 Status-Standard, 8 Orchestrator, 9 Meta-Schicht.
 
@@ -134,12 +157,12 @@ Nichts geändert. Beobachtungen:
 ## Offen
 | # | Was | Wer |
 |---|---|---|
-| O1 | **Deutsche Stimme:** ElevenLabs → Voices → Library → „Silke - Relaxed & Friendly“ → „Add to My Voices“. Dann im Agent auswählen oder mir Bescheid geben. Alternative: Voice Design („leicht sexy, charmant, freundlich, aufgeweckt“) braucht einen Beispielsatz von Daniel. | Daniel |
-| O2 | **Post-Call-Webhook:** ElevenLabs → Agents → Settings → Post-call webhook → URL `…/postcall` (Transcription). Ohne das landet nichts in Notion. | Daniel |
+| O1 | **Deutsche Stimme:** ElevenLabs → Voices → Library → „Silke - Relaxed & Friendly“ → „Add to My Voices“. Dann im Agent auswählen oder mir Bescheid geben, ich setze sie per MCP. Stand 12.10.: noch nicht in My Voices (E15). Alternative: Voice Design („leicht sexy, charmant, freundlich, aufgeweckt“) braucht einen Beispielsatz von Daniel. | Daniel |
+| O2 | **Post-Call-Webhook, die fehlende Verbindung (E13):** ElevenLabs → Agents Platform → Settings (Workspace-Einstellungen) → „Post-call webhook“ → Webhook anlegen: Name z. B. „n8n Daily postcall“, URL = Webhook-Basis + `/postcall` (steht im n8n-Node „Nach dem Call“), Auth HMAC. **Das Secret wird nur einmal angezeigt, sicher ablegen** (wird für O11 gebraucht). Events bleiben „Transcript“ (JSON). Danach einen Browser-Test-Call machen, ich prüfe n8n-Execution, Notion und Agent Log. Ohne den Webhook landet nichts in Notion. | Daniel, dann ich |
 | O3 | Twilio-Konto + deutsche Nummer, dann Import + Agent zuweisen | Daniel, dann ich |
 | O4 | iPhone-Kurzbefehl „Daily-Check“ + Automationen (Anleitung unten) | Daniel |
 | O5 | 12-Uhr-Fallback (Schedule im Workflow) wieder aktivieren, optional als Rückruf | ich, nach O3 |
-| O6 | **Workspace bestätigen:** In ElevenLabs prüfen, dass `agent_2601…` in „My Workspace“ liegt. | Daniel |
+| O6 | ~~Workspace bestätigen~~ Erledigt (Session 4, E12): Agent liegt im Workspace, Daniel ist Creator und admin. | – |
 | O7 | n8n `TEMP LG source probe` (`aZuPjAIYwf2Gd5TR`, inaktiv) archivieren, falls nicht mehr gebraucht | Daniel |
 | O8 | Optional: Audio-Aufbewahrung im Agent auf 30 Tage begrenzen (`retention_days: -1`). | Daniel oder ich |
 | O9 | **Routine-Connectoren:** claude.ai → Routines → „PA Meta-Review (wöchentlich)“ öffnen und Notion + n8n als Connectoren hinzufügen (per MCP nicht möglich). Ohne das hat der Sonntagslauf keinen Zugriff und legt nur eine Seite mit Fehlerhinweis an. | Daniel |
