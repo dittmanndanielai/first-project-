@@ -3,102 +3,134 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Uhr</title>
+<title>Weltuhr</title>
 <style>
-  :root {
-    --bg: #f5f5f7; --card: #ffffff; --ink: #1d1d1f; --muted: #86868b;
-    --line: rgba(0,0,0,.06); --dot: #34c759;
-  }
-  :root[data-theme="dark"] {
-    --bg: #000000; --card: #1c1c1e; --ink: #f5f5f7; --muted: #8e8e93;
-    --line: rgba(255,255,255,.08); --dot: #30d158;
-  }
-  * { box-sizing: border-box; margin: 0; }
-  html, body { height: 100%; }
+  :root { --card: #ffffff; --ink: #1d1d1f; --muted: #86868b; --line: #e8e8ed; --accent: #ff9f0a; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; background: transparent; }
   body {
-    background: var(--bg); color: var(--ink);
-    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", Arial, sans-serif;
-    display: flex; align-items: center; justify-content: center; padding: 12px;
-    -webkit-font-smoothing: antialiased;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+    color: var(--ink); -webkit-font-smoothing: antialiased; overflow: hidden;
   }
   .card {
-    width: 100%; max-width: 560px; background: var(--card); border-radius: 22px;
-    padding: 22px 28px 20px; box-shadow: 0 1px 2px var(--line), 0 8px 30px var(--line);
+    height: 100%; min-height: 150px; background: var(--card); border-radius: 22px;
+    display: flex; align-items: center; justify-content: space-between; gap: 24px;
+    padding: 20px 26px;
   }
-  .eyebrow {
-    font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase;
-    color: var(--muted); display: flex; align-items: center; gap: 8px;
-  }
-  .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--dot); animation: pulse 2s ease-in-out infinite; }
-  @keyframes pulse { 50% { opacity: .35; } }
+  .local { min-width: 0; }
+  .eyebrow { font-size: 11px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
   .time {
-    font-size: clamp(48px, 15vw, 84px); font-weight: 200; letter-spacing: -.03em;
-    line-height: 1; margin: 10px 0 8px; font-variant-numeric: tabular-nums;
+    font-size: clamp(44px, 9vw, 68px); font-weight: 250; letter-spacing: -.035em; line-height: 1;
+    margin: 6px 0 8px; font-variant-numeric: tabular-nums; white-space: nowrap;
   }
-  .time .sec { color: var(--muted); font-size: .42em; font-weight: 300; letter-spacing: 0; margin-left: 6px; }
-  .row { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; }
-  .date { font-size: 17px; font-weight: 500; }
-  .zone {
-    font-family: "SF Mono", ui-monospace, Menlo, monospace; font-size: 12px; color: var(--muted);
-    border: 1px solid var(--line); border-radius: 999px; padding: 3px 10px;
+  .time .sec { font-size: .36em; color: var(--muted); font-weight: 400; letter-spacing: 0; margin-left: 4px; }
+  .sub { font-size: 13px; color: var(--muted); white-space: nowrap; }
+  .sub b { color: var(--ink); font-weight: 500; }
+  .clocks { display: flex; gap: 18px; flex-shrink: 0; }
+  .clock { width: 76px; text-align: center; }
+  .clock svg { width: 76px; height: 76px; display: block; }
+  .city { font-size: 12px; font-weight: 600; margin-top: 7px; }
+  .delta { white-space: nowrap; font-size: 11px; color: var(--muted); margin-top: 1px; font-variant-numeric: tabular-nums; }
+  @media (max-width: 600px) { .clock[data-opt] { display: none; } }
+  @media (max-width: 470px) {
+    .card { flex-direction: column; align-items: stretch; gap: 16px; padding: 18px 20px; }
+    .clocks { justify-content: space-between; }
+    .clock[data-opt] { display: block; }
+    .clock { width: auto; }
+    .clock svg { width: 64px; height: 64px; margin: 0 auto; }
+    .delta { font-size: 10px; }
   }
-  .bar { height: 3px; border-radius: 3px; background: var(--line); margin-top: 16px; overflow: hidden; }
-  .bar i { display: block; height: 100%; width: 0; background: var(--ink); opacity: .7; border-radius: 3px; }
-  .meta { display: flex; justify-content: space-between; margin-top: 6px; font-size: 11px; color: var(--muted); font-variant-numeric: tabular-nums; }
 </style>
 </head>
 <body>
-  <div class="card">
-    <div class="eyebrow"><span class="dot"></span><span id="city">Ortszeit</span></div>
-    <div class="time"><span id="hm">--:--</span><span class="sec" id="s">--</span></div>
-    <div class="row">
-      <div class="date" id="date"></div>
-      <div class="zone" id="zone"></div>
-    </div>
-    <div class="bar"><i id="prog"></i></div>
-    <div class="meta"><span id="kw"></span><span id="pct"></span></div>
+<div class="card">
+  <div class="local">
+    <div class="eyebrow" id="lcity">Ortszeit</div>
+    <div class="time"><span id="hm">--:--</span><span class="sec" id="s"></span></div>
+    <div class="sub"><b id="date"></b> · <span id="zone"></span></div>
   </div>
+  <div class="clocks" id="clocks"></div>
+</div>
 <script>
-  // Parameter: ?tz=Europe/Berlin (Standard: Gerätezeitzone), ?theme=dark
-  var q = new URLSearchParams(location.search);
-  if (q.get("theme") === "dark") document.documentElement.dataset.theme = "dark";
-  var tz = q.get("tz") || Intl.DateTimeFormat().resolvedOptions().timeZone || "Europe/Berlin";
-  try { new Intl.DateTimeFormat("de-DE", { timeZone: tz }); } catch (e) { tz = "Europe/Berlin"; }
+  var LOCAL = Intl.DateTimeFormat().resolvedOptions().timeZone || "Europe/Berlin";
+  var CITIES = [
+    { name: "New York", tz: "America/New_York" },
+    { name: "Hongkong", tz: "Asia/Hong_Kong" },
+    { name: "London", tz: "Europe/London", opt: true }
+  ];
+  var NS = "http://www.w3.org/2000/svg";
 
-  function parts(d, opts) {
+  function parts(d, tz, opts) {
     var o = {};
     new Intl.DateTimeFormat("de-DE", Object.assign({ timeZone: tz }, opts)).formatToParts(d)
       .forEach(function (p) { o[p.type] = p.value; });
     return o;
   }
-  function offset(d) {
-    var n = parts(d, { timeZoneName: "longOffset" }).timeZoneName || "GMT";
-    return n.replace("GMT", "UTC") || "UTC";
+  function hms(d, tz) {
+    var p = parts(d, tz, { hour: "2-digit", minute: "2-digit", second: "2-digit", hourCycle: "h23" });
+    return { h: +p.hour, m: +p.minute, s: +p.second };
   }
-  function isoWeek(y, m, day) {
-    var t = new Date(Date.UTC(y, m - 1, day)), wd = t.getUTCDay() || 7;
-    t.setUTCDate(t.getUTCDate() + 4 - wd);
-    return Math.ceil(((t - Date.UTC(t.getUTCFullYear(), 0, 1)) / 864e5 + 1) / 7);
+  function offsetMin(d, tz) {
+    var n = parts(d, tz, { timeZoneName: "longOffset" }).timeZoneName || "GMT";
+    var m = n.match(/([+-])(\d{2}):?(\d{2})?/);
+    return m ? (m[1] === "-" ? -1 : 1) * (+m[2] * 60 + +(m[3] || 0)) : 0;
+  }
+  function el(tag, attrs, parent) {
+    var e = document.createElementNS(NS, tag);
+    for (var k in attrs) e.setAttribute(k, attrs[k]);
+    parent.appendChild(e); return e;
   }
 
-  document.getElementById("city").textContent = tz.split("/").pop().replace(/_/g, " ");
+  // Zifferblätter aufbauen
+  CITIES.forEach(function (c) {
+    var wrap = document.createElement("div");
+    wrap.className = "clock"; if (c.opt) wrap.dataset.opt = "1";
+    var svg = el("svg", { viewBox: "0 0 100 100" }, wrap);
+    c.face = el("circle", { cx: 50, cy: 50, r: 48 }, svg);
+    c.ticks = [];
+    for (var i = 0; i < 12; i++) {
+      var a = i * Math.PI / 6, r1 = i % 3 ? 41 : 38;
+      c.ticks.push(el("line", { x1: 50 + r1 * Math.sin(a), y1: 50 - r1 * Math.cos(a),
+        x2: 50 + 44 * Math.sin(a), y2: 50 - 44 * Math.cos(a), "stroke-width": i % 3 ? 1.5 : 2.5, "stroke-linecap": "round" }, svg));
+    }
+    c.hh = el("line", { x1: 50, y1: 50, x2: 50, y2: 28, "stroke-width": 4.5, "stroke-linecap": "round" }, svg);
+    c.mh = el("line", { x1: 50, y1: 50, x2: 50, y2: 14, "stroke-width": 3, "stroke-linecap": "round" }, svg);
+    c.sh = el("line", { x1: 50, y1: 58, x2: 50, y2: 10, "stroke-width": 1.2, stroke: "#ff9f0a", "stroke-linecap": "round" }, svg);
+    el("circle", { cx: 50, cy: 50, r: 2.6, fill: "#ff9f0a" }, svg);
+    var city = document.createElement("div"); city.className = "city"; city.textContent = c.name; wrap.appendChild(city);
+    c.delta = document.createElement("div"); c.delta.className = "delta"; wrap.appendChild(c.delta);
+    document.getElementById("clocks").appendChild(wrap);
+  });
+
+  document.getElementById("lcity").textContent = LOCAL.split("/").pop().replace(/_/g, " ");
+
+  function rot(line, deg) { line.setAttribute("transform", "rotate(" + deg + " 50 50)"); }
 
   function tick() {
-    var d = new Date();
-    var p = parts(d, { hour: "2-digit", minute: "2-digit", second: "2-digit", hourCycle: "h23",
-                       year: "numeric", month: "numeric", day: "numeric" });
-    var abbr = parts(d, { timeZoneName: "short" }).timeZoneName;
-    document.getElementById("hm").textContent = p.hour + ":" + p.minute;
-    document.getElementById("s").textContent = p.second;
+    var d = new Date(), l = hms(d, LOCAL), lo = offsetMin(d, LOCAL);
+    var pad = function (n) { return (n < 10 ? "0" : "") + n; };
+    document.getElementById("hm").textContent = pad(l.h) + ":" + pad(l.m);
+    document.getElementById("s").textContent = pad(l.s);
     document.getElementById("date").textContent =
-      new Intl.DateTimeFormat("de-DE", { timeZone: tz, weekday: "long", day: "numeric", month: "long" }).format(d);
-    var off = offset(d);
-    document.getElementById("zone").textContent = abbr && abbr.replace("GMT", "UTC") !== off ? abbr + " · " + off : off;
-    var secs = (+p.hour) * 3600 + (+p.minute) * 60 + (+p.second);
-    var pct = secs / 864;
-    document.getElementById("prog").style.width = pct.toFixed(2) + "%";
-    document.getElementById("pct").textContent = "Tag " + Math.floor(pct) + " %";
-    document.getElementById("kw").textContent = "KW " + isoWeek(+p.year, +p.month, +p.day);
+      new Intl.DateTimeFormat("de-DE", { timeZone: LOCAL, weekday: "short", day: "numeric", month: "long" }).format(d);
+    var abbr = parts(d, LOCAL, { timeZoneName: "short" }).timeZoneName || "";
+    var off = "UTC" + (lo < 0 ? "−" : "+") + Math.abs(lo / 60);
+    document.getElementById("zone").textContent = abbr && !/^(GMT|UTC)/.test(abbr) ? abbr + " · " + off : off;
+
+    var lday = parts(d, LOCAL, { year: "numeric", month: "2-digit", day: "2-digit" });
+    CITIES.forEach(function (c) {
+      var t = hms(d, c.tz), night = t.h < 6 || t.h >= 18;
+      var fg = night ? "#ffffff" : "#1d1d1f";
+      c.face.setAttribute("fill", night ? "#1d1d1f" : "#f5f5f7");
+      c.ticks.forEach(function (k, i) { k.setAttribute("stroke", night ? "#6e6e73" : (i % 3 ? "#c7c7cc" : "#86868b")); });
+      c.hh.setAttribute("stroke", fg); c.mh.setAttribute("stroke", fg);
+      rot(c.hh, (t.h % 12) * 30 + t.m * 0.5); rot(c.mh, t.m * 6 + t.s * 0.1); rot(c.sh, t.s * 6);
+      var diff = (offsetMin(d, c.tz) - lo) / 60;
+      var cday = parts(d, c.tz, { year: "numeric", month: "2-digit", day: "2-digit" });
+      var key = function (p) { return p.year + p.month + p.day; };
+      var dayTxt = key(cday) > key(lday) ? "Morgen" : key(cday) < key(lday) ? "Gestern" : "Heute";
+      c.delta.textContent = dayTxt + ", " + (diff === 0 ? "±0" : (diff > 0 ? "+" : "−") + Math.abs(diff)) + " Std.";
+    });
     setTimeout(tick, 1000 - (Date.now() % 1000));
   }
   tick();
