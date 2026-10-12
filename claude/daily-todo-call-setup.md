@@ -81,6 +81,7 @@ Hinweis: Die IDs aus Session 1 (`agent_9401…`, `tool_6401…`) tauchen im Conn
 | W35 | Zurückgebaut | Headquarters/Cockpit | Embed bleibt in der Notion-iOS-App leer (Abruf 984 bei n8n erfolgreich, Inhalt wird nicht angezeigt; vermutlich Sicherheits-Sandbox von n8n für HTML-Antworten). Wieder die native Einzelkachel „Agent-Status“ (Gruppen, Ampel, Monospace). Webhook-Ansicht bleibt im Workflow, ist aber nirgends eingebunden. Test 986. |
 | W36 | Zeitplan | `B_news_digest` | Evening Brief von 18:00 auf 17:00 (Schedule „Taeglich 08:00 und 17:00“, Europe/Berlin). Morning-Brief-Schlusszeile „Bis heute um 17 Uhr.“ Status-Kachel: Evening Brief fällig ab 18:00 (1 h Puffer). Cockpit-Tabelle und Strukturbild angepasst. |
 | W37 | Farbe frei | `M_cockpit_status` | Update setzt keine Kastenfarbe mehr; die in Notion gewählte Farbe von „Agent-Status“ und „Agent-Hinweise“ bleibt erhalten. Test 988. |
+| N16 | Widget neu | Headquarters ganz oben | Live-Uhr im Apple-Stil (weiße Karte, große Ziffern, Sekunden grau, Datum, Zeitzone mit Kürzel und UTC-Versatz, KW, Tagesfortschritt). Zeitzone = Gerät (auf Reisen automatisch richtig). Als HTML-Anhang direkt in Notion eingebettet (kein n8n, kein externer Host). Quelle: `claude/widgets/uhr.html` (Parameter `?tz=` und `?theme=dark` bei externer Nutzung). |
 
 ## Audit-Log Session 3 (11.10.2026, 22:30–23:50)
 
