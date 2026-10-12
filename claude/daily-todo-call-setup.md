@@ -101,6 +101,7 @@ Ziel: laufende Kosten sichtbar machen, ohne zusätzliche n8n-Ausführungen. Jede
 | W40 | Workflow geändert | `SUB_log` | Sucht vor dem Schreiben die Monatszeile und setzt die Relation „Kosten-Monat“. Fehlt sie, wird wie bisher ohne Relation geloggt. Test 1008. |
 | W41 | Workflow geändert | `PA_orchestrator` | Nach Log schreiben: Kosten schätzen (Tokens aus Textlänge je Modellrunde, kalibriert an Exec 1005) → SUB_cost asynchron. Test 1005: Chat-Zeile im Kosten-Log, Agent-Log-Zeile mit Monat. |
 | W42 | Workflow geändert | `D_daily_todo_call` | Zweiter Zweig am Post-Call-Webhook: Minuten, Credits, Test-Rabatt, Gegenwert → SUB_cost asynchron, auch bei Calls ohne Änderungen. Test 1015 (simuliert, Zeile neutralisiert). |
+| W43 | Workflow geändert | `M_cockpit_status` | Liest zusätzlich die Monatszeile aus Kosten-Monate und schreibt in die Kachel „Agent-Status“ (Headquarters + Cockpit) den Abschnitt „KOSTEN <MONAT>“: bisher/Budget, Prognose, ElevenLabs-Credits, n8n-Ausführungen ≈, Link zur Kostenseite. Rote Budget-Ampel zählt als Problem. Keine zusätzliche Ausführung. Test 1038. |
 
 Gemessen: Ein 63-s-Call kostet 223 Credits (Stimme 188 + LLM 35) mit Test-Rabatt der Talk-to-Seite. 90 Call-Minuten im Monat sind ca. 19 % des Creator-Kontingents.
 

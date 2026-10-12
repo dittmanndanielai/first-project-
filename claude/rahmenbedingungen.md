@@ -79,7 +79,9 @@ Größter Einzelposten ist die stündliche Status-Kachel, nicht die KI. Sie wird
 
 **Prinzip:** Jeder Lauf meldet seine Kosten in dem Moment, in dem er ohnehin läuft. Notion rechnet Summen, Prognose und Ampel live. Es gibt keinen stündlichen oder nächtlichen Auswerte-Lauf und damit **keine zusätzliche n8n-Ausführung** (SUB_cost läuft nur als Sub-Workflow, asynchron).
 
-**Fenster jetzt:** Notion → Agent Cockpit → „Kosten & Verbrauch“
+**Im Headquarters:** Kachel „Agent-Status“, Abschnitt „KOSTEN <MONAT>“ (bisher/Budget, Prognose, Credits, n8n-Ausführungen) mit Link zur Detailseite. Wird mit der Kachel aktualisiert, ohne eigenen Lauf.
+
+**Detailseite:** Notion → Agent Cockpit → „Kosten & Verbrauch“
 1. **Monatsübersicht** (Kosten-Monate): Status-Ampel, Gesamt bisher, Prognose Monatsende, Budget, Fix, Variabel, Credits % vom Kontingent, Call-Minuten, n8n-Ausführungen ≈ (von 2.500), Feld „Ist laut Rechnung“ für den Monatsabgleich.
 2. **Variable Kosten nach Funktion** (Donut, 30 Tage).
 3. **Variable Kosten pro Tag** (Säulen nach Funktion, 30 Tage).
