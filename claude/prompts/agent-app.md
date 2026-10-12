@@ -15,7 +15,7 @@ Ein Fenster für alles: Status auf einen Blick, Chat mit dem Agenten, To-dos per
 3. **Briefs als Nachricht:** Morning und Evening Brief erscheinen als Nachricht im Chat (kurz, mit „Mehr“) plus Push-Benachrichtigung (Web Push, iOS ab 16.4 bei Installation auf dem Home-Bildschirm). Die Mail bleibt vorerst parallel.
 4. **Anruf-Knopf:** Startet das Gespräch mit meinem ElevenLabs-Agenten direkt in der App (ElevenLabs Conversational AI Web SDK). Das Telefonat bleibt mein Hauptweg, um To-dos zu besprechen; das Ergebnis erscheint danach als Zusammenfassung im Chat.
 5. **Heute-Liste:** kompakte Liste der offenen To-dos von heute, antippen → Aktionen (erledigt, verschieben, Priorität).
-6. **Verbrauch (später):** Ansicht mit Kosten Monat bis heute, Budget, Prognose, Aufteilung nach Anbieter und Funktion (Details in `claude/rahmenbedingungen.md`, Abschnitt 3). Im Prototyp mit Beispieldaten, Anbindung erst nach dem MVP.
+6. **Verbrauch (später):** Ansicht mit Kosten Monat bis heute, Budget, Prognose, Aufteilung nach Anbieter und Funktion. Die Daten laufen schon in Notion (Kosten-Monate, Kosten-Log; Details in `claude/rahmenbedingungen.md`, Abschnitt 3). Im Prototyp mit Beispieldaten, Anbindung erst nach dem MVP, ohne eigene Datenhaltung.
 
 ## Design
 Hell, Apple-Stil, sehr modern: Hintergrund #f5f5f7, weiße Karten mit großen Radien, SF-Schrift (system-ui), viel Weißraum, eine Akzentfarbe, dezente Animationen, keine Emojis, kein Sci-Fi-Look. Mobile first (iPhone), auf dem Mac als schmales Fenster ebenfalls gut. Installierbar als PWA (Manifest, Icon, Vollbild ohne Browserleiste).

@@ -55,6 +55,10 @@ Rollenverteilung: Notion hält Wissen und Konfiguration, n8n führt aus und logg
 | Notion | Prompts (neu) | Data Source `c768fdf4-97f9-4465-a7ed-83b049d75207`. Keys: `daily_call.aktionen`, `digest.scoring`, `digest.redaktion`, `orchestrator.system`, `elevenlabs.todo_agent.system` (Kopie, ElevenLabs liest nicht aus Notion) |
 | Notion | Agent Log (neu) | Data Source `b3790be9-17d2-4368-8a57-09d171cd1622` |
 | Notion | Meta-Reviews (neu) | Seite `3f682151-c6cc-8182-a24e-c5f7f1f2b114` unter AI Operating System |
+| n8n | `SUB_cost` (neu) | `yeA3NEIjiWKnz0HU`, Input `{ funktion, anbieter, modell, tokens_in, tokens_cached, tokens_out, websuchen, minuten, credits, geschaetzt, titel, notiz, execution_url }` |
+| Notion | Kosten & Verbrauch (neu) | Seite `3f782151-c6cc-8145-b0b0-db5b28567d64` unter Agent Cockpit |
+| Notion | Kosten-Monate (neu) | Data Source `c665ca43-f757-43b9-b744-8c68eb48704c`, Titel `JJJJ-MM` |
+| Notion | Kosten-Log (neu) | Data Source `b8603a24-799a-415a-aeed-ae254a8dc15c` |
 | Claude | Routine „PA Meta-Review (wöchentlich)“ | `trig_01WukBfP8fHRGqVuKVaWsK4E`, `CRON_TZ=Europe/Berlin 47 17 * * 0`, erster Lauf So 18.10.2026, neue Session je Lauf, Push-Benachrichtigung |
 
 Hinweis: Die IDs aus Session 1 (`agent_9401…`, `tool_6401…`) tauchen im Connector nicht mehr auf. Der Connector sieht genau einen Agenten mit den neuen IDs, angelegt 11.10. 21:47 Uhr. Das ist sehr wahrscheinlich der Umzug nach „My Workspace“ aus einem anderen Chat. Bitte einmal in der ElevenLabs-Oberfläche bestätigen (siehe Offen O6).
@@ -82,6 +86,23 @@ Hinweis: Die IDs aus Session 1 (`agent_9401…`, `tool_6401…`) tauchen im Conn
 | W36 | Zeitplan | `B_news_digest` | Evening Brief von 18:00 auf 17:00 (Schedule „Taeglich 08:00 und 17:00“, Europe/Berlin). Morning-Brief-Schlusszeile „Bis heute um 17 Uhr.“ Status-Kachel: Evening Brief fällig ab 18:00 (1 h Puffer). Cockpit-Tabelle und Strukturbild angepasst. |
 | W37 | Farbe frei | `M_cockpit_status` | Update setzt keine Kastenfarbe mehr; die in Notion gewählte Farbe von „Agent-Status“ und „Agent-Hinweise“ bleibt erhalten. Test 988. |
 | N16 | Widget neu | Headquarters ganz oben | Weltuhr im Apple-Stil: weiße Karte, Ortszeit groß (Zeitzone = Gerät, mit Kürzel und UTC-Versatz), daneben analoge Zifferblätter New York, Hongkong, London (London nur bei genug Breite; nachts dunkles Zifferblatt), Abstand „Heute, −6 Std.“. Als Link-Embed ohne Notion-Rahmen über `rawcdn.githack.com` (fest auf Commit `cb51b0b`; bei Änderungen neuen Commit-Hash eintragen). Quelle: `claude/widgets/uhr.html`. Erster Versuch als HTML-Anhang verworfen (Notion-Rahmen mit Dateiname). |
+
+## Änderung 12.10.2026: Kosten-Tracking
+
+Ziel: laufende Kosten sichtbar machen, ohne zusätzliche n8n-Ausführungen. Jeder Lauf meldet seine Kosten selbst, Notion rechnet live. Details und Kostenliste: `claude/rahmenbedingungen.md`.
+
+| # | Aktion | Objekt | Details |
+|---|---|---|---|
+| N17 | Seite + DBs neu | Notion „Kosten & Verbrauch“ (unter Agent Cockpit) | DB **Kosten-Monate** (Monat, Start, Fixkosten, Budget, Credits-Kontingent, Ist laut Rechnung; Rollups Variabel €, Credits genutzt, Minuten, Läufe n8n; Formeln Gesamt bisher, Prognose, Status-Ampel, Credits %, n8n-Ausführungen ≈). DB **Kosten-Log** (eine Zeile je kostenpflichtigem Aufruf, Relation Monat). Zeilen 2026-10 bis 2026-12 angelegt: 44 € fix (n8n Starter 24 + ElevenLabs Creator ca. 20), Budget 60 € vorläufig, 100.000 Credits. Ansichten: Monatsübersicht, Kosten nach Funktion (Donut), Kosten pro Tag (Säulen), Teuerste Läufe. |
+| N18 | Spalte neu | Agent Log „Kosten-Monat“ | Relation zu Kosten-Monate (Gegenstück „Agent-Läufe“), zählt n8n-Läufe pro Monat. |
+| N19 | Spalte neu | Agent Config `preise_json` | USD je 1 Mio. Tokens [ein, Cache, aus] je Modell, Websuche 0,01 $, Kurs 0,90. |
+| W38 | Workflow neu | `SUB_cost` (`yeA3NEIjiWKnz0HU`) | SUB_config → Preis berechnen → Monat in Kosten-Monate suchen (fehlt: anlegen) → Zeile im Kosten-Log. Nie hart fehlend (onError weiter), Error Workflow = ERR_notify. Ohne Tokens/Minuten/Credits passiert nichts. |
+| W39 | Workflow geändert | `SUB_llm` | Nach Parse Output: Kosten melden (Usage aus der OpenAI-Antwort, Funktion aus `prompt_key`, Capture an `schema_name`) → SUB_cost asynchron → Rückgabe = Parse Output unverändert. Test 1001/1003. |
+| W40 | Workflow geändert | `SUB_log` | Sucht vor dem Schreiben die Monatszeile und setzt die Relation „Kosten-Monat“. Fehlt sie, wird wie bisher ohne Relation geloggt. Test 1008. |
+| W41 | Workflow geändert | `PA_orchestrator` | Nach Log schreiben: Kosten schätzen (Tokens aus Textlänge je Modellrunde, kalibriert an Exec 1005) → SUB_cost asynchron. Test 1005: Chat-Zeile im Kosten-Log, Agent-Log-Zeile mit Monat. |
+| W42 | Workflow geändert | `D_daily_todo_call` | Zweiter Zweig am Post-Call-Webhook: Minuten, Credits, Test-Rabatt, Gegenwert → SUB_cost asynchron, auch bei Calls ohne Änderungen. Test 1015 (simuliert, Zeile neutralisiert). |
+
+Gemessen: Ein 63-s-Call kostet 223 Credits (Stimme 188 + LLM 35) mit Test-Rabatt der Talk-to-Seite. 90 Call-Minuten im Monat sind ca. 19 % des Creator-Kontingents.
 
 ## Audit-Log Session 3 (11.10.2026, 22:30–23:50)
 
@@ -242,7 +263,7 @@ Automationen (Kurzbefehle → Automation → „Sofort ausführen“, Kurzbefehl
 Fragt nur zwischen 7:30 und 12:00 und nur, solange der Daily offen ist. `action=reset` setzt Tagesstatus und Pause zurück. Twilio (O3) bleibt optional für echte Anrufe.
 
 ## Kosten (Schätzung, 150 Min./Monat)
-**Überholt am 12.10.2026:** Aktuelle Kostenliste mit n8n-Abo und Messwerten steht in `claude/rahmenbedingungen.md` (ca. 30–50 €/Monat). Die Zahlen unten bleiben als Historie.
+**Überholt am 12.10.2026:** Aktuelle Kostenliste mit n8n-Abo und Messwerten steht in `claude/rahmenbedingungen.md` (Okt.–Dez. ca. 46–53 €/Monat, danach ca. 30–37 €). Live-Stand: Notion „Kosten & Verbrauch“. Die Zahlen unten bleiben als Historie.
 
 ElevenLabs Starter + Mehrminuten ca. 12,75 € · Twilio (überwiegend eingehend) ca. 3–4 € · Sprachmodelle ca. 1 € → **ca. 16–17 €/Monat**. Durch das 45-Sekunden-Stille-Limit (E9) fallen keine „vergessenen“ Call-Minuten mehr an.
 Neu: PA_orchestrator mit gpt-5.1, ca. 2–3 k Tokens je Nachricht → bei 20 Nachrichten/Tag grob 2–4 €/Monat (Schätzung). Config-Cache spart je LLM-Aufruf zwei Notion-Abfragen.
