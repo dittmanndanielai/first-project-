@@ -59,6 +59,17 @@ Rollenverteilung: Notion hält Wissen und Konfiguration, n8n führt aus und logg
 
 Hinweis: Die IDs aus Session 1 (`agent_9401…`, `tool_6401…`) tauchen im Connector nicht mehr auf. Der Connector sieht genau einen Agenten mit den neuen IDs, angelegt 11.10. 21:47 Uhr. Das ist sehr wahrscheinlich der Umzug nach „My Workspace“ aus einem anderen Chat. Bitte einmal in der ElevenLabs-Oberfläche bestätigen (siehe Offen O6).
 
+## Änderung 12.10.2026 (abends): Personal OS, Phase 0
+
+Freigabe durch Daniel („lets go“) für F1–F4 aus `docs/architecture/personal-os-blueprint.md`. Umgesetzt:
+
+| # | Aktion | Objekt | Details |
+|---|---|---|---|
+| N16 | Feld neu | TODOS `Fokus` (Checkbox) | Top 3 für das Personal OS, max. 3 offene. Additiv: n8n-Workflows lesen und schreiben es nicht. |
+| E12 | Datenschutz | Agent `agent_2601…` | `retention_days` −1 → 30 (gilt für neue Gespräche). `enable_auth` bleibt bewusst aus, bis die Web-App Tokens ausgibt (Phase 2); sonst bricht der Talk-to-Daily. |
+
+Offen für Phase 0 (braucht Daniel): n8n Header-Auth-Credential anlegen (dann hängt Claude `/add`, `/status`, `/context`, `PA_orchestrator` daran), ElevenLabs-Webhook-Secret für die HMAC-Prüfung von `/postcall`, Notion-Integration „Personal OS Web“, Vercel-Projekt.
+
 ## Änderung 12.10.2026: Bestätigungsmail
 
 | # | Aktion | Objekt | Details |

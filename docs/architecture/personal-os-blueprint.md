@@ -1,9 +1,33 @@
 # Personal OS: Architektur- und Implementierungs-Blueprint
 
-Stand 12.10.2026 · Status: **Vorschlag zur Abstimmung** (noch kein Anwendungscode)
+Stand 12.10.2026 · Status: **abgestimmt, Umsetzung läuft** (Umsetzungsstand siehe unten)
 Grundlage: Design-Artefakt „Personal OS“ (7 Boards: Desktop hell/dunkel, iPhone hell/dunkel, iPad, Orb-Zustände, Design System), Live-Abgleich von Notion, n8n und ElevenLabs (nur lesend, nichts verändert), `claude/daily-todo-call-setup.md`.
 
 **Belegstatus:** ✅ verifiziert (live geprüft oder aus Paketquelle) · 🔶 Annahme · 📊 Schätzung · ❓ vor Implementierung prüfen
+
+## Umsetzungsstand (12.10.2026, nach Freigabe „lets go“)
+
+| Bereich | Stand |
+|---|---|
+| F1 Notion `Fokus` (Checkbox) | ✅ angelegt |
+| F3 ElevenLabs Aufbewahrung 30 Tage | ✅ gesetzt. `enable_auth` bewusst erst in Phase 2 (siehe E.3) |
+| F2 n8n Header-Auth/HMAC | ⏳ braucht ein Header-Auth-Credential und das ElevenLabs-Webhook-Secret von Daniel |
+| F4 Notion-Integration „Personal OS Web“ | ⏳ nur in der Notion-Oberfläche anlegbar (Daniel) |
+| App-Gerüst, Login, Proxy, Env-Prüfung, Notion-/n8n-Client | ✅ |
+| Tasks-Modul (Mapping, Regeln, Store, Actions), 28 Unit-Tests | ✅ |
+| Today und Tasks nach Design (Desktop, iPad, iPhone, hell/dunkel), Quick Capture, Undo | ✅ im Demo-Modus geprüft |
+| `/api/capture` (Siri/Mac), `/api/voice/token`, Voice-Testseite `/voice` | ✅ gebaut, live erst mit Secrets |
+| PWA-Manifest, Icons | ✅ |
+| Vercel-Projekt, Secrets, iPhone-Spike | ⏳ Daniel |
+
+**Korrekturen gegenüber dem ersten Entwurf** (durch die Umsetzung belegt):
+- `use cache` hält Daten auf Vercel (Serverless) nur im Speicher einer Instanz ✅ (Next-16-Doku). Persistenter
+  Server-Cache ist der `fetch`-Cache mit `force-cache` + Tags; er gilt laut Doku auch für POST-Anfragen wie die
+  Notion-Query ✅, und `updateTag` invalidiert ihn ✅. Alle Cache-Stellen unten sind entsprechend zu lesen.
+- `/context` prüft bereits einen Schlüssel (`X-Key`, If-Node „Zugang prüfen“), und `/postcall` ändert ohne
+  gültigen Snapshot nichts ✅. S2 ist dadurch „Hoch“ statt „Kritisch“.
+- Die ElevenLabs-Zugangsprüfung (`enable_auth`) darf erst an, wenn die Voice-Route der App live ist, sonst
+  bricht der heutige Daily-Call über den Talk-to-Link.
 
 ---
 
@@ -28,7 +52,7 @@ Diese Punkte bestimmen die Architektur stärker als der Stack.
 ## A. Executive Architecture Recommendation
 
 1. Eine einzige **Next.js-16-App** (App Router, TypeScript, Tailwind v4) auf **Vercel Hobby**, gebaut als modularer Monolith mit sechs Feature-Ordnern und ohne eigene Datenbank.
-2. **Notion bleibt Source of Truth.** Die App liest TODOS, Goals, Digest Archive und Agent Log direkt über die Notion-API, mit einer eigenen, eng berechtigten Integration, und cached serverseitig mit `use cache` und Tags.
+2. **Notion bleibt Source of Truth.** Die App liest TODOS, Goals, Digest Archive und Agent Log direkt über die Notion-API, mit einer eigenen, eng berechtigten Integration, und cached serverseitig im `fetch`-Cache mit Tags (persistiert auf Vercel).
 3. **Einfache Task-Mutationen** (erledigen, verschieben, Fokus setzen, löschen mit Undo) schreibt die App über **Server Actions direkt nach Notion**: optimistisch, idempotent und ohne n8n-Ausführung.
 4. **Alles mit Sprachverständnis bleibt in n8n.** Quick Capture läuft für Web und Siri über denselben gesicherten Endpunkt `/api/capture` → `D_todo_capture`, die Post-Call-Verarbeitung bleibt, wo sie ist. Die App selbst ruft kein LLM auf.
 5. Der **Orb ist die Oberfläche des bestehenden ElevenLabs-Agenten** über `@elevenlabs/react` (WebRTC). Die App erzeugt nur kurzlebige Conversation-Tokens. Kontext und Post-Call laufen unverändert über n8n.
@@ -55,7 +79,7 @@ flowchart LR
     UI["App Router · Server Components<br/>Today · Tasks · Calendar · Digest · Investments · Settings"]:::new
     SA["Server Actions<br/>Task-Mutationen · Capture"]:::new
     API["Route Handlers<br/>/api/capture · /api/voice/token · /api/hooks/revalidate"]:::new
-    CACHE[("Next Data Cache<br/>use cache + Tags")]:::new
+    CACHE[("Next fetch-Cache<br/>force-cache + Tags")]:::new
   end
 
   subgraph Notion["Notion · Source of Truth"]
@@ -155,7 +179,7 @@ sequenceDiagram
 | 1 | Quick Capture → Dashboard | PWA → Server Action `captureText` → `lib/n8n.ts` → n8n `/add` (Header-Auth) → SUB_llm → Notion. Antwort `nachricht` als Toast, danach `updateTag('tasks')`. Siri und Mac gehen über `/api/capture` und dieselbe Funktion; dort `revalidateTag('tasks', { expire: 0 })`, weil `updateTag` nur in Server Actions erlaubt ist ✅. | 4–6 s (LLM) |
 | 2 | Task-Änderung → Notion | PWA → `useOptimistic` → Server Action → Regeln (`rules.ts`) → `PATCH /v1/pages/{id}` → `updateTag('tasks')` | UI sofort, Notion 0,3–1 s |
 | 3 | Voice → Notion | siehe B.2. Die App schreibt während des Gesprächs nichts. | Post-Call 11–18 s ✅ |
-| 4 | Kalender → Dashboard | RSC → `getEvents()` (`use cache`, 5 Min, Tag `calendar`) → `fetch(GCAL_ICS_URL)` → parsen und expandieren | 0 ms aus dem Cache, beim Refresh 0,3–1 s |
+| 4 | Kalender → Dashboard | RSC → `getEvents()` (fetch-Cache, 5 Min, Tag `calendar`) → `fetch(GCAL_ICS_URL)` → parsen und expandieren | 0 ms aus dem Cache, beim Refresh 0,3–1 s |
 | 5 | Investments (später) | n8n `D_depot_snapshot` täglich → Kurse × Positionen → Notion „Depot Snapshots“ → RSC `getPortfolio()` (Cache 1 h) | – |
 
 ---
@@ -305,7 +329,7 @@ first-project-/
 | Notion-Zugriffe kapseln? | `lib/notion.ts` (HTTP, Retry, Version) + `features/*/notion-map.ts` (Property-Namen, Zod-Parsing). | Wird eine Notion-Spalte umbenannt, ändert sich genau eine Datei. Kein SDK nötig, `fetch` genügt und ist cachebar. |
 | Wo liegen Geschäftsregeln? | `features/tasks/rules.ts`, reine Funktionen mit Unit-Tests. | Testbar ohne Netzwerk. Die Actions orchestrieren nur. |
 | Doppelte LLM-Logik vermeiden? | Kein LLM-SDK in `package.json`. NL-Parsing nur in n8n (SUB_llm), Gesprächs-LLM nur in ElevenLabs. | Eine Stelle pro Fähigkeit. Prompts bleiben in Notion „Prompts“. |
-| Redundante Abfragen vermeiden? | Ein `listTasks()` pro Request (React `cache()`) und über Requests hinweg (`use cache`, Tag `tasks`). Focus, Tabs, Progress, Badge und Kopfzeile werden aus derselben Liste abgeleitet. Goal-Titel kommen aus einer gecachten Map (1 Abfrage/Tag), nicht pro Task. | Pro Seitenaufruf höchstens 1 Notion-Abfrage pro Datenquelle, kein N+1. |
+| Redundante Abfragen vermeiden? | Ein `listTasks()` pro Request (React `cache()`) und über Requests hinweg (fetch-Cache, Tag `tasks`). Focus, Tabs, Progress, Badge und Kopfzeile werden aus derselben Liste abgeleitet. Goal-Titel kommen aus einer gecachten Map (1 Abfrage/Tag), nicht pro Task. | Pro Seitenaufruf höchstens 1 Notion-Abfrage pro Datenquelle, kein N+1. |
 | Server oder Client Components? | Seiten und Datenabruf sind RSC. Client-Inseln: TaskList (optimistisch), CaptureBar, Voice, Segmented Controls, Toast, Theme. | Kleines JS-Bundle. Tokens bleiben auf dem Server. |
 | Doppelte Task-Logik Web vs. Voice? | Bewusst akzeptiert: Die Web-App setzt 5 einfache Mutationen direkt, `SUB_todos_apply` bleibt für Voice. Gemeinsamer Vertrag ist `docs/notion-contract.md`. | Die Alternative (alles über n8n) kostet pro Klick 0,5–2 s und eine Ausführung. Konsolidierung siehe J. |
 
@@ -327,7 +351,7 @@ type Task = {
 };
 ```
 
-### D.3 Entwurf `CLAUDE.md` (kompakt, erst nach Abstimmung anlegen)
+### D.3 Entwurf `CLAUDE.md` (angelegt als `/CLAUDE.md`; dort gilt die aktuelle Fassung)
 
 ```md
 # Personal OS: Regeln für Claude Code
@@ -445,7 +469,7 @@ Unit: rules, notion-map (echte API-JSON-Fixtures), ical (RRULE/EXDATE/Zeitzone),
 
 | Änderung | Wirkung | Pflicht? |
 |---|---|---|
-| `enable_auth: true`, Allowlist = App-Domain | Gespräche nur noch mit serverseitig erzeugtem Token. **Der alte Kurzbefehl „Agentin“ (Talk-to-Link) funktioniert danach vermutlich nicht mehr** ❓ und wird durch `/?talk=1` ersetzt. | Pflicht |
+| `enable_auth: true`, Allowlist = App-Domain (**erst in Phase 2**, wenn `/api/voice/token` live ist) | Gespräche nur noch mit serverseitig erzeugtem Token. **Der alte Kurzbefehl „Agentin“ (Talk-to-Link) funktioniert danach vermutlich nicht mehr** ❓ und wird durch `/?talk=1` ersetzt. | Pflicht |
 | Tool-Header `X-Key` aus Workspace-Secret statt Variable `zugang` | Schlüssel erreicht nie einen Client | Pflicht |
 | Post-Call-Webhook-Secret anlegen | Voraussetzung für F2b | Pflicht |
 | `retention_days: 30`, `record_voice` prüfen | Datenschutz, offener Punkt O8 | Empfohlen |
@@ -457,7 +481,7 @@ Unit: rules, notion-map (echte API-JSON-Fixtures), ical (RRULE/EXDATE/Zeitzone),
 |---|---|
 | Quelle | „Geheime Adresse im iCal-Format“ als `GCAL_ICS_URL` (Vercel-Env, nie im Client) |
 | Verarbeitung | `fetch` → parsen → wiederkehrende Termine (RRULE, EXDATE, RECURRENCE-ID) für gestern … +7 Tage expandieren → `CalendarEvent { id, start, end, allDay, title, location, people[], notes }` |
-| Cache | `use cache`, Tag `calendar`, Revalidate 5 Min, nur das Ergebnisfenster wird gecacht |
+| Cache | fetch-Cache, Tag `calendar`, Revalidate 5 Min |
 | Bibliothek | ❓ Spike in Phase 4: `node-ical` 0.27.3 (aktiv gepflegt) vs. `ical.js` 2.2.1. Kriterium: korrekte Ausnahmen und Zeitzonen mit einer Fixture aus deinem echten Feed. |
 | Offene Prüfungen | ❓ Enthält der Feed `ATTENDEE`? ❓ Wie aktuell ist der Feed (Minuten oder Stunden)? Falls zu träge: Google Calendar API über die bestehenden Google-Credentials in n8n (später). |
 
@@ -504,7 +528,7 @@ Unit: rules, notion-map (echte API-JSON-Fixtures), ical (RRULE/EXDATE/Zeitzone),
 | ID | Risiko | Befund | Schwere | Maßnahme | Phase | Pflicht vor Go-Live |
 |---|---|---|---|---|---|---|
 | S1 | Fremde starten Gespräche auf deine Kosten und blockieren dein Tageslimit (10) | Agent `enable_auth: false`, Agent-ID steht im Repo ✅ | **Kritisch** | F3: Auth + Allowlist, Tokens nur über `/api/voice/token` | 0 | ja |
-| S2 | Gefälschtes Transkript → LLM → Notion-Änderungen inkl. Löschen | `/postcall` ohne Signaturprüfung ✅ (O11) | **Kritisch** | F2b HMAC | 0 | ja |
+| S2 | Gefälschtes Transkript → LLM → Notion-Änderungen inkl. Löschen | `/postcall` ohne Signaturprüfung ✅ (O11). Abgemildert: ohne Snapshot einer gültigen `conversation_id` (nur nach `/context` mit Schlüssel) passiert nichts ✅ | **Hoch** | F2b HMAC | 0 | ja |
 | S3 | `PA_orchestrator`-Webhook kann Notion durchsuchen, lesen und ändern | nur geheimer Pfad ✅ | **Hoch** | F2a Header-Auth | 0 | ja |
 | S4 | `/add`, `/context`, `/status` offen bei geleaktem Pfad | nur geheimer Pfad ✅ | Hoch | F2a | 0 | ja |
 | S5 | Tool-Schlüssel würde im Browser landen | `X-Key` aus Client-Variable `zugang` ✅ | Mittel | F3 Workspace-Secret | 0 | ja |
@@ -527,7 +551,7 @@ Unit: rules, notion-map (echte API-JSON-Fixtures), ical (RRULE/EXDATE/Zeitzone),
 
 | Engpass | Wirkung (📊) | Maßnahme |
 |---|---|---|
-| Latenz der Notion-API | 0,3–1 s pro Abfrage | `use cache` mit Tags (`stale` 30 s, Revalidate 60 s). Statischer Shell plus Streaming hinter `Suspense`. Optimistische Mutationen. `router.refresh()` bei `visibilitychange` (PWA kommt aus dem Hintergrund). |
+| Latenz der Notion-API | 0,3–1 s pro Abfrage | fetch-Cache mit Tags (Revalidate 60 s). Statischer Shell plus Streaming hinter `Suspense`. Optimistische Mutationen. `router.refresh()` bei `visibilitychange` (PWA kommt aus dem Hintergrund). |
 | 3 Requests/s bei Notion | unkritisch (< 300/Tag) | Ein Query pro Quelle, Goals-Map gecacht, Schreibvorgänge seriell |
 | Capture mit LLM | 4–6 s ✅ | Sofort „Saving…“, Eingabefeld frei, Ergebnis-Toast mit `nachricht` |
 | Größe des Voice-SDK (WebRTC) | merklicher Anteil am Bundle 🔶 | Lazy laden beim ersten Tap bzw. im Leerlauf |
