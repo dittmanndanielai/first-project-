@@ -80,6 +80,7 @@ Hinweis: Die IDs aus Session 1 (`agent_9401…`, `tool_6401…`) tauchen im Conn
 | W34 | Apple-Ansicht | `M_cockpit_status` + Headquarters/Cockpit | Native Kopfzeile und Boards wieder entfernt (Notion kann Kästchen nicht weiß färben). Neu: Webhook GET `…/webhook/cockpit-…` (geheimer Pfad, im Node) liefert eine HTML-Ansicht im Apple-Stil: weiße abgerundete Gruppen auf #f5f5f7, Ampelpunkt, SF-Schrift, Uhrzeiten in SF Mono, immer hell (auch im Dark Mode weiß), Auto-Refresh 5 Min. Wird bei jedem Öffnen live aus dem Agent Log berechnet und ist oben im Headquarters und im Cockpit als Embed eingebunden. „Agent-Hinweise“ im Cockpit bleibt nativ. Test 982. Jeder Aufruf ist eine n8n-Ausführung. |
 | W35 | Zurückgebaut | Headquarters/Cockpit | Embed bleibt in der Notion-iOS-App leer (Abruf 984 bei n8n erfolgreich, Inhalt wird nicht angezeigt; vermutlich Sicherheits-Sandbox von n8n für HTML-Antworten). Wieder die native Einzelkachel „Agent-Status“ (Gruppen, Ampel, Monospace). Webhook-Ansicht bleibt im Workflow, ist aber nirgends eingebunden. Test 986. |
 | W36 | Zeitplan | `B_news_digest` | Evening Brief von 18:00 auf 17:00 (Schedule „Taeglich 08:00 und 17:00“, Europe/Berlin). Morning-Brief-Schlusszeile „Bis heute um 17 Uhr.“ Status-Kachel: Evening Brief fällig ab 18:00 (1 h Puffer). Cockpit-Tabelle und Strukturbild angepasst. |
+| W37 | Farbe frei | `M_cockpit_status` | Update setzt keine Kastenfarbe mehr; die in Notion gewählte Farbe von „Agent-Status“ und „Agent-Hinweise“ bleibt erhalten. Test 988. |
 
 ## Audit-Log Session 3 (11.10.2026, 22:30–23:50)
 
