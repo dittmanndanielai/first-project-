@@ -78,7 +78,9 @@ Rückweg je Workflow: Webhook-Node Authentication auf „None“ und veröffentl
 
 Unabhängig geprüft (Diff der Versionen, nur lesend): je Workflow genau eine Änderung am Ziel-Webhook, alle anderen Nodes, Verbindungen und Gruppen identisch; `/context` und `/postcall` ohne Webhook-Credential wie vorgesehen.
 
-Offen: HMAC-Prüfung `/postcall` (braucht das Webhook-Secret aus ElevenLabs; dabei auch den Zweig „Call-Kosten“ hinter die Prüfung legen, der heute auf jeden POST hin Kosten-Log-Zeilen schreibt), Umstellung `/context` + `enable_auth` in Phase 2 (dabei den X-Key aus dem If-Node „Zugang prüfen“ in ein Credential verschieben), Sticky Note in `D_todo_capture` um den Header ergänzen, Vercel-Projekt.
+Offen: HMAC-Prüfung `/postcall` (braucht das Webhook-Secret aus ElevenLabs; dabei auch den Zweig „Call-Kosten“ hinter die Prüfung legen, der heute auf jeden POST hin Kosten-Log-Zeilen schreibt), Umstellung `/context` + `enable_auth` in Phase 2 (dabei den X-Key aus dem If-Node „Zugang prüfen“ in ein Credential verschieben), Sticky Note in `D_todo_capture` um den Header ergänzen.
+
+Vercel (13.10.): App live, `N8N_WEBHOOK_KEY` und `N8N_CAPTURE_URL` nur in Vercel gesetzt. Quick Capture aus der App über `/add` mit Header von Daniel bestätigt. Keine Änderung an n8n, Notion oder ElevenLabs.
 
 ## Änderung 12.10.2026: Bestätigungsmail
 

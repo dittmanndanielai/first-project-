@@ -18,7 +18,8 @@ Grundlage: Design-Artefakt „Personal OS“ (7 Boards: Desktop hell/dunkel, iPh
 | Today und Tasks nach Design (Desktop, iPad, iPhone, hell/dunkel), Quick Capture, Undo | ✅ im Demo-Modus geprüft |
 | `/api/capture` (Siri/Mac), `/api/voice/token`, Voice-Testseite `/voice` | ✅ gebaut, live erst mit Secrets |
 | PWA-Manifest, Icons | ✅ |
-| Vercel-Projekt, Secrets, iPhone-Spike | ⏳ Daniel |
+| Vercel-Projekt (Hobby), Secrets | ✅ live seit 13.10. Production-Branch = `claude/personal-os-architecture-nav59w` (GitHub-Default-Branch). Echte Notion-Aufgaben und Quick Capture von Daniel bestätigt |
+| iPhone-Spike (Home-Bildschirm, `/voice` mit `ELEVENLABS_API_KEY`) | ⏳ |
 
 **Korrekturen gegenüber dem ersten Entwurf** (durch die Umsetzung belegt):
 - `use cache` hält Daten auf Vercel (Serverless) nur im Speicher einer Instanz ✅ (Next-16-Doku). Persistenter
@@ -545,7 +546,7 @@ Unit: rules, notion-map (echte API-JSON-Fixtures), ical (RRULE/EXDATE/Zeitzone),
 
 **Security-Header (Phase 1):** CSP mit `connect-src 'self' https://api.elevenlabs.io wss://*.elevenlabs.io` + LiveKit-Hosts ❓, `frame-ancestors 'none'`, `Permissions-Policy: microphone=(self)`, `Referrer-Policy: same-origin`.
 
-**Secrets (Vercel-Env, nur Production):** `SESSION_SECRET`, `SESSION_VERSION`, `AUTH_PASSWORD_HASH`, `NOTION_TOKEN`, `NOTION_*_DS_ID`, `N8N_CAPTURE_URL`, `N8N_WEBHOOK_KEY`, `ELEVENLABS_API_KEY`, `ELEVENLABS_AGENT_ID`, `GCAL_ICS_URL`, `CAPTURE_TOKENS`, `REVALIDATE_SECRET`, `DATA_SOURCE`. Alle werden in `lib/env.ts` per Zod geprüft; die App startet nicht mit unvollständiger Konfiguration.
+**Secrets (Vercel-Env, nur Production):** `SESSION_SECRET`, `SESSION_VERSION`, `AUTH_PASSWORD` (oder `AUTH_PASSWORD_HASH`, hat Vorrang), `NOTION_TOKEN`, `NOTION_*_DS_ID`, `N8N_CAPTURE_URL`, `N8N_WEBHOOK_KEY`, `ELEVENLABS_API_KEY`, `ELEVENLABS_AGENT_ID`, `GCAL_ICS_URL`, `CAPTURE_TOKENS`, `REVALIDATE_SECRET`, `DATA_SOURCE`. Alle werden in `lib/env.ts` per Zod geprüft; die App startet nicht mit unvollständiger Konfiguration.
 
 ### F.2 Performance
 
