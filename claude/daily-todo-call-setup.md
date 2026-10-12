@@ -242,6 +242,8 @@ Automationen (Kurzbefehle → Automation → „Sofort ausführen“, Kurzbefehl
 Fragt nur zwischen 7:30 und 12:00 und nur, solange der Daily offen ist. `action=reset` setzt Tagesstatus und Pause zurück. Twilio (O3) bleibt optional für echte Anrufe.
 
 ## Kosten (Schätzung, 150 Min./Monat)
+**Überholt am 12.10.2026:** Aktuelle Kostenliste mit n8n-Abo und Messwerten steht in `claude/rahmenbedingungen.md` (ca. 30–50 €/Monat). Die Zahlen unten bleiben als Historie.
+
 ElevenLabs Starter + Mehrminuten ca. 12,75 € · Twilio (überwiegend eingehend) ca. 3–4 € · Sprachmodelle ca. 1 € → **ca. 16–17 €/Monat**. Durch das 45-Sekunden-Stille-Limit (E9) fallen keine „vergessenen“ Call-Minuten mehr an.
 Neu: PA_orchestrator mit gpt-5.1, ca. 2–3 k Tokens je Nachricht → bei 20 Nachrichten/Tag grob 2–4 €/Monat (Schätzung). Config-Cache spart je LLM-Aufruf zwei Notion-Abfragen.
 
