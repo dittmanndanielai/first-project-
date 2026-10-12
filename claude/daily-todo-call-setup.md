@@ -65,6 +65,7 @@ Hinweis: Die IDs aus Session 1 (`agent_9401…`, `tool_6401…`) tauchen im Conn
 |---|---|---|---|
 | W25 | Workflow umgebaut | `D_daily_todo_call` | Mail nur noch bei mindestens einer Notion-Änderung oder Fehler (neuer If-Node „Mail nötig?“); Calls ohne Änderung landen nur im Agent Log. Anlass: zwei Mails am 12.10. durch zwei Calls (einer abgebrochen), beide mit 0 Änderungen. |
 | W26 | Mail-Layout neu | `D_daily_todo_call` | Gleiches Design-System wie der Intelligence Digest (Hintergrund #f5f5f7, weiße Karten, Eyebrows, SF-Typo, keine Emojis). Aufbau: Kopf mit Anzahl Änderungen, Kennzahlen (erledigt / geändert / heute offen), Karte „Änderungen“ mit farbigem Typ-Label je Aktion, Karte „Heute offen“ nummeriert mit Tags Hoch/Neu, „Bitte kurz prüfen“, „Fehler“. Betreff `Daily · 12. Okt. · 3 Änderungen`, Vorschautext im Postfach. Tests 950 und 957: 0 Änderungen → keine Mail, Log geschrieben. |
+| W27 | Mail-Links | `D_daily_todo_call` | Button „To-do-Liste öffnen“ im Kopf und Footer-Link auf die TODOS-Datenbank (`notion.so/0cc26d3d…`, öffnet auf dem iPhone die Notion-App). Jede Zeile unter „Heute offen“ verlinkt direkt auf die Notion-Seite des To-dos (neue To-dos ohne ID → Liste). Test 964: IDs aus dem Snapshot kommen an. |
 
 ## Audit-Log Session 3 (11.10.2026, 22:30–23:50)
 
