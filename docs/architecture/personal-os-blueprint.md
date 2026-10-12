@@ -528,7 +528,7 @@ Unit: rules, notion-map (echte API-JSON-Fixtures), ical (RRULE/EXDATE/Zeitzone),
 | ID | Risiko | Befund | Schwere | Maßnahme | Phase | Pflicht vor Go-Live |
 |---|---|---|---|---|---|---|
 | S1 | Fremde starten Gespräche auf deine Kosten und blockieren dein Tageslimit (10) | Agent `enable_auth: false`, Agent-ID steht im Repo ✅ | **Kritisch** | F3: Auth + Allowlist, Tokens nur über `/api/voice/token` | 0 | ja |
-| S2 | Gefälschtes Transkript → LLM → Notion-Änderungen inkl. Löschen | `/postcall` ohne Signaturprüfung ✅ (O11). Abgemildert: ohne Snapshot einer gültigen `conversation_id` (nur nach `/context` mit Schlüssel) passiert nichts ✅ | **Hoch** | F2b HMAC | 0 | ja |
+| S2 | Gefälschtes Transkript → LLM → Notion-Änderungen inkl. Löschen | `/postcall` ohne Signaturprüfung ✅ (O11). Abgemildert: ohne Snapshot einer gültigen `conversation_id` (nur nach `/context` mit Schlüssel) ändert sich nichts an den Aufgaben ✅. Aber: der Zweig „Call-Kosten“ läuft vor dieser Prüfung, ein gefälschter POST kann also Zeilen ins Kosten-Log schreiben ✅ | **Hoch** | F2b HMAC | 0 | ja |
 | S3 | `PA_orchestrator`-Webhook kann Notion durchsuchen, lesen und ändern | nur geheimer Pfad ✅ | **Hoch** | F2a Header-Auth | 0 | ja |
 | S4 | `/add`, `/context`, `/status` offen bei geleaktem Pfad | nur geheimer Pfad ✅ | Hoch | F2a | 0 | ja |
 | S5 | Tool-Schlüssel würde im Browser landen | `X-Key` aus Client-Variable `zugang` ✅ | Mittel | F3 Workspace-Secret | 0 | ja |

@@ -76,7 +76,9 @@ Freigabe durch Daniel („lets go“) für F1–F4 aus `docs/architecture/person
 
 Rückweg je Workflow: Webhook-Node Authentication auf „None“ und veröffentlichen, oder vorherige Version in der n8n-Versionshistorie wiederherstellen.
 
-Offen: HMAC-Prüfung `/postcall` (braucht das Webhook-Secret aus ElevenLabs), Umstellung `/context` + `enable_auth` in Phase 2, Vercel-Projekt.
+Unabhängig geprüft (Diff der Versionen, nur lesend): je Workflow genau eine Änderung am Ziel-Webhook, alle anderen Nodes, Verbindungen und Gruppen identisch; `/context` und `/postcall` ohne Webhook-Credential wie vorgesehen.
+
+Offen: HMAC-Prüfung `/postcall` (braucht das Webhook-Secret aus ElevenLabs; dabei auch den Zweig „Call-Kosten“ hinter die Prüfung legen, der heute auf jeden POST hin Kosten-Log-Zeilen schreibt), Umstellung `/context` + `enable_auth` in Phase 2 (dabei den X-Key aus dem If-Node „Zugang prüfen“ in ein Credential verschieben), Sticky Note in `D_todo_capture` um den Header ergänzen, Vercel-Projekt.
 
 ## Änderung 12.10.2026: Bestätigungsmail
 
