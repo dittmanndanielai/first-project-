@@ -1,4 +1,4 @@
-import { randomBytes, scrypt as scryptCb, timingSafeEqual, type ScryptOptions } from "node:crypto";
+import { createHash, randomBytes, scrypt as scryptCb, timingSafeEqual, type ScryptOptions } from "node:crypto";
 
 // Format: scrypt$N$r$p$<salt base64url>$<hash base64url>
 // Erzeugen: `npm run hash-password` (scripts/hash-password.mjs, gleiche Parameter).
@@ -32,4 +32,12 @@ export async function verifyPassword(password: string, stored: string): Promise<
     p: Number(p),
   });
   return timingSafeEqual(key, expected);
+}
+
+/** Login gegen Hash (scrypt) oder Klartext aus der Umgebung; Klartext-Vergleich in konstanter Zeit. */
+export async function verifyLogin(input: string, secret: { hash: string } | { plain: string }): Promise<boolean> {
+  if ("hash" in secret) return verifyPassword(input, secret.hash);
+  const a = createHash("sha256").update(input).digest();
+  const b = createHash("sha256").update(secret.plain).digest();
+  return timingSafeEqual(a, b);
 }

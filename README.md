@@ -19,8 +19,10 @@ npm run check      # Typen, Lint, Unit-Tests
 ## Deployment (Vercel)
 
 1. Repository in Vercel importieren (Framework: Next.js, keine Build-Anpassung nötig).
+   Production Branch: `claude/personal-os-architecture-nav59w` (GitHub-Default-Branch oder Vercel › Settings › Environments).
 2. Environment Variables aus `.env.example` setzen. Production: `DATA_SOURCE=notion` und alle Secrets.
-   Preview: nur `DATA_SOURCE=mock`, `SESSION_SECRET`, `AUTH_PASSWORD_HASH`.
+   Preview: nur `DATA_SOURCE=mock`, `SESSION_SECRET`, `AUTH_PASSWORD`.
+   Ohne Terminal: `SESSION_SECRET` und `AUTH_PASSWORD` je als starkes Passwort aus der Passwörter-App.
 3. Nach dem ersten Deploy: Safari öffnen, anmelden, Teilen › „Zum Home-Bildschirm“ (iPhone/iPad)
    bzw. Ablage › „Zum Dock hinzufügen“ (Mac).
 4. Voice-Test auf dem iPhone in der installierten App: Tab „Today“ › Talk (Seite `/voice`).
