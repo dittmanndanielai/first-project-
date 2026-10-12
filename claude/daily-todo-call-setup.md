@@ -76,6 +76,7 @@ Hinweis: Die IDs aus Session 1 (`agent_9401…`, `tool_6401…`) tauchen im Conn
 | W31 | Design neu | `M_cockpit_status` | Kachel „Agent-Status“: drei Gruppen (Täglich für dich · Auf Zuruf · Im Hintergrund), pro Funktion Ampelpunkt (🟢 ok, 🔴 Fehler oder fälliger Lauf fehlt, ⚪ noch nie gelaufen) und Uhrzeit in Monospace (Inline-Code) für einheitliche Spalten. Kopfzeile mit Gesamtstatus und Stand. „Agent-Hinweise“ im gleichen Format. |
 | W32 | Logging ergänzt | `C_todos_hygiene`, `D_todo_capture`, `SUB_log` | Beide schreiben jetzt pro Lauf eine Agent-Log-Zeile (Hygiene auch bei „nichts zu tun“, Capture mit Diktat, angelegten To-dos und Siri-Antwort), damit Kachel und Lern-Schicht sie sehen. SUB_log erlaubt die beiden Workflow-Namen. Test 978. |
 | N15 | Tabelle neu | Agent Cockpit „Funktionen“ | Gleiche Gruppen wie die Kachel plus „Infrastruktur“; Spalten Funktion · Was sie tut · Wann. Status steht nur noch in der Kachel. |
+| W33 | Layout neu | `M_cockpit_status` + Headquarters/Cockpit | Status-Kachel aufgeteilt: schlanke Kopfzeile „Agent-Status“ (Gesamtstatus, Stand) und darunter drei schlichte Boards nebeneinander in Notion-Spalten (Täglich für dich · Auf Zuruf · Im Hintergrund), je Funktion Ampelpunkt, fetter Name, Uhrzeit in Monospace. Workflow lädt dafür zusätzlich Spalten und Spalteninhalt und erkennt die Boards an ihrer Überschrift. Test 981: 9 Blöcke auf beiden Seiten aktualisiert. |
 
 ## Audit-Log Session 3 (11.10.2026, 22:30–23:50)
 
