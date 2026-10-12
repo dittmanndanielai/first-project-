@@ -59,6 +59,13 @@ Rollenverteilung: Notion hält Wissen und Konfiguration, n8n führt aus und logg
 
 Hinweis: Die IDs aus Session 1 (`agent_9401…`, `tool_6401…`) tauchen im Connector nicht mehr auf. Der Connector sieht genau einen Agenten mit den neuen IDs, angelegt 11.10. 21:47 Uhr. Das ist sehr wahrscheinlich der Umzug nach „My Workspace“ aus einem anderen Chat. Bitte einmal in der ElevenLabs-Oberfläche bestätigen (siehe Offen O6).
 
+## Änderung 12.10.2026: Bestätigungsmail
+
+| # | Aktion | Objekt | Details |
+|---|---|---|---|
+| W25 | Workflow umgebaut | `D_daily_todo_call` | Mail nur noch bei mindestens einer Notion-Änderung oder Fehler (neuer If-Node „Mail nötig?“); Calls ohne Änderung landen nur im Agent Log. Anlass: zwei Mails am 12.10. durch zwei Calls (einer abgebrochen), beide mit 0 Änderungen. |
+| W26 | Mail-Layout neu | `D_daily_todo_call` | Betreff `✅ To-dos: N Änderungen · Mo 12.10.`; Blöcke „Geändert“ (Icon + Titel + Detail je Aktion), „Heute offen“ (Stand nach dem Call, Prio Hoch rot markiert), „Bitte prüfen“, „Fehler“. Fließtext-Zusammenfassung entfällt in der Mail (bleibt im Agent Log). Test 950: 0 Änderungen → keine Mail, Log geschrieben. |
+
 ## Audit-Log Session 3 (11.10.2026, 22:30–23:50)
 
 Reihenfolge wie von Daniel vorgegeben: 1 Agent Log, 2 Prompts nach Notion, 3 Cache, 4 Zustand debugbar, 5 HMAC nur registrieren, 6 TODOS-Struktur unverändert, 7 Status-Standard, 8 Orchestrator, 9 Meta-Schicht.
