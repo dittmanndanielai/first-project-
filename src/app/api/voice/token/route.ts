@@ -1,7 +1,8 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { hasSession } from "@/lib/auth";
 import { env } from "@/lib/env";
-import { logError } from "@/lib/log";
+import { tokenErrorCode, upstreamReason } from "@/features/voice/token-error";
+import { log, logError } from "@/lib/log";
 
 // Mintet ein kurzlebiges Conversation-Token (WebRTC) für den bestehenden ElevenLabs-Agenten.
 // Der API-Key verlässt nie den Server.
@@ -26,9 +27,10 @@ export async function POST(request: NextRequest) {
       signal: AbortSignal.timeout(8000),
     });
     if (!res.ok) {
-      // 429 = Tages- oder Parallel-Limit des Agenten erreicht
-      const error = res.status === 429 ? "limit_reached" : "token_failed";
-      return NextResponse.json({ error }, { status: res.status === 429 ? 429 : 502 });
+      const error = tokenErrorCode(res.status);
+      const reason = upstreamReason(await res.json().catch(() => null));
+      log("voice.token.rejected", { upstream: res.status, error, reason });
+      return NextResponse.json({ error, reason, upstream: res.status }, { status: error === "limit_reached" ? 429 : 502 });
     }
     const data = (await res.json()) as { token?: string };
     if (!data.token) return NextResponse.json({ error: "token_failed" }, { status: 502 });

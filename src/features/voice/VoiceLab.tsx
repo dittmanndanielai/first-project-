@@ -25,16 +25,26 @@ function isStandalone(): boolean {
   return Boolean(nav.standalone) || window.matchMedia("(display-mode: standalone)").matches;
 }
 
-function errorText(code: string): string {
-  switch (code) {
+type TokenResponse = { token?: string; error?: string; reason?: string; upstream?: number };
+
+function errorText(data: TokenResponse, httpStatus: number): string {
+  // Code in Klammern hilft bei der Fehlersuche, ohne Interna preiszugeben.
+  const detail = data.reason ?? data.upstream ?? httpStatus;
+  switch (data.error) {
     case "voice_not_configured":
       return "ELEVENLABS_API_KEY is not set on the server.";
     case "limit_reached":
       return "The agent's daily limit is reached.";
     case "unauthorized":
       return "Session expired. Please sign in again.";
+    case "forbidden":
+      return "Request blocked: please open the app from its own address.";
+    case "key_rejected":
+      return `ElevenLabs rejected the API key. Check its ElevenAgents permission (${detail}).`;
+    case "agent_not_found":
+      return `ElevenLabs does not know this agent for this API key. Same workspace? (${detail})`;
     default:
-      return "Could not start the conversation.";
+      return `Could not start the conversation (${detail}).`;
   }
 }
 
@@ -98,9 +108,9 @@ function Lab() {
       return;
     }
     const res = await fetch("/api/voice/token", { method: "POST" });
-    const data = (await res.json().catch(() => ({}))) as { token?: string; error?: string };
+    const data = (await res.json().catch(() => ({}))) as TokenResponse;
     if (!res.ok || !data.token) {
-      setError(errorText(data.error ?? ""));
+      setError(errorText(data, res.status));
       return;
     }
     conversation.startSession({ conversationToken: data.token, connectionType: "webrtc", useWakeLock: true });
