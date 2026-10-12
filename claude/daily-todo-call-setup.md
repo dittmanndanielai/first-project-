@@ -68,7 +68,15 @@ Freigabe durch Daniel („lets go“) für F1–F4 aus `docs/architecture/person
 | N16 | Feld neu | TODOS `Fokus` (Checkbox) | Top 3 für das Personal OS, max. 3 offene. Additiv: n8n-Workflows lesen und schreiben es nicht. |
 | E12 | Datenschutz | Agent `agent_2601…` | `retention_days` −1 → 30 (gilt für neue Gespräche). `enable_auth` bleibt bewusst aus, bis die Web-App Tokens ausgibt (Phase 2); sonst bricht der Talk-to-Daily. |
 
-Offen für Phase 0 (braucht Daniel): n8n Header-Auth-Credential anlegen (dann hängt Claude `/add`, `/status`, `/context`, `PA_orchestrator` daran), ElevenLabs-Webhook-Secret für die HMAC-Prüfung von `/postcall`, Notion-Integration „Personal OS Web“, Vercel-Projekt.
+| N17 | Connection neu | Notion „Personal OS Web“ (API-Token) | Von Daniel angelegt, nur Inhalte lesen/ändern, freigegeben für TODOS und Goals. Token nur in Vercel. |
+| W38 | Credential neu | n8n „Personal OS Webhook Key“ (`3ncLL2MMT1BYnaEr`, Header Auth, Header `X-Personal-OS-Key`) | Von Daniel angelegt; Wert nur in n8n, Passwörter-App und später Vercel (`N8N_WEBHOOK_KEY`). |
+| W39 | Webhook-Auth | `D_todo_capture` „Siri Eingabe“ (`/add`) | Header Auth mit W38, veröffentlicht (Version `e2f3e082`). Siri-Kurzbefehl „Aufgabe notieren“ braucht den Header. |
+| W40 | Webhook-Auth | `D_daily_todo_call` „Kurzbefehl Status“ (`/status`) | Header Auth mit W38, veröffentlicht (Version `1f416fe2`). Kurzbefehl „Daily-Check“ braucht den Header in allen „Inhalte von URL abrufen“-Aktionen. `/context` (eigene X-Key-Prüfung) und `/postcall` bewusst unverändert. |
+| W41 | Webhook-Auth | `PA_orchestrator` „Webhook“ (`pa-chat-…`) | Header Auth mit W38, veröffentlicht (Version `e7d40bea`). n8n-Chat (Login) unverändert. |
+
+Rückweg je Workflow: Webhook-Node Authentication auf „None“ und veröffentlichen, oder vorherige Version in der n8n-Versionshistorie wiederherstellen.
+
+Offen: HMAC-Prüfung `/postcall` (braucht das Webhook-Secret aus ElevenLabs), Umstellung `/context` + `enable_auth` in Phase 2, Vercel-Projekt.
 
 ## Änderung 12.10.2026: Bestätigungsmail
 

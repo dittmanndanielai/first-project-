@@ -11,8 +11,8 @@ Grundlage: Design-Artefakt „Personal OS“ (7 Boards: Desktop hell/dunkel, iPh
 |---|---|
 | F1 Notion `Fokus` (Checkbox) | ✅ angelegt |
 | F3 ElevenLabs Aufbewahrung 30 Tage | ✅ gesetzt. `enable_auth` bewusst erst in Phase 2 (siehe E.3) |
-| F2 n8n Header-Auth/HMAC | ⏳ braucht ein Header-Auth-Credential und das ElevenLabs-Webhook-Secret von Daniel |
-| F4 Notion-Integration „Personal OS Web“ | ⏳ nur in der Notion-Oberfläche anlegbar (Daniel) |
+| F2 n8n Header-Auth/HMAC | ✅ Header-Auth für `/add`, `/status`, `PA_orchestrator` (live). ⏳ HMAC `/postcall` braucht das ElevenLabs-Webhook-Secret; `/context` folgt in Phase 2 |
+| F4 Notion-Integration „Personal OS Web“ | ✅ angelegt (API-Token), TODOS und Goals freigegeben |
 | App-Gerüst, Login, Proxy, Env-Prüfung, Notion-/n8n-Client | ✅ |
 | Tasks-Modul (Mapping, Regeln, Store, Actions), 28 Unit-Tests | ✅ |
 | Today und Tasks nach Design (Desktop, iPad, iPhone, hell/dunkel), Quick Capture, Undo | ✅ im Demo-Modus geprüft |
