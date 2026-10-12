@@ -71,6 +71,50 @@ describe("taskFromNotion", () => {
   });
 });
 
+describe("echte API-Form (aus n8n SUB_todos, Execution 1063, Titel neutralisiert)", () => {
+  const real = {
+    object: "page",
+    id: "3f682151-c6cc-8076-a8fa-d0bf4932c8fe",
+    created_time: "2026-10-11T14:41:00.000Z",
+    last_edited_time: "2026-10-11T21:24:00.000Z",
+    parent: { type: "data_source_id", data_source_id: "b8065b38-5580-43fc-b022-e8708fc1b680" },
+    in_trash: false,
+    is_archived: false,
+    properties: {
+      Liste: { id: "NRF%3D", type: "select", select: { id: "939f99c8", name: "Heute", color: "red" } },
+      reschedule_count: { id: "NT%3Bc", type: "number", number: null },
+      Prio: { id: "QGw%7B", type: "select", select: null },
+      Notizen: { id: "RIvC", type: "rich_text", rich_text: [] },
+      Person: { id: "Y_%5Cy", type: "relation", relation: [], has_more: false },
+      Status: { id: "%60FnN", type: "select", select: { id: "923d7ccf", name: "offen", color: "blue" } },
+      Ziel: { id: "j%3Eb%3E", type: "relation", relation: [], has_more: false },
+      Datum: { id: "kMqz", type: "date", date: null },
+      "Erledigt am": { id: "wVLy", type: "date", date: null },
+      created_by: { id: "%7DGec", type: "select", select: { id: "64d17f48", name: "user", color: "blue" } },
+      Titel: {
+        id: "title",
+        type: "title",
+        title: [{ type: "text", text: { content: "Beispielaufgabe ", link: null }, plain_text: "Beispielaufgabe ", href: null }],
+      },
+    },
+    url: "https://app.notion.com/p/Beispielaufgabe-3f682151c6cc8076a8fad0bf4932c8fe",
+    archived: false,
+  };
+
+  it("liest Seiten vor Einführung von Fokus (Feld fehlt) und trimmt Titel", () => {
+    expect(taskFromNotion(real)).toMatchObject({
+      title: "Beispielaufgabe",
+      list: "today",
+      priority: null,
+      status: "open",
+      focus: false,
+      postponed: 0,
+      createdBy: "user",
+      url: "https://app.notion.com/p/Beispielaufgabe-3f682151c6cc8076a8fad0bf4932c8fe",
+    });
+  });
+});
+
 describe("patchToNotion", () => {
   it("übersetzt in Notion-Properties mit deutschen Optionsnamen", () => {
     expect(patchToNotion({ status: "done", doneAt: "2026-10-12", list: "week", postponed: 2, focus: false })).toEqual({
