@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { dateLabel, dayOfYear, greeting, isoDate } from "@/lib/time";
+import { dateLabel, dayOfYear, greeting, isoDate, minusDays, shortDayLabel } from "@/lib/time";
 
 describe("Zeitzone Europe/Berlin", () => {
   it("liefert nach Mitternacht Berlin schon den neuen Tag, obwohl UTC noch den alten hat", () => {
@@ -20,5 +20,18 @@ describe("Zeitzone Europe/Berlin", () => {
 
   it("zählt den Tag des Jahres (12. Oktober 2026 = Tag 285, wie im Design)", () => {
     expect(dayOfYear(new Date("2026-10-12T10:00:00Z"))).toBe(285);
+  });
+});
+
+describe("shortDayLabel / minusDays", () => {
+  it("formatiert Kalendertage ohne Zeitzonen-Verschiebung", () => {
+    expect(shortDayLabel("2026-10-13")).toBe("Tue 13 Oct");
+    expect(shortDayLabel("2026-03-29")).toBe("Sun 29 Mar"); // Zeitumstellung
+  });
+
+  it("rechnet über Monats- und Jahresgrenzen", () => {
+    expect(minusDays("2026-10-13", 3)).toBe("2026-10-10");
+    expect(minusDays("2026-03-01", 1)).toBe("2026-02-28");
+    expect(minusDays("2026-01-01", 1)).toBe("2025-12-31");
   });
 });

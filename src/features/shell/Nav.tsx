@@ -10,7 +10,7 @@ const NAV = [
   { href: "/", label: "Today", tab: "Today", Icon: SunIcon, inTabBar: true },
   { href: "/tasks", label: "Tasks", tab: "Tasks", Icon: TasksIcon, inTabBar: true },
   { href: "/calendar", label: "Calendar", tab: "Calendar", Icon: CalendarIcon, inTabBar: true },
-  { href: "/digest", label: "Digest", tab: "Digest", Icon: DigestIcon, inTabBar: false },
+  { href: "/digest", label: "Digest", tab: "Digest", Icon: DigestIcon, inTabBar: true },
   { href: "/investments", label: "Investments", tab: "Invest", Icon: ChartIcon, inTabBar: true },
   { href: "/settings", label: "Settings", tab: "Settings", Icon: SlidersIcon, inTabBar: false },
 ] as const;

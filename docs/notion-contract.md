@@ -26,3 +26,25 @@ Data Source: `b8065b38-5580-43fc-b022-e8708fc1b680` · API-Version `2025-09-03`
 - Löschen = `in_trash: true` (Papierkorb, wiederherstellbar), nie endgültig.
 - Neue Aufgaben legt nur n8n an (`D_todo_capture`, Post-Call). Personal OS ruft dafür `/add` auf.
 - Offene Liste = `Status` ≠ `erledigt` oder leer. Personal OS lädt zusätzlich heute Erledigte für den Fortschritt.
+
+# Notion-Vertrag: Digest Archive (nur lesend)
+
+Schreiber ist ausschließlich n8n `B_news_digest` (täglich 08:00 und 17:00, Europe/Berlin, je Lauf bis zu 8 Stories).
+Personal OS liest nur (`src/features/digest/notion-map.ts`). Voraussetzung: Datenbank mit der Connection
+„Personal OS Web“ geteilt.
+
+Data Source: `42a6a120-423e-4375-8a43-f7d5002a2d11` · API-Version `2025-09-03`
+
+| Property | Typ | Werte | Personal OS |
+|---|---|---|---|
+| `Titel` | title | deutsche Überschrift (LLM) | Überschrift |
+| `Kernaussage` | rich_text | ein Satz | Teaser |
+| `Datum` | date | Tag der Ausgabe | jüngster Tag = aktuelle Ausgabe |
+| `Themenfeld` | multi_select | `Geopolitik`, `Wirtschaft`, `KI`, `VC` | erstes Feld bestimmt die Rubrik: Wirtschaft/VC → Markets & Money, Rest → Daily Brief |
+| `Source Count` | number | Quellen im Cluster | Reihenfolge (mehr Quellen zuerst) |
+| `Canonical URL` | url | Original-Artikel, bei Economist oft leer | Link (nur http/https) |
+| `Story ID` | rich_text | Hash der URL bzw. `economist:<datum>:<n>` | Duplikate je Ausgabe entfernen |
+| (Seite) `created_time` | – | Schreibzeit | Morgen- (vor 14 Uhr) vs. Abendausgabe |
+
+Nicht gespeichert und daher nicht in der App: Rang/Score, Rubrik, Quelle, Lead-Text, „Dein Move heute“.
+Änderungen daran betreffen `B_news_digest` und brauchen Freigabe.

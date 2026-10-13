@@ -15,6 +15,6 @@ export const TTL = {
   tasks: 60,
   goals: 60 * 60 * 24,
   calendar: 5 * 60,
-  digest: 60 * 60,
+  digest: 15 * 60, // neue Ausgabe kommt morgens einmal, kurze TTL hält das Warten danach klein
   status: 5 * 60,
 } as const;

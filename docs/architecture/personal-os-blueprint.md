@@ -19,7 +19,8 @@ Grundlage: Design-Artefakt „Personal OS“ (7 Boards: Desktop hell/dunkel, iPh
 | `/api/capture` (Siri/Mac), `/api/voice/token`, Voice-Testseite `/voice` | ✅ gebaut, live erst mit Secrets |
 | PWA-Manifest, Icons | ✅ |
 | Vercel-Projekt (Hobby), Secrets | ✅ live seit 13.10. Production-Branch = `claude/personal-os-architecture-nav59w` (GitHub-Default-Branch). Echte Notion-Aufgaben und Quick Capture von Daniel bestätigt |
-| iPhone-Spike (Home-Bildschirm, `/voice` mit `ELEVENLABS_API_KEY`) | ⏳ |
+| iPhone-Spike (Home-Bildschirm, `/voice` mit `ELEVENLABS_API_KEY`) | ✅ Voice im Home-Bildschirm-Modus von Daniel bestätigt (13.10.) |
+| 4c Digest-Seite (Digest Archive, nur lesend), Digest in der iPhone-Tab-Leiste | ✅ gebaut (13.10.). Live, sobald „Digest Archive“ mit „Personal OS Web“ geteilt ist |
 
 **Korrekturen gegenüber dem ersten Entwurf** (durch die Umsetzung belegt):
 - `use cache` hält Daten auf Vercel (Serverless) nur im Speicher einer Instanz ✅ (Next-16-Doku). Persistenter
@@ -194,7 +195,7 @@ Spalte „Design“: was der Prototyp heute tut (**simuliert** = Timer/Mock im P
 | Element | Modul | Datenquelle | Automation | Design | v1 |
 |---|---|---|---|---|---|
 | Sidebar (Today, Tasks, Calendar, Digest, Investments, Settings) mit Badge „offene Heute“ | `shell` | TODOS (Zählung aus `getTasks`) | – | simuliert | echt |
-| iPhone Floating Tab Bar (Today, Tasks, Calendar, Invest) | `shell` | – | – | statisch | echt. Digest und Settings über den Avatar |
+| iPhone Floating Tab Bar (Today, Tasks, Calendar, Digest, Invest) | `shell` | – | – | statisch | echt. Settings über den Avatar |
 | Kopfzeile: Datum, Begrüßung, „4 tasks left · Weldstone call at 11:00“ | `today` | TODOS + iCal | – | simuliert | echt (abgeleitet) |
 | Sync-Chip „Synced“ | `shell` | Zeitstempel der letzten Notion-Abfrage | – | simuliert | echt: „Synced · vor 2 Min“ bzw. „Offline · Stand 10:42“ |
 | Theme-Toggle, „Dark mode“, Settings-Appearance | `shell` | `localStorage` + `prefers-color-scheme` | – | lokal | echt |
@@ -231,7 +232,7 @@ Spalte „Design“: was der Prototyp heute tut (**simuliert** = Timer/Mock im P
 | Event-Detail (Zeit, Ort, Personen, Notizen) | `calendar` | `LOCATION`, `ATTENDEE`, `DESCRIPTION` | – | Mock | echt. Personen ❓ (enthält der Feed `ATTENDEE`?) |
 | „Ask assistant to prepare“ | `voice` + `calendar` | Event → `sendContextualUpdate()` ✅ | – | simuliert | Phase 4, optional |
 | Digest „For you“ (4 Hinweise) | `digest` | Regeln über TODOS, iCal und Agent Log | – | Mock (teils E-Mail-Inhalte) | regelbasiert. E-Mail-Signale entfallen |
-| „The Daily Brief“ / „Markets & Money“ | `digest` | Digest Archive: Datum = heute, nach `Source Count`. `Wirtschaft` → Markets, Rest → Brief | B_news_digest | Mock | echt |
+| „The Daily Brief“ / „Markets & Money“ | `digest` | Digest Archive: jüngste Ausgabe (Tag, dann Lauf 08:00/17:00), nach `Source Count`. Erstes Themenfeld `Wirtschaft`/`VC` → Markets, Rest → Brief | B_news_digest | Mock | echt |
 | „Read the brief“ / „Read more“ | `digest` | `Canonical URL` bzw. Notion-Ansicht | – | simuliert | echt |
 | Investments-Seite: Gesamtwert (verbergen), Perioden 1M/3M/1Y/All, Chart, Allokation, Holdings | `investments` | Mock-Modul (Design-Daten) | – | Mock | Mock bis Phase 4b |
 | Settings · Integrations-Status | `settings` | Notion-Abfragezeit, letzte Fehler im Agent Log, letzter iCal-Abruf, ElevenLabs-Konfiguration | – | Mock | echt (5 Min Cache) |

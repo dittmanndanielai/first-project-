@@ -33,6 +33,8 @@ function buildSchema(isProd: boolean) {
       NOTION_TOKEN: optional,
       NOTION_TODOS_DS_ID: z.string().default("b8065b38-5580-43fc-b022-e8708fc1b680"),
       NOTION_GOALS_DS_ID: z.string().default("467d56b3-cf05-429b-a3dd-08d47c443b7b"),
+      // Digest Archive (B_news_digest schreibt, die App liest nur)
+      NOTION_DIGEST_DS_ID: z.string().default("42a6a120-423e-4375-8a43-f7d5002a2d11"),
 
       N8N_CAPTURE_URL: optional.pipe(z.url().optional()),
       N8N_WEBHOOK_KEY: optional,

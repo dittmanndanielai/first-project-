@@ -40,3 +40,18 @@ export function dayOfYear(date: Date, timeZone = DEFAULT_TZ): number {
   const start = Date.UTC(y, 0, 1);
   return Math.floor((Date.UTC(y, m - 1, d) - start) / 86_400_000) + 1;
 }
+
+/** Kalendertag (YYYY-MM-DD) als kurzes Label, z. B. "Tue 13 Oct". Ohne Zeitzone: Datum ist bereits lokal. */
+export function shortDayLabel(iso: string): string {
+  const [y, m, d] = iso.split("-").map(Number);
+  const date = new Date(Date.UTC(y, m - 1, d, 12));
+  const parts = new Intl.DateTimeFormat("en-GB", { timeZone: "UTC", weekday: "short", day: "numeric", month: "short" }).formatToParts(date);
+  const get = (type: Intl.DateTimeFormatPartTypes) => parts.find((p) => p.type === type)?.value ?? "";
+  return `${get("weekday")} ${get("day")} ${get("month")}`;
+}
+
+/** Kalendertag minus n Tage (YYYY-MM-DD). */
+export function minusDays(iso: string, days: number): string {
+  const [y, m, d] = iso.split("-").map(Number);
+  return new Date(Date.UTC(y, m - 1, d) - days * 86_400_000).toISOString().slice(0, 10);
+}
