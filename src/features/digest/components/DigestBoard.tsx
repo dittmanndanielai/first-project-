@@ -29,6 +29,10 @@ function Headline({ story, style, as: Tag = "span" }: { story: Story; style: Rea
   );
 }
 
+export function storiesLabel(n: number): string {
+  return `${n} ${n === 1 ? "story" : "stories"}`;
+}
+
 export function editionLabel(edition: Edition, today: string): string {
   const run = edition.run === "evening" ? "Evening edition · 17:00" : "Morning edition · 08:00";
   return edition.date === today ? run : `${shortDayLabel(edition.date)} · ${run}`;
@@ -185,7 +189,15 @@ export function DigestBoard({
         <MarketsCard section={edition.markets} date={edition.date} archiveUrl={archiveUrl} />
       </div>
       <div style={{ fontSize: 11.5, color: "var(--text3)", padding: "0 4px" }}>
-        {edition.count} {edition.count === 1 ? "story" : "stories"} · delivered by n8n twice a day
+        {storiesLabel(edition.count)} · delivered by n8n twice a day
+        {edition.hidden > 0 && archiveUrl ? (
+          <>
+            {" · "}
+            <a href={archiveUrl} target="_blank" rel="noopener noreferrer" style={{ color: "inherit", textDecoration: "underline" }}>
+              {edition.hidden} more in Notion
+            </a>
+          </>
+        ) : null}
       </div>
     </div>
   );

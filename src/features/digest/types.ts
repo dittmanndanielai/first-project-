@@ -22,7 +22,8 @@ export type Edition = {
   run: EditionRun;
   brief: Section | null; // Geopolitik, KI
   markets: Section | null; // Wirtschaft, VC
-  count: number;
+  count: number; // angezeigte Stories
+  hidden: number; // über SECTION_SIZE hinaus, nur im Notion-Archiv
 };
 
 export type ForYouItem = { title: string; detail: string };

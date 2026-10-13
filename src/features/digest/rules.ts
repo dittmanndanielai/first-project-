@@ -7,7 +7,8 @@ import type { Edition, EditionRun, ForYouItem, Section, Story, Topic } from "./t
 // und speichert weder Rang noch Rubrik. Die App leitet beides deterministisch ab.
 
 export const EVENING_FROM_HOUR = 14;
-export const SECTION_SIZE = 5; // Aufmacher + 4 Meldungen
+export const SECTION_SIZE = 8; // ein Lauf hat höchstens 8 Stories, so geht keine verloren
+export const RUN_WINDOW_MS = 15 * 60_000; // n8n schreibt einen Lauf innerhalb von Sekunden
 
 const MARKET_TOPICS: readonly Topic[] = ["economy", "vc"];
 
@@ -35,19 +36,22 @@ function section(stories: Story[]): Section | null {
 }
 
 /**
- * Jüngste Ausgabe: neuester Tag, dort der neueste Lauf (Abend vor Morgen).
- * Doppelte Story-IDs (Testläufe, wiederholte Economist-Zeilen) zählen einmal.
+ * Jüngste Ausgabe = jüngster Lauf: neuester Tag, dort die Zeilen bis 15 Minuten vor der neuesten Schreibzeit.
+ * Ein zweiter Lauf am selben Nachmittag (Test, Retry) ersetzt also den ersten, statt sich mit ihm zu mischen.
+ * Die 14-Uhr-Grenze bestimmt nur das Label. Doppelte Story-IDs zählen einmal (Sicherheitsnetz).
  * Innerhalb einer Rubrik zuerst die Stories mit den meisten Quellen, sonst Reihenfolge wie geschrieben.
  */
 export function latestEdition(stories: Story[], timeZone: string): Edition | null {
   if (stories.length === 0) return null;
   const date = stories.reduce((max, s) => (s.date > max ? s.date : max), stories[0].date);
   const ofDay = stories.filter((s) => s.date === date);
-  const run: EditionRun = ofDay.some((s) => runOf(s, timeZone) === "evening") ? "evening" : "morning";
+  const newest = ofDay.reduce((max, s) => (s.createdAt > max.createdAt ? s : max), ofDay[0]);
+  const since = Date.parse(newest.createdAt) - RUN_WINDOW_MS;
+  const run: EditionRun = runOf(newest, timeZone);
 
   const seen = new Set<string>();
   const picked = ofDay
-    .filter((s) => runOf(s, timeZone) === run)
+    .filter((s) => Date.parse(s.createdAt) >= since)
     .filter((s) => {
       if (seen.has(s.storyId)) return false;
       seen.add(s.storyId);
@@ -55,13 +59,10 @@ export function latestEdition(stories: Story[], timeZone: string): Edition | nul
     })
     .sort((a, b) => b.sources - a.sources); // stabil: gleiche Quellenzahl behält die Schreibreihenfolge
 
-  return {
-    date,
-    run,
-    brief: section(picked.filter((s) => !isMarketStory(s))),
-    markets: section(picked.filter(isMarketStory)),
-    count: picked.length,
-  };
+  const brief = section(picked.filter((s) => !isMarketStory(s)));
+  const markets = section(picked.filter(isMarketStory));
+  const shown = [brief, markets].reduce((n, sec) => n + (sec ? 1 + sec.items.length : 0), 0);
+  return { date, run, brief, markets, count: shown, hidden: picked.length - shown };
 }
 
 function shorten(title: string, max = 42): string {

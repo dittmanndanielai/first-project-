@@ -131,7 +131,7 @@ describe("latestEdition", () => {
       [s(1, { date: "2026-10-12", createdAt: "2026-10-12T15:00:00.000Z" }), s(2), s(3, { createdAt: EVENING }), s(4, { createdAt: EVENING })],
       TZ,
     );
-    expect(e).toMatchObject({ date: "2026-10-13", run: "evening", count: 2 });
+    expect(e).toMatchObject({ date: "2026-10-13", run: "evening", count: 2, hidden: 0 });
     expect(e?.brief?.lead.id).toBe("p3");
   });
 
@@ -156,12 +156,29 @@ describe("latestEdition", () => {
     expect([e?.brief?.lead.id, ...(e?.brief?.items.map((i) => i.id) ?? [])]).toEqual(["p2", "p4", "p1", "p3"]);
   });
 
-  it("zählt doppelte Story-IDs (Testläufe, Economist) nur einmal und begrenzt die Rubrik", () => {
+  it("nimmt bei zwei Läufen am selben Nachmittag nur den jüngsten (n8n schreibt dann neue Story-IDs)", () => {
+    const first = Array.from({ length: 7 }, (_, i) => s(i + 1, { createdAt: "2026-10-12T15:02:00.000Z" }));
+    const second = Array.from({ length: 8 }, (_, i) => s(i + 11, { createdAt: "2026-10-12T15:57:30.000Z" }));
+    const e = latestEdition([...first, ...second].map((x) => ({ ...x, date: "2026-10-12" })), TZ);
+    expect(e).toMatchObject({ run: "evening", count: 8, hidden: 0 });
+    expect(e?.brief?.lead.id).toBe("p11");
+  });
+
+  it("zeigt einen vollen Lauf mit 8 Stories vollständig, auch wenn fast alle in eine Rubrik fallen", () => {
+    const e = latestEdition(
+      [...Array.from({ length: 6 }, (_, i) => s(i + 1)), s(7, { topics: ["economy"] }), s(8, { topics: ["economy"] })],
+      TZ,
+    );
+    expect(e).toMatchObject({ count: 8, hidden: 0 });
+    expect(e?.brief?.items).toHaveLength(5);
+    expect(e?.markets?.items).toHaveLength(1);
+  });
+
+  it("zählt doppelte Story-IDs nur einmal und meldet, was über die Rubrik hinausgeht", () => {
     const many = Array.from({ length: 9 }, (_, i) => s(i + 1));
     const e = latestEdition([...many, s(20, { storyId: "s1" })], TZ);
-    expect(e?.count).toBe(9);
     expect(1 + (e?.brief?.items.length ?? 0)).toBe(SECTION_SIZE);
-    expect(e?.markets).toBeNull();
+    expect(e).toMatchObject({ count: SECTION_SIZE, hidden: 1, markets: null });
   });
 
   it("liefert null ohne Stories und trennt Läufe um 14 Uhr Berliner Zeit", () => {

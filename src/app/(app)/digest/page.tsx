@@ -3,7 +3,7 @@ import { requireSession } from "@/lib/auth";
 import { env } from "@/lib/env";
 import { logError } from "@/lib/log";
 import { dateLabel, isoDate } from "@/lib/time";
-import { DigestBoard, DigestNotice, editionLabel, ForYouCard } from "@/features/digest/components/DigestBoard";
+import { DigestBoard, DigestNotice, editionLabel, ForYouCard, storiesLabel } from "@/features/digest/components/DigestBoard";
 import { forYou } from "@/features/digest/rules";
 import { getDigest } from "@/features/digest/store";
 import { HeaderSkeleton, PageHeader } from "@/features/shell/PageHeader";
@@ -41,7 +41,7 @@ async function Digest() {
     const { edition, archiveUrl } = digest;
     return (
       <>
-        {header(`${edition.count} stories · ${editionLabel(edition, today)}`)}
+        {header(`${storiesLabel(edition.count)} · ${editionLabel(edition, today)}`)}
         <DigestBoard edition={edition} archiveUrl={archiveUrl} forYou={hints} today={today} />
       </>
     );
