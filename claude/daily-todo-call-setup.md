@@ -59,6 +59,16 @@ Rollenverteilung: Notion hält Wissen und Konfiguration, n8n führt aus und logg
 
 Hinweis: Die IDs aus Session 1 (`agent_9401…`, `tool_6401…`) tauchen im Connector nicht mehr auf. Der Connector sieht genau einen Agenten mit den neuen IDs, angelegt 11.10. 21:47 Uhr. Das ist sehr wahrscheinlich der Umzug nach „My Workspace“ aus einem anderen Chat. Bitte einmal in der ElevenLabs-Oberfläche bestätigen (siehe Offen O6).
 
+## Änderung 13.10.2026: Uhr aus Headquarters entfernt
+
+Auf ausdrücklichen Wunsch von Daniel.
+
+| # | Art | Ort | Inhalt |
+|---|---|---|---|
+| N18 | Block entfernt | „🏦 Daniel’s Headquarters“, erster Block | Embed der Uhr (`claude/widgets/uhr.html` über rawcdn.githack.com, Commit `cb51b0b`). Sonst nichts geändert, Seite danach geprüft. |
+
+Rückweg: auf der Seite ganz oben `/embed` mit `https://rawcdn.githack.com/dittmanndanielai/first-project-/cb51b0bbeef9d102a59cc3d9befe507b06f5ce62/claude/widgets/uhr.html` einfügen.
+
 ## Änderung 12.10.2026 (abends): Personal OS, Phase 0
 
 Freigabe durch Daniel („lets go“) für F1–F4 aus `docs/architecture/personal-os-blueprint.md`. Umgesetzt:
