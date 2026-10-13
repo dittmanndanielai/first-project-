@@ -63,7 +63,7 @@ Hinweis: Die IDs aus Session 1 (`agent_9401…`, `tool_6401…`) tauchen im Conn
 
 Auf ausdrücklichen Wunsch von Daniel.
 
-| # | Art | Ort | Inhalt |
+| # | Aktion | Objekt | Details |
 |---|---|---|---|
 | N18 | Block entfernt | „🏦 Daniel’s Headquarters“, erster Block | Embed der Uhr (`claude/widgets/uhr.html` über rawcdn.githack.com, Commit `cb51b0b`). Sonst nichts geändert, Seite danach geprüft. |
 
