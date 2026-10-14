@@ -21,6 +21,7 @@ Grundlage: Design-Artefakt „Personal OS“ (7 Boards: Desktop hell/dunkel, iPh
 | Vercel-Projekt (Hobby), Secrets | ✅ live seit 13.10. Production-Branch = `claude/personal-os-architecture-nav59w` (GitHub-Default-Branch). Echte Notion-Aufgaben und Quick Capture von Daniel bestätigt |
 | iPhone-Spike (Home-Bildschirm, `/voice` mit `ELEVENLABS_API_KEY`) | ✅ Voice im Home-Bildschirm-Modus von Daniel bestätigt (13.10.) |
 | 4c Digest-Seite (Digest Archive, nur lesend), Digest in der iPhone-Tab-Leiste | ✅ gebaut (13.10.). Live, sobald „Digest Archive“ mit „Personal OS Web“ geteilt ist |
+| 4a Kalender: iCloud (öffentlicher ICS-Link, nur lesend), Upcoming-Karte auf Today, Seite Tag/Woche, Refresh | ✅ gebaut (14.10.), siehe `docs/decisions/0001-icloud-kalender.md`. Live, sobald `ICLOUD_CALENDAR_URL` in Vercel steht. Google und Outlook entfallen vorerst |
 
 **Korrekturen gegenüber dem ersten Entwurf** (durch die Umsetzung belegt):
 - `use cache` hält Daten auf Vercel (Serverless) nur im Speicher einer Instanz ✅ (Next-16-Doku). Persistenter
@@ -58,7 +59,7 @@ Diese Punkte bestimmen die Architektur stärker als der Stack.
 3. **Einfache Task-Mutationen** (erledigen, verschieben, Fokus setzen, löschen mit Undo) schreibt die App über **Server Actions direkt nach Notion**: optimistisch, idempotent und ohne n8n-Ausführung.
 4. **Alles mit Sprachverständnis bleibt in n8n.** Quick Capture läuft für Web und Siri über denselben gesicherten Endpunkt `/api/capture` → `D_todo_capture`, die Post-Call-Verarbeitung bleibt, wo sie ist. Die App selbst ruft kein LLM auf.
 5. Der **Orb ist die Oberfläche des bestehenden ElevenLabs-Agenten** über `@elevenlabs/react` (WebRTC). Die App erzeugt nur kurzlebige Conversation-Tokens. Kontext und Post-Call laufen unverändert über n8n.
-6. **Kalender:** Die geheime Google-iCal-URL wird serverseitig gelesen, 5 Minuten gecacht und nur für den Zeitraum gestern bis +7 Tage expandiert.
+6. **Kalender:** Der öffentliche iCloud-Link (`ICLOUD_CALENDAR_URL`) wird serverseitig gelesen, für −14 bis +90 Tage expandiert und das Ergebnis 5 Minuten gecacht (umgesetzt 14.10., ADR 0001; ersetzt die ursprünglich geplante Google-iCal-URL).
 7. **Investments bleiben Mock**, bis ein legaler Datenpfad steht. Empfehlung: Positionen manuell in Notion pflegen und den Kurs-Snapshot täglich über n8n holen.
 8. **Apple-Integration als PWA** (Home-Bildschirm, Dock) plus **Kurzbefehle** für Siri, Action Button und einen globalen Mac-Hotkey. Keine native App in v1.
 9. **Phase 0 kommt vor jeder neuen Funktion:** Agent-Auth aktivieren und die Webhooks per Header bzw. HMAC sichern. Das ist heute die größte Schwachstelle.
@@ -477,15 +478,15 @@ Unit: rules, notion-map (echte API-JSON-Fixtures), ical (RRULE/EXDATE/Zeitzone),
 | `retention_days: 30`, `record_voice` prüfen | Datenschutz, offener Punkt O8 | Empfohlen |
 | Dynamische Variable `{{tageszeit}}` in erster Nachricht/Prompt | „Morgen Daniel!“ passt um 18 Uhr nicht mehr | Optional |
 
-### E.4 Google Calendar (iCal)
+### E.4 iCloud-Kalender (ICS) ✅ umgesetzt, Details in `docs/decisions/0001-icloud-kalender.md`
 
 | Punkt | Festlegung |
 |---|---|
-| Quelle | „Geheime Adresse im iCal-Format“ als `GCAL_ICS_URL` (Vercel-Env, nie im Client) |
-| Verarbeitung | `fetch` → parsen → wiederkehrende Termine (RRULE, EXDATE, RECURRENCE-ID) für gestern … +7 Tage expandieren → `CalendarEvent { id, start, end, allDay, title, location, people[], notes }` |
-| Cache | fetch-Cache, Tag `calendar`, Revalidate 5 Min |
-| Bibliothek | ❓ Spike in Phase 4: `node-ical` 0.27.3 (aktiv gepflegt) vs. `ical.js` 2.2.1. Kriterium: korrekte Ausnahmen und Zeitzonen mit einer Fixture aus deinem echten Feed. |
-| Offene Prüfungen | ❓ Enthält der Feed `ATTENDEE`? ❓ Wie aktuell ist der Feed (Minuten oder Stunden)? Falls zu träge: Google Calendar API über die bestehenden Google-Credentials in n8n (später). |
+| Quelle | Öffentlicher iCloud-Link als `ICLOUD_CALENDAR_URL` (Vercel-Env, nie im Client), mehrere durch Komma. Nur `https` auf `*.icloud.com` |
+| Verarbeitung | `fetch` (8 s, 5 MB, Weiterleitungen nur innerhalb iCloud) → `node-ical` → RRULE, EXDATE, RECURRENCE-ID für −14 … +90 Tage → `CalendarEvent { id, title, location, allDay, start, end }` |
+| Cache | `unstable_cache` mit dem geparsten Ergebnis (nicht der `fetch`-Cache: über 2 MB loggt Next.js die URL), Tag `calendar`, Schlüssel = Tag + 5-Minuten-Fenster. Refresh per `updateTag` |
+| Bibliothek | `node-ical` 0.27.3. Getestet: Serien, Ausnahmen, verschobene Termine, ganztägig, über Mitternacht, Zeitumstellung, Server-Zeitzonen |
+| Offen | Akzeptanz mit dem echten Feed: Termine stimmen eine Woche lang mit der Kalender-App überein. iCloud veröffentlicht Änderungen selbst mit Verzögerung |
 
 ### E.5 Apple-Kurzbefehle
 

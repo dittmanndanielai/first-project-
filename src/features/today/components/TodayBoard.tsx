@@ -4,21 +4,19 @@ import { Suspense } from "react";
 import { CaptureBar } from "@/features/capture/CaptureBar";
 import { TasksProvider } from "@/features/tasks/components/TasksProvider";
 import type { Task } from "@/features/tasks/types";
-import type { UpcomingEvent } from "@/features/calendar/upcoming";
 import { FocusCard, MyTasksCard, ProgressCard } from "./TaskCards";
-import { AssistantCard, InvestmentsTeaser, LawCard, UpcomingCard } from "./SideCards";
+import { AssistantCard, InvestmentsTeaser, LawCard } from "./SideCards";
 
 type Props = {
   tasks: Task[];
   today: string;
-  events: UpcomingEvent[];
-  nextIn: number | null;
-  calendarConnected: boolean;
+  /** Kalender-Karte, serverseitig gerendert (features/calendar). */
+  calendar: React.ReactNode;
   lawIndex: number;
 };
 
 /** Raster der Today-Seite wie im Design: links Aufgaben, Mitte Capture + Orb, rechts Termine, Fortschritt, Law. */
-export function TodayBoard({ tasks, today, events, nextIn, calendarConnected, lawIndex }: Props) {
+export function TodayBoard({ tasks, today, calendar, lawIndex }: Props) {
   return (
     <TasksProvider tasks={tasks} today={today}>
       <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
@@ -34,7 +32,7 @@ export function TodayBoard({ tasks, today, events, nextIn, calendarConnected, la
             <AssistantCard />
           </div>
           <div className="col">
-            <UpcomingCard events={events} nextIn={nextIn} connected={calendarConnected} />
+            {calendar}
             <ProgressCard />
             <LawCard initialIndex={lawIndex} />
           </div>

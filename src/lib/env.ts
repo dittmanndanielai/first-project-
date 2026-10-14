@@ -42,6 +42,11 @@ function buildSchema(isProd: boolean) {
       ELEVENLABS_API_KEY: optional,
       ELEVENLABS_AGENT_ID: z.string().default("agent_2601m4p82ey6ew8bnejvezdmrt9x"),
 
+      // Öffentlicher iCloud-Kalender (ICS), geheim wie ein Passwort. Mehrere Kalender durch Komma getrennt.
+      // Bewusst ohne URL-Prüfung hier: ein falscher Wert soll nur den Kalender abschalten, nicht die App
+      // (Prüfung in features/calendar/source.ts).
+      ICLOUD_CALENDAR_URL: optional,
+
       // Komma-getrennte SHA-256-Hashes der Geräte-Tokens für /api/capture (Siri, Mac).
       CAPTURE_TOKENS: optional,
       REVALIDATE_SECRET: optional,
