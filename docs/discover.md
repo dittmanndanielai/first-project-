@@ -33,7 +33,9 @@ Vertikaler Card-Feed mit zwei Modi: **Intelligence** (Stories der letzten 7 Tage
 3. **Reihenfolge Intelligence:** Tag absteigend; im Tag volle Karten vor Thin-Cards, Impact Hoch → Niedrig, dann der jüngere
    Lauf, sonst Mail-Reihenfolge. Pro Story ID eine Karte (vollständigere, sonst jüngere).
 4. **Modell-Anpassungen an Repo-Konventionen:** `impact` als `high | medium | low` (Notion-Werte deutsch nur in
-   `notion-map.ts`); zusätzlich `categories: string[]`, damit der Filter alle Themenfelder einer Story trifft.
+   `notion-map.ts`); zusätzlich `categories: string[]`, damit der Filter alle Themenfelder einer Story trifft. Unter
+   „Alle“ zeigt die Karte ihr erstes Themenfeld, im gefilterten Feed die gewählte Kategorie (sonst stünde unter
+   „Business & Markets“ eine Karte mit „Geopolitics“).
 5. **UI-Texte deutsch** wie in der Discover-Vorgabe („Mehr lesen“, „Du bist auf dem Stand.“). Das weicht bewusst von
    „UI-Texte englisch“ in `CLAUDE.md` ab, weil die Inhalte deutsch sind; Kategorien und Feed-Namen bleiben englisch.
 6. **Wheel-Handler auf dem Mac:** `scroll-snap-stop: always` allein verhinderte in Chromium keine Mehrfachsprünge

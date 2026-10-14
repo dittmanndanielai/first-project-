@@ -58,7 +58,7 @@ export function DiscoverApp({ intelligence, status, learning, nextDigest, today 
   const categories = useMemo(() => categoriesOf(source), [source]);
   const stateOnly = feed === "intelligence" && status !== "ok"; // Fehler, Leer, nicht geteilt
   const total = stateOnly ? 1 : cards.length + 1; // + Abschlusskarte
-  const openCard = open ? source.find((c) => c.id === open.id) : undefined;
+  const openCard = open ? cards.find((c) => c.id === open.id) : undefined;
   const modal = !!openCard && mode !== "panel";
 
   // Gespeicherten Stand lesen (nach der Hydration, damit Server- und Client-HTML übereinstimmen).

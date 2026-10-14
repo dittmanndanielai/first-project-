@@ -93,6 +93,8 @@ describe("Intelligence-Adapter", () => {
     const cards = [storyToCard(story({ topics: ["geopolitics", "economy"] })), storyToCard(story({ storyId: "b2", topics: ["vc"] }))];
     expect(cards[0].category).toBe("Geopolitics");
     expect(filterCards(cards, "Business & Markets")).toHaveLength(1);
+    expect(filterCards(cards, "Business & Markets")[0].category).toBe("Business & Markets"); // Eyebrow folgt dem Filter
+    expect(filterCards(cards, "Geopolitics")[0]).toBe(cards[0]); // Hauptkategorie: Karte unverändert
     expect(filterCards(cards, "Opportunities")[0].storyId).toBe("b2");
     expect(filterCards(cards, null)).toHaveLength(2);
     expect(categoriesOf(cards)).toEqual(["Geopolitics", "Business & Markets", "Opportunities"]);

@@ -23,9 +23,13 @@ export function categoriesOf(cards: DiscoverCard[]): string[] {
   return [...seen];
 }
 
-/** null = „Alle“. Eine Karte mit mehreren Themenfeldern erscheint in jedem davon. */
+/**
+ * null = „Alle“. Eine Karte mit mehreren Themenfeldern erscheint in jedem davon und trägt im gefilterten Feed die
+ * gewählte Kategorie (Eyebrow und Farbe), damit „Business & Markets“ nicht „Geopolitics“ anzeigt.
+ */
 export function filterCards(cards: DiscoverCard[], category: string | null): DiscoverCard[] {
-  return category ? cards.filter((c) => c.categories.includes(category)) : cards;
+  if (!category) return cards;
+  return cards.filter((c) => c.categories.includes(category)).map((c) => (c.category === category ? c : { ...c, category }));
 }
 
 /** Feedback-Endpunkt: Hash-IDs aus n8n oder Economist-IDs, sonst ungültig. */
