@@ -1,0 +1,37 @@
+{
+  "slug": "anreize",
+  "category": "Mental Models",
+  "title": "Anreize erklären Verhalten",
+  "lead": "Wenn du verstehen willst, warum Menschen etwas tun, schau zuerst darauf, wofür sie belohnt werden. Munger hielt die Macht von Anreizen für systematisch unterschätzt.",
+  "sections": [
+    {
+      "label": "Erklärung",
+      "body": "In seiner Rede „The Psychology of Human Misjudgment“ (Harvard, 1995) stellt Munger die Wirkung von Belohnung und Bestrafung an den Anfang seiner Liste menschlicher Fehlurteile. Sein Beispiel: Federal Express bekam die nächtliche Paketsortierung lange nicht schnell genug hin. Erst als die Nachtschicht nicht mehr pro Stunde, sondern pro Schicht bezahlt wurde, war das Problem gelöst, jedenfalls nach Mungers Schilderung.",
+      "kind": "fact"
+    },
+    {
+      "label": "Warum es wirkt",
+      "body": "Menschen reagieren auf das, was tatsächlich belohnt wird, nicht auf das, was gesagt oder gewünscht wird. Wer pro Stunde bezahlt wird, hat keinen Grund, schneller fertig zu werden. Anreize verzerren zudem das Urteil: Wer an einem Ergebnis verdient, hält es oft ganz ehrlich für richtig.",
+      "kind": "analysis"
+    },
+    {
+      "label": "Anwendung",
+      "body": "Du rechnest Kundenprojekte nach Stunden ab. Damit verdienst du umso mehr, je länger die Automatisierung dauert, und der Kunde spürt das. Stell Standardabläufe auf einen Festpreis pro Ergebnis um, etwa pro live geschaltetem Workflow. Umgekehrt beim Investieren: Frag bei jeder Produktempfehlung deiner Bank zuerst, wie der Berater daran verdient.",
+      "kind": "application"
+    },
+    {
+      "label": "Grenzen & Gegenargumente",
+      "body": "Anreize wirken nicht immer wie gedacht. In einer bekannten Feldstudie führten Uri Gneezy und Aldo Rustichini (2000) in israelischen Kitas eine Geldstrafe für spätes Abholen ein; danach kamen mehr Eltern zu spät, weil die Strafe wie ein Preis wirkte, und nach ihrer Abschaffung blieb es dabei. Geld kann auch innere Motivation verdrängen. Was gemessen und belohnt wird, wird oft so lange optimiert, bis es nichts mehr aussagt (Goodhart's Law). Und die FedEx-Geschichte ist Mungers Anekdote, nicht unabhängig dokumentiert.",
+      "kind": "critique"
+    }
+  ],
+  "takeaway": "Bevor du Verhalten erklärst oder änderst, prüfe, wofür tatsächlich belohnt wird.",
+  "source": {
+    "title": "The Psychology of Human Misjudgment",
+    "author": "Charlie Munger",
+    "year": 1995,
+    "detail": "Rede in Harvard; überarbeitet in „Poor Charlie's Almanack“ (2005)"
+  },
+  "basis": "primary",
+  "reviewed": false
+}

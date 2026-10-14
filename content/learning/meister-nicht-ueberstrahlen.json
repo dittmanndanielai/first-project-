@@ -1,0 +1,38 @@
+{
+  "slug": "meister-nicht-ueberstrahlen",
+  "category": "Strategy & Power",
+  "title": "Den Meister nicht überstrahlen",
+  "lead": "Greene rät, Vorgesetzte nie in den Schatten zu stellen, weil verunsicherte Mächtige gefährlich werden. Ein Körnchen Wahrheit, verpackt in eine fragwürdige Regel.",
+  "sections": [
+    {
+      "label": "Erklärung",
+      "body": "Gesetz 1 in „The 48 Laws of Power“: Sorge dafür, dass die über dir sich überlegen fühlen; wer seine Talente zu sehr zur Schau stellt, weckt Angst und Neid. Greene stützt das auf historische Anekdoten, vor allem auf Nicolas Fouquet, den Finanzminister Ludwigs XIV., der im August 1661 ein prunkvolles Fest auf Schloss Vaux-le-Vicomte gab und kurz darauf verhaftet wurde.",
+      "kind": "fact"
+    },
+    {
+      "label": "Warum es wirkt",
+      "body": "Menschen mit Status reagieren empfindlich, wenn dieser Status bedroht wirkt, besonders wenn sie unsicher sind. Wer Erfolge so präsentiert, dass auch die Führungskraft gut dasteht, verringert diese Bedrohung und bekommt eher Unterstützung. Der brauchbare Kern betrifft also das Wie der Darstellung, nicht das Verstecken von Leistung.",
+      "kind": "analysis"
+    },
+    {
+      "label": "Anwendung",
+      "body": "Im Praktikum findest du einen Fehler im Bewertungsmodell deines Vorgesetzten. Du deckst ihn nicht in der Teamrunde auf, sondern vorher unter vier Augen: „Mir ist in der Umsatzplanung etwas aufgefallen, kannst du kurz draufschauen?“ Der Fehler wird korrigiert, du bekommst Anerkennung, und niemand verliert öffentlich das Gesicht. Deine Arbeit selbst versteckst du nicht.",
+      "kind": "application"
+    },
+    {
+      "label": "Grenzen & Gegenargumente",
+      "body": "Das Buch ist anekdotisch, nicht empirisch: Greene wählt Geschichten aus, die seine Regel stützen, und lässt Gegenbeispiele weg. Selbst die Fouquet-Geschichte ist verkürzt; Historiker sehen eher Colberts Intrigen und Ludwigs Machtpolitik als Ursache als das Fest. Wörtlich befolgt kostet die Regel viel: Wer sich systematisch kleinmacht, wird übersehen, und wer taktiert, verliert Vertrauen, sobald es auffällt. Bei guten Vorgesetzten und in Organisationen, die sichtbare Leistung belohnen, ist sie schlicht falsch. Reputation und Vertrauen sind langfristig mehr wert als Schutz vor Neid.",
+      "kind": "critique"
+    }
+  ],
+  "takeaway": "Lass andere gut aussehen, wenn du Erfolge teilst, aber versteck nie deine Leistung.",
+  "source": {
+    "title": "The 48 Laws of Power",
+    "author": "Robert Greene",
+    "year": 1998,
+    "detail": "Gesetz 1",
+    "url": "https://en.wikipedia.org/wiki/The_48_Laws_of_Power"
+  },
+  "basis": "primary",
+  "reviewed": false
+}

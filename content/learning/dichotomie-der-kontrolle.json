@@ -1,0 +1,37 @@
+{
+  "slug": "dichotomie-der-kontrolle",
+  "category": "Philosophy & Personal Development",
+  "title": "Dichotomie der Kontrolle",
+  "lead": "Manches liegt in deiner Macht, anderes nicht. Epiktet rät, Kraft nur auf das Erste zu richten: dein Urteil, deine Absichten, dein Handeln.",
+  "sections": [
+    {
+      "label": "Erklärung",
+      "body": "So beginnt das „Handbüchlein der Moral“ (Encheiridion), das Epiktets Schüler Arrian im 2. Jahrhundert zusammenstellte: „Das eine steht in unserer Macht, das andere nicht.“ In unserer Macht sind nach Epiktet Urteil, Antrieb, Begehren und Abneigung, also unser eigenes Tun; nicht in unserer Macht sind Körper, Besitz, Ansehen und Ämter. Leid entsteht, wenn wir unser Wohl an Dinge knüpfen, die wir nicht steuern.",
+      "kind": "fact"
+    },
+    {
+      "label": "Warum es wirkt",
+      "body": "Die Unterscheidung lenkt Aufmerksamkeit vom Grübeln aufs Handeln. Wer klar trennt, was er beeinflussen kann, verschwendet weniger Energie mit Ärger über Dinge außerhalb seiner Reichweite. Die kognitive Verhaltenstherapie greift verwandte Gedanken auf: Albert Ellis berief sich ausdrücklich auf Epiktets Satz, dass uns nicht die Dinge selbst beunruhigen, sondern unsere Urteile über sie.",
+      "kind": "analysis"
+    },
+    {
+      "label": "Anwendung",
+      "body": "Ein Kunde entscheidet, ob er deinen Pilot verlängert; das liegt nicht in deiner Macht. In deiner Macht: Ergebnisse sauber dokumentieren, eine klare Empfehlung schicken, rechtzeitig nachfragen. Schreib vor dem Gespräch zwei Spalten auf. Dein Ziel lautet dann nicht „Verlängerung bekommen“, sondern „die bestmögliche Entscheidungsgrundlage liefern“. Bei einer Absage fragst du nach dem Grund, statt dich zu ärgern.",
+      "kind": "application"
+    },
+    {
+      "label": "Grenzen & Gegenargumente",
+      "body": "Die meisten wichtigen Dinge liegen weder ganz in noch ganz außerhalb unserer Macht. Der Philosoph William B. Irvine schlägt deshalb eine Dreiteilung vor und rät, bei teilweise beeinflussbaren Dingen innere Ziele zu setzen, etwa „gut spielen“ statt „gewinnen“. Falsch verstanden führt die Lehre zu Passivität: Wer Ungerechtigkeit als „nicht in meiner Macht“ abtut, macht es sich zu leicht. Zudem gibt es kaum belastbare Studien zu stoischen Übungen selbst; Belege stammen eher aus der Forschung zu verwandten Therapieverfahren.",
+      "kind": "critique"
+    }
+  ],
+  "takeaway": "Trenne vor jeder wichtigen Sache, was du steuerst und was nicht, und setz dein Ziel im ersten Teil.",
+  "source": {
+    "title": "Encheiridion (Handbüchlein der Moral)",
+    "author": "Epiktet, aufgezeichnet von Arrian",
+    "detail": "2. Jh. n. Chr.; Abschnitt 1",
+    "url": "https://en.wikipedia.org/wiki/Enchiridion_of_Epictetus"
+  },
+  "basis": "primary",
+  "reviewed": false
+}

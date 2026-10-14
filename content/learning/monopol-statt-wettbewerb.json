@@ -1,0 +1,37 @@
+{
+  "slug": "monopol-statt-wettbewerb",
+  "category": "Business & Entrepreneurship",
+  "title": "Monopol statt Wettbewerb",
+  "lead": "Dauerhafte Gewinne entstehen dort, wo du etwas so Eigenes baust, dass es keinen direkten Vergleich gibt. Wettbewerb um Austauschbares drückt die Gewinne für alle.",
+  "sections": [
+    {
+      "label": "Erklärung",
+      "body": "In „Zero to One“ argumentiert Peter Thiel, dass Unternehmen in umkämpften Märkten ihre Gewinne wegkonkurrieren, während „kreative Monopole“, also Firmen mit einem deutlich besseren, eigenen Angebot, dauerhaft Wert abschöpfen. Sein Rat für Gründer: klein anfangen, einen eng umrissenen Markt dominieren und dann schrittweise erweitern. Als Quellen dauerhafter Stärke nennt er eigene Technologie, Netzwerkeffekte, Skaleneffekte und Marke.",
+      "kind": "fact"
+    },
+    {
+      "label": "Warum es wirkt",
+      "body": "Bei austauschbaren Angeboten entscheidet am Ende der Preis, und der sinkt, bis kaum Marge bleibt. Wer dagegen für eine bestimmte Gruppe klar die beste Lösung ist, kann Preise setzen und in Qualität investieren. Kleine Märkte sind leichter zu dominieren, weil große Konkurrenten sie oft nicht ernst nehmen.",
+      "kind": "analysis"
+    },
+    {
+      "label": "Anwendung",
+      "body": "„KI-Beratung für den Mittelstand“ ist ein Markt voller austauschbarer Anbieter. Enger gefasst: „automatisierte Angebots- und Rechnungsabläufe für Handwerksbetriebe mit 10 bis 50 Mitarbeitenden in deiner Region“. Dort kannst du in einem Jahr der bekannteste Anbieter sein, mit Vorlagen, Referenzen und Paketen, die niemand direkt vergleichen kann. Test: Kannst du in einem Satz sagen, warum ein Kunde nicht einfach zu einem anderen Anbieter wechselt?",
+      "kind": "application"
+    },
+    {
+      "label": "Grenzen & Gegenargumente",
+      "body": "„Monopol“ meint bei Thiel Einzigartigkeit, nicht Marktmissbrauch; trotzdem blendet das Buch die Kosten echter Monopole für Kunden und Gesellschaft weitgehend aus. Die Beispiele sind Erfolgsgeschichten, rückblickend gedeutet; viele Firmen mit derselben Strategie sind gescheitert, ohne dass man von ihnen hört. Eine zu enge Nische kann schlicht zu klein sein. Und für Dienstleister sind Netzwerk- und Skaleneffekte selten: Viele profitable Firmen leben gut in Märkten mit Wettbewerb, durch Service, Beziehung und Verlässlichkeit.",
+      "kind": "critique"
+    }
+  ],
+  "takeaway": "Werde für eine kleine, klar umrissene Gruppe die offensichtlich beste Wahl.",
+  "source": {
+    "title": "Zero to One",
+    "author": "Peter Thiel mit Blake Masters",
+    "year": 2014,
+    "url": "https://en.wikipedia.org/wiki/Zero_to_One"
+  },
+  "basis": "primary",
+  "reviewed": false
+}

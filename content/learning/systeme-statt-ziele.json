@@ -1,0 +1,38 @@
+{
+  "slug": "systeme-statt-ziele",
+  "category": "Philosophy & Personal Development",
+  "title": "Systeme statt Ziele",
+  "lead": "Ziele sagen dir, wohin du willst; Systeme entscheiden, ob du ankommst. Wer seine täglichen Abläufe gestaltet, ist weniger auf Motivation angewiesen.",
+  "sections": [
+    {
+      "label": "Erklärung",
+      "body": "James Clear argumentiert in „Atomic Habits“ (2018), dass Erfolgreiche und Erfolglose oft dieselben Ziele haben; der Unterschied liege in den Systemen, also den wiederholten Abläufen dahinter. Ähnlich hatte Scott Adams (2013) argumentiert, Ziele seien etwas für Verlierer, Systeme etwas für Gewinner. Clear empfiehlt, gute Gewohnheiten offensichtlich, attraktiv, einfach und befriedigend zu gestalten.",
+      "kind": "fact"
+    },
+    {
+      "label": "Warum es wirkt",
+      "body": "Ein Ziel ist ein einzelner Zeitpunkt, ein System wirkt jeden Tag. Wer sich auf den Ablauf konzentriert, erlebt häufiger kleine Erfolge und hängt weniger an Tagesform und Willenskraft. Außerdem endet ein erreichtes Ziel, ein System läuft weiter.",
+      "kind": "analysis"
+    },
+    {
+      "label": "Anwendung",
+      "body": "Ziel: „bis Jahresende fünf neue Kunden“. System: jeden Dienstag von 9 bis 10 Uhr drei persönliche Nachrichten an Kontakte aus deiner Liste, jeden Freitag ein kurzer Praxisbeitrag auf LinkedIn. Fürs Studium: statt „Klausur mit 1,7“ jeden Werktag 45 Minuten Altklausuren, direkt nach dem Frühstück. Miss, ob du das System einhältst, nicht nur das Ergebnis.",
+      "kind": "application"
+    },
+    {
+      "label": "Grenzen & Gegenargumente",
+      "body": "Die Zielsetzungsforschung von Edwin Locke und Gary Latham gehört zu den am besten belegten Befunden der Arbeitspsychologie: Konkrete, anspruchsvolle Ziele steigern Leistung. Ziele und Systeme sind also keine Gegensätze; ohne Ziel weißt du nicht, welches System das richtige ist, und ein System ohne Richtung wird zur Beschäftigung. Clears und Adams' Bücher sind Ratgeber, die eher auf Beispielen als auf eigenen Studien beruhen; ihre Faustregeln sind keine festen Gesetze.",
+      "kind": "critique"
+    }
+  ],
+  "takeaway": "Setz ein Ziel für die Richtung und bau ein wöchentliches System, das du messen kannst.",
+  "source": {
+    "title": "Atomic Habits",
+    "author": "James Clear",
+    "year": 2018,
+    "detail": "ähnlich zuvor Scott Adams, „How to Fail at Almost Everything and Still Win Big“ (2013)",
+    "url": "https://en.wikipedia.org/wiki/Atomic_Habits"
+  },
+  "basis": "primary",
+  "reviewed": false
+}

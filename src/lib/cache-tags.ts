@@ -16,5 +16,6 @@ export const TTL = {
   goals: 60 * 60 * 24,
   calendar: 5 * 60,
   digest: 15 * 60, // neue Ausgabe kommt morgens einmal, kurze TTL hält das Warten danach klein
+  discover: 30 * 60, // Discover-Feed (7 Tage Digest Archive, Tag „digest“); bewusst ohne manuelle Invalidierung
   status: 5 * 60,
 } as const;

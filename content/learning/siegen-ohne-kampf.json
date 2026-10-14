@@ -1,0 +1,37 @@
+{
+  "slug": "siegen-ohne-kampf",
+  "category": "Strategy & Power",
+  "title": "Siegen ohne Kampf",
+  "lead": "Der beste Sieg ist der, für den du nicht kämpfen musst: Pläne und Bündnisse des Gegners entwerten, bevor es zur offenen Auseinandersetzung kommt.",
+  "sections": [
+    {
+      "label": "Erklärung",
+      "body": "Im dritten Kapitel der „Kunst des Krieges“ heißt es in der gemeinfreien Übersetzung von Lionel Giles: „Die höchste Vollendung besteht darin, den Widerstand des Feindes ohne Kampf zu brechen.“ Sunzi ordnet die Mittel: am besten die Pläne des Gegners vereiteln, dann verhindern, dass sich seine Kräfte vereinen, dann sein Heer im Feld angreifen; am schlechtesten ist es, befestigte Städte zu belagern.",
+      "kind": "fact"
+    },
+    {
+      "label": "Warum es wirkt",
+      "body": "Offene Konflikte kosten auch den Gewinner: Ressourcen, Zeit, Ruf. Wer früher ansetzt, an der Logik, nach der der andere entscheidet, verändert das Ergebnis mit weniger Aufwand. Übertragen auf Märkte heißt das: eine Position wählen, in der ein Preiskampf gar nicht erst nötig ist.",
+      "kind": "analysis"
+    },
+    {
+      "label": "Anwendung",
+      "body": "Eine größere Agentur pitcht beim selben Kunden wie du. Statt sie im Preis zu unterbieten (die Belagerung), änderst du die Entscheidungsfrage: Du bietest einen zweiwöchigen, bezahlten Pilot mit messbarem Ergebnis an, den die Agentur mit ihren Abläufen nicht so schnell liefern kann. Der Kunde vergleicht dann nicht mehr Tagessätze, sondern Risiko.",
+      "kind": "application"
+    },
+    {
+      "label": "Grenzen & Gegenargumente",
+      "body": "Die Schrift ist ein antiker Militärtext; Autorschaft und Datierung sind umstritten. Ihre Sätze sind so knapp, dass sie sich für fast jede Strategie zitieren lassen. Das macht sie anregend, aber nicht belastbar. Übertragungen auf Wirtschaft sind Analogien, keine Belege. Manche Konflikte lassen sich auch nicht umgehen: Wer jeder Auseinandersetzung ausweicht, überlässt anderen das Feld. Und „Pläne vereiteln“ setzt voraus, dass du sie kennst; oft ist das Wunschdenken.",
+      "kind": "critique"
+    }
+  ],
+  "takeaway": "Ändere die Frage, nach der entschieden wird, bevor du um die Antwort kämpfst.",
+  "source": {
+    "title": "Die Kunst des Krieges (Sunzi bingfa)",
+    "author": "Sunzi (Sun Tzu)",
+    "detail": "um das 5. Jh. v. Chr., Datierung umstritten; Kapitel III nach der Übersetzung von Lionel Giles (1910)",
+    "url": "https://en.wikipedia.org/wiki/The_Art_of_War"
+  },
+  "basis": "primary",
+  "reviewed": false
+}

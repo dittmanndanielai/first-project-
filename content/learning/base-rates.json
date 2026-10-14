@@ -1,0 +1,38 @@
+{
+  "slug": "base-rates",
+  "category": "Psychology",
+  "title": "Basisraten: der Blick von außen",
+  "lead": "Bevor du einen Einzelfall beurteilst, frag, wie es vergleichbaren Fällen ergangen ist. Diese Basisrate schlägt die beste Geschichte über den Einzelfall erstaunlich oft.",
+  "sections": [
+    {
+      "label": "Erklärung",
+      "body": "Kahneman und Tversky zeigten in den 1970er-Jahren, dass Menschen Basisraten, also die Häufigkeit eines Ergebnisses in einer Vergleichsgruppe, zugunsten anschaulicher Einzelinformationen vernachlässigen. In „Thinking, Fast and Slow“ beschreibt Kahneman, wie das seinem eigenen Team passierte: Es schätzte die Arbeit an einem Lehrbuch auf etwa zwei Jahre. Ein Kollege wusste aus vergleichbaren Projekten, dass rund 40 % nie fertig wurden und die übrigen sieben bis zehn Jahre brauchten. Das Buch war nach acht Jahren fertig.",
+      "kind": "fact"
+    },
+    {
+      "label": "Warum es wirkt",
+      "body": "Der Blick von innen konzentriert sich auf das, was wir über den eigenen Fall wissen, und blendet aus, was wir nicht wissen können: Verzögerungen, Zufälle, Konkurrenz. Die Basisrate enthält diese Faktoren bereits, weil sie in den Vergleichsfällen schon eingetreten sind. Deshalb ist sie der bessere Ausgangspunkt, den man dann mit den Besonderheiten des Einzelfalls anpasst.",
+      "kind": "analysis"
+    },
+    {
+      "label": "Anwendung",
+      "body": "Du überlegst, deine Beratung zum Hauptberuf zu machen, weil zwei Kunden begeistert sind. Zuerst die Basisrate: Wie viele kleine Beratungen in deinem Umfeld haben nach zwei Jahren stabile Umsätze? Frag drei Gründer, die vor zwei bis drei Jahren gestartet sind, nach Umsatzverlauf und abgesprungenen Kunden. Plane mit ihren Werten und weiche nur dort nach oben ab, wo du einen konkreten Grund hast.",
+      "kind": "application"
+    },
+    {
+      "label": "Grenzen & Gegenargumente",
+      "body": "Die Wahl der Vergleichsgruppe ist oft das eigentliche Problem: Sind „KI-Beratungen“, „Studentengründungen“ oder „IT-Dienstleister“ die richtige Klasse? Je nach Wahl entstehen sehr unterschiedliche Raten, und für neue Märkte fehlen gute Daten. Gerd Gigerenzer und Ulrich Hoffrage zeigten, dass der Fehler deutlich kleiner wird, wenn Informationen als natürliche Häufigkeiten statt als Prozente vorliegen; er ist also weniger fest verdrahtet, als populäre Darstellungen nahelegen. Und wer nur auf Basisraten schaut, gründet nie.",
+      "kind": "critique"
+    }
+  ],
+  "takeaway": "Starte jede Prognose mit dem, was vergleichbaren Fällen passiert ist, und ändere sie nur mit Grund.",
+  "source": {
+    "title": "Thinking, Fast and Slow",
+    "author": "Daniel Kahneman",
+    "year": 2011,
+    "detail": "Grundlage: Kahneman & Tversky (1973), Kahneman & Lovallo (1993)",
+    "url": "https://en.wikipedia.org/wiki/Thinking,_Fast_and_Slow"
+  },
+  "basis": "primary",
+  "reviewed": false
+}

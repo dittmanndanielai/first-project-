@@ -122,3 +122,12 @@ export function zonedTime(iso: string, hhmm = "00:00", timeZone = DEFAULT_TZ): n
 export function startOfDay(iso: string, timeZone = DEFAULT_TZ): number {
   return zonedTime(iso, "00:00", timeZone);
 }
+
+/** Kalendertag (YYYY-MM-DD) als kurzes deutsches Label, z. B. "Di. 13. Okt." (Discover-Karten). */
+export function germanDayLabel(iso: string): string {
+  const [y, m, d] = iso.split("-").map(Number);
+  const date = new Date(Date.UTC(y, m - 1, d, 12));
+  const parts = new Intl.DateTimeFormat("de-DE", { timeZone: "UTC", weekday: "short", day: "numeric", month: "short" }).formatToParts(date);
+  const get = (type: Intl.DateTimeFormatPartTypes) => parts.find((p) => p.type === type)?.value ?? "";
+  return `${get("weekday")} ${get("day")}. ${get("month")}`; // ICU kürzt selbst: „Okt.“, aber „Mai“
+}

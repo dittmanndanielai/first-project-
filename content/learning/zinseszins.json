@@ -1,0 +1,37 @@
+{
+  "slug": "zinseszins",
+  "category": "Finance & Investing",
+  "title": "Zeit schlägt Rendite: der Zinseszins",
+  "lead": "Beim Vermögensaufbau zählt die Dauer mehr als die Höhe der Rendite. Wer zehn Jahre früher anfängt, kann am Ende fast doppelt so viel haben, bei kaum mehr Einsatz.",
+  "sections": [
+    {
+      "label": "Erklärung",
+      "body": "Housel zeigt in „The Psychology of Money“ am Beispiel Warren Buffetts, dass nahezu sein gesamtes Vermögen erst nach seinem 50. Geburtstag entstand. Buffetts Können sei real, entscheidend sei aber, dass er schon als Jugendlicher anfing zu investieren und es jahrzehntelang durchhielt. Zinseszins wächst exponentiell: Die späten Jahre bringen den größten Zuwachs.",
+      "kind": "fact"
+    },
+    {
+      "label": "Warum es wirkt",
+      "body": "Erträge werfen selbst wieder Erträge ab, ein Vermögen wächst also mit jedem Jahr schneller. Unser Gefühl rechnet dagegen linear und unterschätzt, wie viel die letzten Jahrzehnte ausmachen. Daraus folgt: früh anfangen und nicht unterbrechen ist wichtiger, als die perfekte Anlage zu finden.",
+      "kind": "analysis"
+    },
+    {
+      "label": "Anwendung",
+      "body": "Eigene Beispielrechnung, nicht aus dem Buch: 200 € im Monat bei 6 % Rendite pro Jahr, vor Kosten, Steuern und Inflation. In 40 Jahren werden aus 96.000 € Einzahlungen rund 398.000 €, in 30 Jahren aus 72.000 € rund 201.000 €. Die zehn zusätzlichen Jahre verdoppeln das Ergebnis fast. Konkret: Richte jetzt einen kleinen ETF-Sparplan ein, auch mit 50 €, statt auf das erste volle Gehalt zu warten.",
+      "kind": "application"
+    },
+    {
+      "label": "Grenzen & Gegenargumente",
+      "body": "Die Rechnung setzt eine gleichmäßige Rendite voraus; echte Märkte schwanken, und eine lange schwache Phase am Anfang oder Ende verändert das Ergebnis stark. 6 % sind keine Garantie, und Inflation frisst einen Teil davon. Das Buffett-Beispiel ist ein extremer Einzelfall: Die meisten, die genauso lange investieren, erreichen nicht annähernd seine Renditen. Und Zinseszins wirkt auch bei Schulden, ein Dispokredit wächst genauso exponentiell.",
+      "kind": "critique"
+    }
+  ],
+  "takeaway": "Fang klein und früh an, und unterbrich den Zinseszins nicht.",
+  "source": {
+    "title": "The Psychology of Money",
+    "author": "Morgan Housel",
+    "year": 2020,
+    "url": "https://en.wikipedia.org/wiki/The_Psychology_of_Money"
+  },
+  "basis": "primary",
+  "reviewed": false
+}

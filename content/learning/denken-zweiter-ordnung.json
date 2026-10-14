@@ -1,0 +1,37 @@
+{
+  "slug": "denken-zweiter-ordnung",
+  "category": "Mental Models",
+  "title": "Denken zweiter Ordnung",
+  "lead": "Die erste Frage ist, ob etwas gut ist. Die zweite: Was denken alle anderen darüber, und was steckt schon im Preis? Ein Vorsprung entsteht erst auf der zweiten Ebene.",
+  "sections": [
+    {
+      "label": "Erklärung",
+      "body": "Howard Marks nennt das in „The Most Important Thing“ (2011) „second-level thinking“. Denken erster Ebene sagt: gutes Unternehmen, also kaufen. Denken zweiter Ebene sagt: gutes Unternehmen, aber alle halten es für großartig, also ist die Aktie zu teuer. Wer überdurchschnittliche Ergebnisse will, muss nach Marks anders und zugleich besser denken als der Konsens.",
+      "kind": "fact"
+    },
+    {
+      "label": "Warum es wirkt",
+      "body": "An Märkten spiegelt der Preis bereits die Mehrheitsmeinung. Wer dasselbe denkt wie alle, bekommt deshalb bestenfalls durchschnittliche Ergebnisse. Allgemeiner zwingt Denken zweiter Ordnung dazu, Folgen von Folgen zu betrachten: Wie reagieren andere auf meine Entscheidung, und was passiert dann?",
+      "kind": "analysis"
+    },
+    {
+      "label": "Anwendung",
+      "body": "Erste Ebene: „KI-Automatisierung ist gefragt, also biete ich sie an.“ Zweite Ebene: „Das denken gerade Hunderte Agenturen, die Preise für einfache Chatbots fallen. Was wird knapp, wenn alle Chatbots bauen? Saubere Daten und Prozessverständnis.“ Daraus folgt ein anderes Angebot: Datenaufbereitung und Prozessdesign als Einstieg, Automatisierung als zweiter Schritt.",
+      "kind": "application"
+    },
+    {
+      "label": "Grenzen & Gegenargumente",
+      "body": "Die Methode kann in endlose Spekulation abgleiten, was andere denken, was andere denken. Vor allem ist sie schwer: Langjährige Auswertungen wie die SPIVA-Berichte von S&P zeigen, dass die Mehrheit aktiv verwalteter Fonds über längere Zeiträume ihren Vergleichsindex nicht schlägt, obwohl dort Profis genau so denken wollen. Für die meisten Privatanleger lautet das ehrlichste Ergebnis zweiter Ordnung deshalb: Ich habe keinen Vorsprung, also kaufe ich den Index. Marks beschreibt seine Erfahrung als Investor, keine empirisch geprüfte Regel.",
+      "kind": "critique"
+    }
+  ],
+  "takeaway": "Frag nicht nur, ob etwas gut ist, sondern was alle anderen schon darüber denken.",
+  "source": {
+    "title": "The Most Important Thing",
+    "author": "Howard Marks",
+    "year": 2011,
+    "detail": "aus seinen Memos an die Kunden von Oaktree Capital"
+  },
+  "basis": "primary",
+  "reviewed": false
+}

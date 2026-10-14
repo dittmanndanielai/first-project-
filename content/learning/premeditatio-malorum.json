@@ -1,0 +1,37 @@
+{
+  "slug": "premeditatio-malorum",
+  "category": "Philosophy & Personal Development",
+  "title": "Premeditatio malorum",
+  "lead": "Seneca riet, sich Rückschläge im Voraus auszumalen und Entbehrung sogar zu üben. Wer das Schlimmste kennt, fürchtet es weniger und plant besser.",
+  "sections": [
+    {
+      "label": "Erklärung",
+      "body": "In seinen Briefen an Lucilius empfiehlt Seneca, den Geist auf alles vorzubereiten, was geschehen kann, nicht nur auf das Übliche. Anlass von Brief 91 ist der Brand, der die Stadt Lugdunum (Lyon) zerstörte. In Brief 18 rät er, regelmäßig einige Tage mit einfachstem Essen und rauer Kleidung zu verbringen und sich dabei zu fragen: „Ist das der Zustand, den ich gefürchtet habe?“",
+      "kind": "fact"
+    },
+    {
+      "label": "Warum es wirkt",
+      "body": "Ein Rückschlag trifft härter, wenn er überraschend kommt. Wer ihn vorher durchdenkt, hat Zeit für Gegenmaßnahmen und merkt oft, dass das Gefürchtete erträglicher ist als die vage Angst davor. Die Übung verbindet Gefühl und Planung: erst ausmalen, dann vorbereiten.",
+      "kind": "analysis"
+    },
+    {
+      "label": "Anwendung",
+      "body": "Einmal im Quartal zehn Minuten: Was passiert, wenn dein größter Kunde kündigt? Antwort aufschreiben (Umsatz minus 40 %, die Rücklage reicht vier Monate) und eine Wenn-dann-Regel festlegen: Wenn er kündigt, schreibe ich in derselben Woche zehn frühere Kontakte an. Fürs Depot: Wenn es 30 % fällt, verkaufe ich nichts und prüfe nur die Sparrate.",
+      "kind": "application"
+    },
+    {
+      "label": "Grenzen & Gegenargumente",
+      "body": "Wer ohnehin zum Grübeln oder zu Angst neigt, dem kann das Ausmalen von Unglück eher schaden als helfen; es ersetzt keine Therapie. Die Übung braucht einen Abschluss, einen konkreten Plan, sonst wird sie zum Katastrophisieren. Seneca schrieb aus großem Reichtum heraus, freiwillige Entbehrung ist etwas anderes als echte Not. Direkte Studien zur stoischen Übung gibt es kaum; besser belegt sind verwandte Verfahren wie Wenn-dann-Pläne, die Peter Gollwitzer erforscht hat.",
+      "kind": "critique"
+    }
+  ],
+  "takeaway": "Denk den Rückschlag einmal konkret durch und schreib auf, was du dann tust.",
+  "source": {
+    "title": "Briefe an Lucilius (Epistulae morales)",
+    "author": "Seneca",
+    "detail": "letzte Lebensjahre, vor 65 n. Chr.; v. a. Brief 18 und Brief 91",
+    "url": "https://en.wikipedia.org/wiki/Epistulae_Morales_ad_Lucilium"
+  },
+  "basis": "primary",
+  "reviewed": false
+}

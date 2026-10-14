@@ -1,0 +1,38 @@
+{
+  "slug": "opportunitaetskosten",
+  "category": "Mental Models",
+  "title": "Opportunitätskosten",
+  "lead": "Der wahre Preis einer Entscheidung ist das Beste, worauf du dafür verzichtest. Diese unsichtbaren Kosten übersehen wir systematisch.",
+  "sections": [
+    {
+      "label": "Erklärung",
+      "body": "Opportunitätskosten sind der Wert der besten nicht gewählten Alternative. Frédéric Bastiat beschrieb 1850 in „Was man sieht und was man nicht sieht“ den Kern: Neben den sichtbaren Folgen einer Entscheidung gibt es unsichtbare, nämlich alles, was mit demselben Geld oder derselben Zeit sonst entstanden wäre. Der Fachbegriff selbst wird meist dem österreichischen Ökonomen Friedrich von Wieser zugeschrieben.",
+      "kind": "fact"
+    },
+    {
+      "label": "Warum es wirkt",
+      "body": "Sichtbare Kosten stehen auf der Rechnung, die nicht gewählte Alternative nirgends. Shane Frederick und Kollegen (2009) zeigten, dass Menschen beim Kaufen oft gar nicht an Alternativen denken: Schon ein Hinweis, dass man das Geld auch anders verwenden könnte, senkte die Kaufbereitschaft deutlich. Wer die beste Alternative ausdrücklich benennt, entscheidet bewusster.",
+      "kind": "analysis"
+    },
+    {
+      "label": "Anwendung",
+      "body": "Ein Bekannter bietet dir ein Projekt für 35 € pro Stunde an, zwanzig Stunden. Sichtbar: 700 €. Unsichtbar: Diese zwanzig Stunden fehlen für die Akquise bei Kunden, die 90 € zahlen, oder für die Klausurvorbereitung. Schreib vor jeder Zusage die beste Alternative für dieselbe Zeit auf. Ist sie besser, sagst du freundlich ab oder nennst deinen normalen Preis.",
+      "kind": "application"
+    },
+    {
+      "label": "Grenzen & Gegenargumente",
+      "body": "Opportunitätskosten sind fast immer Schätzungen; die „beste Alternative“ ist hypothetisch und wird leicht geschönt. Wer jede Stunde gegen ihren möglichen Geldwert rechnet, entwertet Erholung, Freundschaften und Lernen, deren Nutzen sich nicht in Stundensätzen zeigt. Ständiges Vergleichen kann Entscheidungen auch lähmen. Und vergangene Ausgaben gehören nicht dazu: Bereits ausgegebenes Geld ist versunken und keine Alternative mehr.",
+      "kind": "critique"
+    }
+  ],
+  "takeaway": "Benenne vor jeder Zusage die beste Alternative für dieselbe Zeit oder dasselbe Geld.",
+  "source": {
+    "title": "Was man sieht und was man nicht sieht",
+    "author": "Frédéric Bastiat",
+    "year": 1850,
+    "detail": "Original: „Ce qu'on voit et ce qu'on ne voit pas“; Studie: Frederick et al. (2009)",
+    "url": "https://de.wikipedia.org/wiki/Opportunit%C3%A4tskosten"
+  },
+  "basis": "established-concept",
+  "reviewed": false
+}

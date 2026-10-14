@@ -45,6 +45,32 @@ Data Source: `42a6a120-423e-4375-8a43-f7d5002a2d11` · API-Version `2025-09-03`
 | `Canonical URL` | url | Original-Artikel, bei Economist oft leer | Link (nur http/https) |
 | `Story ID` | rich_text | Hash der URL bzw. `economist:<datum>:<n>` | Duplikate je Ausgabe entfernen |
 | (Seite) `created_time` | – | Schreibzeit | Morgen- (vor 14 Uhr) vs. Abendausgabe |
+| `Kernpunkte` | rich_text | Stichpunkte, getrennt durch `\n` (seit 14.10.2026) | Discover: 3 auf der Karte, alle in „Mehr lesen“ |
+| `Warum relevant` | rich_text | Einordnung (seit 14.10.2026) | Discover: Analyse; leer = Thin-Card |
+| `Was folgen könnte` | rich_text | Ausblick (seit 14.10.2026) | Discover: Einschätzung |
+| `Chance` | rich_text | mögliche Chance (seit 14.10.2026) | Discover: „Chance für dich“ |
+| `Impact` | select | `Hoch`, `Mittel`, `Niedrig` (seit 14.10.2026) | Discover: Reihenfolge im Tag, Punkt bei Hoch |
+| `Kennzahl` | rich_text | „Wert – Label“ (seit 14.10.2026) | Discover: große Zahl, getrennt am ersten „ – “ |
+| `Quelle` | rich_text | Feedname, z. B. „The Decoder“ (seit 14.10.2026) | Discover: Quellenname; Feedback übernimmt ihn unverändert |
 
-Nicht gespeichert und daher nicht in der App: Rang/Score, Rubrik, Quelle, Lead-Text, „Dein Move heute“.
+Ältere Zeilen haben die Felder ab `Kernpunkte` leer oder gar nicht; die App behandelt das wie leer.
+Nicht gespeichert und daher nicht in der App: Rang/Score, Rubrik, Lead-Text, „Dein Move heute“.
 Änderungen daran betreffen `B_news_digest` und brauchen Freigabe.
+
+# Notion-Vertrag: Digest Feedback (Discover schreibt nur `klick`)
+
+Data Source: `dc9965a6-28f0-4380-85ea-4d95894363ec` · Leser: `B_news_digest` (Scoring: Bonus für Quellen und
+Themenfelder mit `klick` der letzten 30 Tage) · Schreiber: Klicks in der Digest-Mail und Discover „Relevant“
+(`src/features/discover/notion-map.ts`). Voraussetzung: Datenbank mit „Personal OS Web“ geteilt.
+
+| Property | Typ | Discover schreibt |
+|---|---|---|
+| `Name` | title | `Relevant: <Quelle oder Titel>` |
+| `Typ` | select | immer `klick` (vorhandene Option, keine neue) |
+| `Story ID` | rich_text | Story ID aus dem Archiv |
+| `Quelle` | rich_text | `Quelle` der Story, leer bleibt leer (kein Hostname) |
+| `Themenfeld` | rich_text | erstes Themenfeld der Story (`KI`, `Wirtschaft`, `Geopolitik`, `VC`) |
+| `Datum` | date | heute (Europe/Berlin) |
+
+Pro Story und Tag höchstens ein `klick`: vor dem Schreiben prüft die App `Story ID` + `Datum` + `Typ = klick`, auch
+Einträge aus der Mail zählen. Geschrieben wird nur mit `DISCOVER_FEEDBACK_WRITE=true`, sonst Dry-Run.

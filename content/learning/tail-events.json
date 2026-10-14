@@ -1,0 +1,38 @@
+{
+  "slug": "tail-events",
+  "category": "Business & Entrepreneurship",
+  "title": "Tail Events: Wenige Treffer tragen alles",
+  "lead": "In vielen Bereichen erklären wenige Ausreißer den Großteil der Ergebnisse. Wer das weiß, hält viele Fehlschläge aus, solange die seltenen Treffer groß genug sind.",
+  "sections": [
+    {
+      "label": "Erklärung",
+      "body": "Housel zeigt in „The Psychology of Money“ an Beispielen aus Investment, Kunst und Unternehmen, dass ein kleiner Teil der Ereignisse den Großteil des Ergebnisses ausmacht. Er beruft sich unter anderem auf eine Auswertung von J.P. Morgan: Rund 40 % aller Aktien im Russell-3000-Index verloren zwischen 1980 und 2014 mindestens 70 % ihres Werts und erholten sich nie. Die Gesamtrendite des Index stammt aus einer kleinen Minderheit der Unternehmen.",
+      "kind": "fact"
+    },
+    {
+      "label": "Warum es wirkt",
+      "body": "Wenn Ergebnisse sehr ungleich verteilt sind, ist der Durchschnitt irreführend: Die meisten Versuche liegen darunter, wenige weit darüber. Wer jeden einzelnen Fehlschlag als Beweis für eine schlechte Strategie liest, hört zu früh auf. Entscheidend ist, lange genug dabeizubleiben, um die seltenen großen Treffer mitzunehmen.",
+      "kind": "analysis"
+    },
+    {
+      "label": "Anwendung",
+      "body": "Schau auf deine Kundenliste: Vermutlich bringen ein oder zwei Kunden den Großteil des Umsatzes, und ein Kanal liefert fast alle guten Anfragen. Investiere bewusst dort, statt den Aufwand gleichmäßig zu verteilen. Beim Investieren gilt die Kehrseite: Wer breit über einen Index streut, besitzt die wenigen künftigen Gewinner sicher mit; wer fünf Einzelaktien hält, wahrscheinlich nicht.",
+      "kind": "application"
+    },
+    {
+      "label": "Grenzen & Gegenargumente",
+      "body": "Tail-Denken kann jede Fehlentscheidung rechtfertigen („der große Treffer kommt noch“); ohne klare Abbruchkriterien wird daraus Sturheit. Viele Bereiche folgen keiner extremen Verteilung, in einem soliden Dienstleistungsgeschäft zählt Beständigkeit mehr als Ausreißer. Klumpen sind zudem gefährlich: Hängt der Umsatz an einem Kunden, ist das Chance und Ruinrisiko zugleich. Housels Beispiele sind gut gewählte Geschichten, die Zahlen dazu stammen aus Auswertungen Dritter.",
+      "kind": "critique"
+    }
+  ],
+  "takeaway": "Rechne mit vielen Nieten und bleib dabei, bis die seltenen Treffer kommen, aber mit Abbruchkriterien.",
+  "source": {
+    "title": "The Psychology of Money",
+    "author": "Morgan Housel",
+    "year": 2020,
+    "detail": "Zahlen nach einer Auswertung von J.P. Morgan (2014)",
+    "url": "https://en.wikipedia.org/wiki/The_Psychology_of_Money"
+  },
+  "basis": "secondary",
+  "reviewed": false
+}
