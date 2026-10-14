@@ -6,6 +6,7 @@ import { dateLabel, isoDate } from "@/lib/time";
 import { DigestBoard, DigestNotice, editionLabel, ForYouCard, storiesLabel } from "@/features/digest/components/DigestBoard";
 import { forYou } from "@/features/digest/rules";
 import { getDigest } from "@/features/digest/store";
+import type { Edition } from "@/features/digest/types";
 import { HeaderSkeleton, PageHeader } from "@/features/shell/PageHeader";
 import { listTasks } from "@/features/tasks/store";
 import type { Task } from "@/features/tasks/types";
@@ -38,11 +39,13 @@ async function Digest() {
   );
 
   if (digest.status === "ok") {
-    const { edition, archiveUrl } = digest;
+    const { editions, archiveUrl } = digest;
+    const shown = [editions.morning, editions.evening].filter((ed): ed is Edition => ed !== null);
+    const total = shown.reduce((n, ed) => n + ed.count, 0);
     return (
       <>
-        {header(`${storiesLabel(edition.count)} · ${editionLabel(edition, today)}`)}
-        <DigestBoard edition={edition} archiveUrl={archiveUrl} forYou={hints} today={today} />
+        {header(`${storiesLabel(total)} · ${shown.length === 2 ? "morning and evening" : editionLabel(shown[0], today)}`)}
+        <DigestBoard editions={editions} archiveUrl={archiveUrl} forYou={hints} today={today} />
       </>
     );
   }
@@ -75,6 +78,7 @@ function DigestSkeleton() {
       <HeaderSkeleton />
       <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
         <div className="card skeleton" style={{ height: 150 }} />
+        <div className="skeleton" style={{ width: 170, height: 32, borderRadius: 10 }} />
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(440px, 100%), 1fr))", gap: 20 }}>
           <div className="card skeleton" style={{ height: 520 }} />
           <div className="card skeleton" style={{ height: 520 }} />

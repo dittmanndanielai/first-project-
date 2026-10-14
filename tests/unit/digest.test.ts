@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { archiveUrlFromNotion, recentStoriesQuery, safeUrl, storyFromNotion } from "@/features/digest/notion-map";
-import { forYou, isMarketStory, latestEdition, runOf, SECTION_SIZE } from "@/features/digest/rules";
+import { forYou, isMarketStory, latestEdition, latestEditions, runOf, SECTION_SIZE } from "@/features/digest/rules";
 import type { Story } from "@/features/digest/types";
 import type { Task } from "@/features/tasks/types";
 
@@ -185,6 +185,51 @@ describe("latestEdition", () => {
     expect(latestEdition([], TZ)).toBeNull();
     expect(runOf(s(1, { createdAt: "2026-10-13T11:59:00.000Z" }), TZ)).toBe("morning"); // 13:59
     expect(runOf(s(1, { createdAt: "2026-10-13T12:00:00.000Z" }), TZ)).toBe("evening"); // 14:00
+  });
+});
+
+describe("latestEditions", () => {
+  it("liefert Morgen- und Abendausgabe desselben Tages, vorausgewählt der Abend", () => {
+    const e = latestEditions([s(1), s(2), s(3, { createdAt: EVENING })], TZ);
+    expect(e?.current).toBe("evening");
+    expect(e?.morning).toMatchObject({ date: "2026-10-13", run: "morning", count: 2 });
+    expect(e?.evening).toMatchObject({ date: "2026-10-13", run: "evening", count: 1 });
+    expect(e?.evening?.brief?.lead.id).toBe("p3");
+  });
+
+  it("zeigt vormittags die heutige Morgen- und die gestrige Abendausgabe, vorausgewählt der Morgen", () => {
+    const e = latestEditions(
+      [
+        s(1, { date: "2026-10-12", createdAt: "2026-10-12T06:00:00.000Z" }),
+        s(2, { date: "2026-10-12", createdAt: "2026-10-12T15:00:00.000Z" }),
+        s(3),
+      ],
+      TZ,
+    );
+    expect(e?.current).toBe("morning");
+    expect(e?.morning).toMatchObject({ date: "2026-10-13", count: 1 });
+    expect(e?.evening).toMatchObject({ date: "2026-10-12", count: 1 });
+    expect(e?.evening?.brief?.lead.id).toBe("p2");
+  });
+
+  it("lässt eine fehlende Ausgabe leer und nimmt die vorhandene", () => {
+    expect(latestEditions([s(1)], TZ)).toMatchObject({ current: "morning", evening: null, morning: { count: 1 } });
+    expect(latestEditions([s(1, { createdAt: EVENING })], TZ)).toMatchObject({ current: "evening", morning: null });
+    expect(latestEditions([], TZ)).toBeNull();
+  });
+
+  it("ein Retry am Vormittag ersetzt nur den Morgenlauf, der Abend bleibt", () => {
+    const e = latestEditions(
+      [
+        s(1, { date: "2026-10-12", createdAt: "2026-10-12T15:00:00.000Z" }),
+        s(2, { createdAt: "2026-10-13T06:00:00.000Z" }),
+        s(3, { createdAt: "2026-10-13T09:30:00.000Z" }), // 11:30 Berlin
+      ],
+      TZ,
+    );
+    expect(e?.morning?.brief?.lead.id).toBe("p3");
+    expect(e?.morning?.count).toBe(1);
+    expect(e?.evening?.brief?.lead.id).toBe("p1");
   });
 });
 

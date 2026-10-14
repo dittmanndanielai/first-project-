@@ -1,7 +1,7 @@
 import { hourIn } from "@/lib/time";
 import { isStale } from "@/features/tasks/rules";
 import type { Task } from "@/features/tasks/types";
-import type { Edition, EditionRun, ForYouItem, Section, Story, Topic } from "./types";
+import type { Edition, EditionRun, Editions, ForYouItem, Section, Story, Topic } from "./types";
 
 // Reine Regeln für die Digest-Seite. n8n B_news_digest läuft um 08:00 und 17:00 (Europe/Berlin)
 // und speichert weder Rang noch Rubrik. Die App leitet beides deterministisch ab.
@@ -38,7 +38,8 @@ function section(stories: Story[]): Section | null {
 /**
  * Jüngste Ausgabe = jüngster Lauf: neuester Tag, dort die Zeilen bis 15 Minuten vor der neuesten Schreibzeit.
  * Ein zweiter Lauf am selben Nachmittag (Test, Retry) ersetzt also den ersten, statt sich mit ihm zu mischen.
- * Die 14-Uhr-Grenze bestimmt nur das Label. Doppelte Story-IDs zählen einmal (Sicherheitsnetz).
+ * Hier bestimmt die 14-Uhr-Grenze nur das Label, `latestEditions` trennt damit die Läufe vorab.
+ * Doppelte Story-IDs zählen einmal (Sicherheitsnetz).
  * Innerhalb einer Rubrik zuerst die Stories mit den meisten Quellen, sonst Reihenfolge wie geschrieben.
  */
 export function latestEdition(stories: Story[], timeZone: string): Edition | null {
@@ -63,6 +64,19 @@ export function latestEdition(stories: Story[], timeZone: string): Edition | nul
   const markets = section(picked.filter(isMarketStory));
   const shown = [brief, markets].reduce((n, sec) => n + (sec ? 1 + sec.items.length : 0), 0);
   return { date, run, brief, markets, count: shown, hidden: picked.length - shown };
+}
+
+/**
+ * Jüngste Morgen- und jüngste Abendausgabe, jede für sich nach `latestEdition`.
+ * Vormittags ist das die heutige Morgen- und die gestrige Abendausgabe, so bleibt keine ungelesen.
+ * `current` ist die neuere der beiden: späterer Tag, am selben Tag der Abend.
+ */
+export function latestEditions(stories: Story[], timeZone: string): Editions | null {
+  const morning = latestEdition(stories.filter((s) => runOf(s, timeZone) === "morning"), timeZone);
+  const evening = latestEdition(stories.filter((s) => runOf(s, timeZone) === "evening"), timeZone);
+  if (!morning && !evening) return null;
+  const current: EditionRun = !evening || (morning && morning.date > evening.date) ? "morning" : "evening";
+  return { morning, evening, current };
 }
 
 function shorten(title: string, max = 42): string {

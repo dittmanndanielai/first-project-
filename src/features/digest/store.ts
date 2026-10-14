@@ -7,15 +7,15 @@ import { TAGS, TTL } from "@/lib/cache-tags";
 import { isoDate, minusDays } from "@/lib/time";
 import { mockStories } from "@/mocks/digest";
 import { archiveUrlFromNotion, recentStoriesQuery, storyFromNotion } from "./notion-map";
-import { latestEdition } from "./rules";
-import type { Edition, Story } from "./types";
+import { latestEditions } from "./rules";
+import type { Editions, Story } from "./types";
 
 // Nur lesend: Schreiber des „Digest Archive“ ist n8n B_news_digest.
 
 type QueryResult = { results: unknown[]; has_more: boolean; next_cursor: string | null };
 
 export type DigestResult =
-  | { status: "ok"; edition: Edition; archiveUrl: string | null }
+  | { status: "ok"; editions: Editions; archiveUrl: string | null }
   | { status: "empty" } // keine Ausgabe in den letzten Tagen
   | { status: "not_shared" } // Datenbank nicht mit der Notion-Connection „Personal OS Web“ geteilt
   | { status: "error" };
@@ -42,15 +42,15 @@ async function notionStories(today: string): Promise<{ stories: Story[]; archive
   };
 }
 
-/** Jüngste Digest-Ausgabe (Morgen 08:00 oder Abend 17:00). Pro Request nur einmal geladen. */
+/** Jüngste Morgen- (08:00) und Abendausgabe (17:00). Pro Request nur einmal geladen. */
 export const getDigest = cache(async (): Promise<DigestResult> => {
   const e = env();
   const today = isoDate(new Date(), e.APP_TIMEZONE);
   try {
     const { stories, archiveUrl } =
       e.DATA_SOURCE === "mock" ? { stories: mockStories(today), archiveUrl: null } : await notionStories(today);
-    const edition = latestEdition(stories, e.APP_TIMEZONE);
-    return edition ? { status: "ok", edition, archiveUrl } : { status: "empty" };
+    const editions = latestEditions(stories, e.APP_TIMEZONE);
+    return editions ? { status: "ok", editions, archiveUrl } : { status: "empty" };
   } catch (err) {
     if (err instanceof NotionError && (err.status === 404 || err.code === "object_not_found")) return { status: "not_shared" };
     logError("digest.load", err);

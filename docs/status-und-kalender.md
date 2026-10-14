@@ -23,7 +23,7 @@ Stand 13.10.2026
 | Login, Today, Tasks mit echten Notion-Daten | live |
 | Quick Capture (App und Siri über n8n `/add`, mit Header-Schutz) | live |
 | Sprachassistent (Orb) auf dem iPhone | live |
-| Digest-Seite, Digest-Tab auf dem iPhone | gebaut. Live, sobald „🗞️ Digest Archive“ in Notion mit „Personal OS Web“ geteilt ist (••• › Connections) |
+| Digest-Seite mit Morgen- und Abendausgabe (Umschalter), Digest-Tab auf dem iPhone | gebaut. Live, sobald „🗞️ Digest Archive“ in Notion mit „Personal OS Web“ geteilt ist (••• › Connections) |
 | Uhr auf „Daniel’s Headquarters“ | entfernt (Audit-Log N18) |
 | Meetings | bleibt wie bisher: Teams → Notion → To-dos. Nichts gebaut |
 | Mail-Check | später. Datenschutz-Konzept steht: Postfach-Filter, Regel-Filter ohne KI, keine Speicherung |

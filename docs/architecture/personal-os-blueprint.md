@@ -232,7 +232,7 @@ Spalte „Design“: was der Prototyp heute tut (**simuliert** = Timer/Mock im P
 | Event-Detail (Zeit, Ort, Personen, Notizen) | `calendar` | `LOCATION`, `ATTENDEE`, `DESCRIPTION` | – | Mock | echt. Personen ❓ (enthält der Feed `ATTENDEE`?) |
 | „Ask assistant to prepare“ | `voice` + `calendar` | Event → `sendContextualUpdate()` ✅ | – | simuliert | Phase 4, optional |
 | Digest „For you“ (4 Hinweise) | `digest` | Regeln über TODOS, iCal und Agent Log | – | Mock (teils E-Mail-Inhalte) | regelbasiert. E-Mail-Signale entfallen |
-| „The Daily Brief“ / „Markets & Money“ | `digest` | Digest Archive: jüngste Ausgabe (Tag, dann Lauf 08:00/17:00), nach `Source Count`. Erstes Themenfeld `Wirtschaft`/`VC` → Markets, Rest → Brief | B_news_digest | Mock | echt |
+| „The Daily Brief“ / „Markets & Money“ | `digest` | Digest Archive: jüngste Morgen- (08:00) und jüngste Abendausgabe (17:00) per Umschalter, die neuere vorausgewählt, nach `Source Count`. Erstes Themenfeld `Wirtschaft`/`VC` → Markets, Rest → Brief | B_news_digest | Mock | echt |
 | „Read the brief“ / „Read more“ | `digest` | `Canonical URL` bzw. Notion-Ansicht | – | simuliert | echt |
 | Investments-Seite: Gesamtwert (verbergen), Perioden 1M/3M/1Y/All, Chart, Allokation, Holdings | `investments` | Mock-Modul (Design-Daten) | – | Mock | Mock bis Phase 4b |
 | Settings · Integrations-Status | `settings` | Notion-Abfragezeit, letzte Fehler im Agent Log, letzter iCal-Abruf, ElevenLabs-Konfiguration | – | Mock | echt (5 Min Cache) |

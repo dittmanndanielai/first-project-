@@ -351,6 +351,10 @@ a:hover {
   color: var(--text);
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08), 0 0 0 0.5px var(--line);
 }
+.seg button:disabled {
+  color: var(--text3);
+  cursor: default;
+}
 .title-done {
   text-decoration: line-through;
   color: var(--text3);

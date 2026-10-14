@@ -1,14 +1,18 @@
 import { shortDayLabel } from "@/lib/time";
 import { paperDisplay, paperSerif } from "../fonts";
 import { TOPIC_LABEL } from "../rules";
-import type { Edition, ForYouItem, Section, Story } from "../types";
+import type { Edition, EditionRun, Editions, ForYouItem, Section, Story } from "../types";
+import { EditionTabs } from "./EditionTabs";
 
 // Digest-Board aus dem Design: „For you“, „The Daily Brief“ (Economist-Stil), „Markets & Money“ (FT-Stil).
 // Inhalte stammen aus Notion „Digest Archive“ (n8n B_news_digest), die Hinweise aus den eigenen Aufgaben.
+// Morgen- und Abendausgabe liegen hinter einem Umschalter, vorausgewählt ist die neuere.
 
 const SANS = "-apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif";
 const SERIF = "var(--font-paper), Georgia, serif";
 const DISPLAY = "var(--font-paper-display), Georgia, serif";
+const RUN_LABEL: Record<EditionRun, string> = { morning: "Morning", evening: "Evening" };
+const RUN_TIME: Record<EditionRun, string> = { morning: "08:00", evening: "17:00" };
 
 function kicker(story: Story): string {
   return story.topics[0] ? TOPIC_LABEL[story.topics[0]] : "News";
@@ -34,7 +38,7 @@ export function storiesLabel(n: number): string {
 }
 
 export function editionLabel(edition: Edition, today: string): string {
-  const run = edition.run === "evening" ? "Evening edition · 17:00" : "Morning edition · 08:00";
+  const run = `${RUN_LABEL[edition.run]} edition · ${RUN_TIME[edition.run]}`;
   return edition.date === today ? run : `${shortDayLabel(edition.date)} · ${run}`;
 }
 
@@ -170,20 +174,10 @@ function MarketsCard({ section, date, archiveUrl }: { section: Section | null; d
   );
 }
 
-export function DigestBoard({
-  edition,
-  archiveUrl,
-  forYou,
-  today,
-}: {
-  edition: Edition;
-  archiveUrl: string | null;
-  forYou: ForYouItem[];
-  today: string;
-}) {
+/** Beide Zeitungskarten einer Ausgabe plus Fußzeile. */
+function EditionPapers({ edition, archiveUrl }: { edition: Edition; archiveUrl: string | null }) {
   return (
-    <div className={`${paperSerif.variable} ${paperDisplay.variable}`} style={{ display: "flex", flexDirection: "column", gap: 20 }}>
-      <ForYouCard items={forYou} label={editionLabel(edition, today)} />
+    <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(440px, 100%), 1fr))", gap: 20, alignItems: "stretch" }}>
         <BriefCard section={edition.brief} archiveUrl={archiveUrl} />
         <MarketsCard section={edition.markets} date={edition.date} archiveUrl={archiveUrl} />
@@ -199,6 +193,35 @@ export function DigestBoard({
           </>
         ) : null}
       </div>
+    </div>
+  );
+}
+
+export function DigestBoard({
+  editions,
+  archiveUrl,
+  forYou,
+  today,
+}: {
+  editions: Editions;
+  archiveUrl: string | null;
+  forYou: ForYouItem[];
+  today: string;
+}) {
+  const tabs = (["morning", "evening"] as const).map((run) => {
+    const edition = editions[run];
+    return {
+      run,
+      label: RUN_LABEL[run],
+      count: edition?.count ?? 0,
+      caption: edition ? editionLabel(edition, today) : `No ${run} edition in the last three days (daily at ${RUN_TIME[run]})`,
+      panel: edition ? <EditionPapers edition={edition} archiveUrl={archiveUrl} /> : null,
+    };
+  });
+  return (
+    <div className={`${paperSerif.variable} ${paperDisplay.variable}`} style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+      <ForYouCard items={forYou} label="From your tasks" />
+      <EditionTabs tabs={tabs} initial={editions.current} />
     </div>
   );
 }

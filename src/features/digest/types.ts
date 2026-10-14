@@ -26,4 +26,7 @@ export type Edition = {
   hidden: number; // über SECTION_SIZE hinaus, nur im Notion-Archiv
 };
 
+/** Beide Ausgaben für den Umschalter; `current` ist vorausgewählt. */
+export type Editions = { morning: Edition | null; evening: Edition | null; current: EditionRun };
+
 export type ForYouItem = { title: string; detail: string };

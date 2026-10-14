@@ -39,7 +39,7 @@ Data Source: `42a6a120-423e-4375-8a43-f7d5002a2d11` · API-Version `2025-09-03`
 |---|---|---|---|
 | `Titel` | title | deutsche Überschrift (LLM) | Überschrift |
 | `Kernaussage` | rich_text | ein Satz | Teaser |
-| `Datum` | date | Tag der Ausgabe | jüngster Tag = aktuelle Ausgabe |
+| `Datum` | date | Tag der Ausgabe | jüngster Tag je Lauf = angezeigte Morgen- bzw. Abendausgabe |
 | `Themenfeld` | multi_select | `Geopolitik`, `Wirtschaft`, `KI`, `VC` | erstes Feld bestimmt die Rubrik: Wirtschaft/VC → Markets & Money, Rest → Daily Brief |
 | `Source Count` | number | Quellen im Cluster | Reihenfolge (mehr Quellen zuerst) |
 | `Canonical URL` | url | Original-Artikel, bei Economist oft leer | Link (nur http/https) |
