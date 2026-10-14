@@ -1,0 +1,38 @@
+{
+  "slug": "reziprozitaet",
+  "category": "Strategy & Power",
+  "title": "Reziprozität",
+  "lead": "Wer zuerst gibt, erzeugt bei anderen das Gefühl, etwas zurückzuschulden. Die Norm wirkt stark, auch bei ungebetenen Gefälligkeiten, und gerade deshalb ist sie heikel.",
+  "sections": [
+    {
+      "label": "Erklärung",
+      "body": "Cialdini beschreibt die Regel der Gegenseitigkeit als eine Grundnorm menschlichen Zusammenlebens: Wir fühlen uns verpflichtet, Gefälligkeiten, Geschenke und Zugeständnisse zu erwidern. Eine Variante betrifft Zugeständnisse: Wer eine große Bitte zurückzieht und danach eine kleinere stellt, bekommt häufiger ein Ja („Door in the Face“). In der Soziologie ist die Norm seit Langem beschrieben, etwa von Alvin Gouldner (1960).",
+      "kind": "fact"
+    },
+    {
+      "label": "Warum es wirkt",
+      "body": "Gegenseitigkeit macht Kooperation zwischen Fremden möglich: Wer gibt, kann damit rechnen, dass etwas zurückkommt. Weil die Norm so tief verankert ist, empfinden Menschen eine unerwiderte Gabe als Spannung, die sie auflösen wollen, oft unabhängig davon, ob sie die Gabe überhaupt wollten.",
+      "kind": "analysis"
+    },
+    {
+      "label": "Anwendung",
+      "body": "Statt nach dem Erstgespräch nur ein Angebot zu schicken, lieferst du eine kurze, kostenlose Prozessanalyse: drei Abläufe, die sich automatisieren lassen, mit grob geschätzter Zeitersparnis. Das ist echter Wert, kein Köder. Im Folgetermin fragst du klar nach dem bezahlten Pilot. Entscheidend: Die Analyse muss dem Kunden auch dann nützen, wenn er Nein sagt.",
+      "kind": "application"
+    },
+    {
+      "label": "Grenzen & Gegenargumente",
+      "body": "Viele bekannte Belege sind Einzelstudien mit kleinen Stichproben oder Feldbeobachtungen; wie stark der Effekt ist, schwankt mit Kontext und Kultur. Wird eine Gabe als Taktik durchschaut, kann sie kippen: Menschen reagieren dann mit Misstrauen statt Dankbarkeit. In Geschäftsbeziehungen erzeugt Reziprozität außerdem Interessenkonflikte, deshalb verbieten viele Unternehmen Geschenke an Einkäufer. Die Regel erklärt einen Impuls, kein garantiertes Verhalten, und wer sie gezielt ausnutzt, verbraucht Vertrauen.",
+      "kind": "critique"
+    }
+  ],
+  "takeaway": "Gib zuerst echten Wert, und zwar so, dass er auch ohne Gegenleistung sinnvoll bleibt.",
+  "source": {
+    "title": "Influence: The Psychology of Persuasion",
+    "author": "Robert B. Cialdini",
+    "year": 1984,
+    "detail": "später als „Influence: Science and Practice“",
+    "url": "https://en.wikipedia.org/wiki/Influence:_Science_and_Practice"
+  },
+  "basis": "primary",
+  "reviewed": false
+}

@@ -1,0 +1,37 @@
+{
+  "slug": "wysiati",
+  "category": "Psychology",
+  "title": "WYSIATI: Was du siehst, ist alles",
+  "lead": "Schnelles Denken baut aus den gerade verfügbaren Informationen eine stimmige Geschichte und fragt nicht, was fehlt. Je weniger wir wissen, desto stimmiger wirkt sie.",
+  "sections": [
+    {
+      "label": "Erklärung",
+      "body": "Kahneman nennt das Muster „What You See Is All There Is“. Das intuitive System 1 bewertet, wie gut eine Geschichte zusammenpasst, nicht wie vollständig die Informationen sind. Damit erklärt er mehrere bekannte Effekte: übertriebene Zuversicht, Framing (dieselbe Information wirkt je nach Darstellung anders) und die Vernachlässigung von Basisraten.",
+      "kind": "fact"
+    },
+    {
+      "label": "Warum es wirkt",
+      "body": "Eine stimmige Geschichte fühlt sich wie Wissen an, und wenige, widerspruchsfreie Informationen ergeben leichter eine stimmige Geschichte als viele, widersprüchliche. Darum kann die Zuversicht steigen, obwohl die Datenbasis dünn ist. Fehlende Informationen lösen kein Warnsignal aus, weil wir sie gar nicht erst bemerken.",
+      "kind": "analysis"
+    },
+    {
+      "label": "Anwendung",
+      "body": "Ein Startup-Pitch im Investment-Praktikum überzeugt dich: starkes Team, schöne Kennzahlen. Bevor du eine Einschätzung abgibst, schreibst du drei Fragen auf, deren Antworten fehlen: Wie viele Kunden springen pro Jahr ab? Was kostet ein Neukunde? Wer hat schon abgelehnt und warum? Erst wenn sie beantwortet oder ausdrücklich als offen markiert sind, gibst du ein Urteil ab.",
+      "kind": "application"
+    },
+    {
+      "label": "Grenzen & Gegenargumente",
+      "body": "WYSIATI ist eine griffige Zusammenfassung, kein eigenständig getestetes Gesetz, und System 1 und System 2 sind nach Kahneman selbst Metaphern, keine Hirnregionen. Einige Studien in „Thinking, Fast and Slow“, besonders zu sozialem Priming, haben sich in Replikationen nicht bestätigt; Kahneman räumte später ein, sich zu sehr auf zu kleine Studien verlassen zu haben. Die Befunde zu Übervertrauen und Framing gelten als deutlich robuster. Und manchmal ist eine schnelle Entscheidung mit wenig Information richtig, weil Warten mehr kostet.",
+      "kind": "critique"
+    }
+  ],
+  "takeaway": "Frag bei jeder überzeugenden Geschichte zuerst, welche Information fehlt.",
+  "source": {
+    "title": "Thinking, Fast and Slow",
+    "author": "Daniel Kahneman",
+    "year": 2011,
+    "url": "https://en.wikipedia.org/wiki/Thinking,_Fast_and_Slow"
+  },
+  "basis": "primary",
+  "reviewed": false
+}

@@ -1,0 +1,38 @@
+{
+  "slug": "erwartungswert",
+  "category": "Finance & Investing",
+  "title": "Erwartungswert und asymmetrische Wetten",
+  "lead": "Eine gute Entscheidung erkennst du nicht am Ergebnis, sondern an Wahrscheinlichkeit mal Wirkung. Am besten: begrenzter Verlust, großer möglicher Gewinn.",
+  "sections": [
+    {
+      "label": "Erklärung",
+      "body": "Der Erwartungswert gewichtet jedes mögliche Ergebnis mit seiner Wahrscheinlichkeit und addiert die Produkte. Christiaan Huygens formalisierte die Idee 1657, aufbauend auf dem Briefwechsel zwischen Blaise Pascal und Pierre de Fermat von 1654. Eine asymmetrische Wette hat einen begrenzten möglichen Verlust und einen deutlich größeren möglichen Gewinn; sie kann einen positiven Erwartungswert haben, obwohl sie meistens nicht aufgeht.",
+      "kind": "fact"
+    },
+    {
+      "label": "Warum es wirkt",
+      "body": "Wer Entscheidungen nur nach dem Ausgang bewertet, lernt aus Zufall: Ein Glückstreffer wirkt wie Können, eine gute Entscheidung mit Pech wie ein Fehler. Der Erwartungswert trennt die Qualität der Entscheidung vom Ergebnis. Ist der Verlust gedeckelt, kannst du außerdem viele solcher Wetten eingehen und die Statistik für dich arbeiten lassen.",
+      "kind": "analysis"
+    },
+    {
+      "label": "Anwendung",
+      "body": "Du überlegst, für 300 € Reisekosten und zwei Abende einen Workshop bei einem Unternehmerverband zu halten. Grobe Schätzung: 20 % Chance auf einen Auftrag über 8.000 €, sonst bleibt nur die Übung. Erwartungswert rund 1.600 € gegen 300 € plus Zeit, und mehr als das kannst du nicht verlieren. Das ist eine asymmetrische Wette. Ein Optionsschein mit Totalverlustrisiko, dessen Gewinnchance du nicht beziffern kannst, ist keine.",
+      "kind": "application"
+    },
+    {
+      "label": "Grenzen & Gegenargumente",
+      "body": "Der Erwartungswert sagt wenig, wenn du eine Wette nur einmal eingehen kannst und ein Verlust ruinös wäre; dann zählt das Überleben, nicht der Durchschnitt (siehe die Debatte um Ergodizität, etwa bei Ole Peters). Wahrscheinlichkeiten im echten Leben sind Schätzungen, wer mit ihnen rechnet, als wären sie exakt, täuscht Präzision vor. Menschen gewichten zudem kleine Chancen auf große Gewinne zu stark, genau davon leben Lotterien. Und echte asymmetrische Chancen bleiben an Märkten selten lange unentdeckt.",
+      "kind": "critique"
+    }
+  ],
+  "takeaway": "Bewerte Entscheidungen nach Wahrscheinlichkeit mal Wirkung und bevorzuge Wetten mit gedeckeltem Verlust.",
+  "source": {
+    "title": "De ratiociniis in ludo aleae",
+    "author": "Christiaan Huygens",
+    "year": 1657,
+    "detail": "Grundlage: Briefwechsel Pascal–Fermat (1654)",
+    "url": "https://de.wikipedia.org/wiki/Erwartungswert"
+  },
+  "basis": "established-concept",
+  "reviewed": false
+}

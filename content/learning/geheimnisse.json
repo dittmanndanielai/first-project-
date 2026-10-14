@@ -1,0 +1,37 @@
+{
+  "slug": "geheimnisse",
+  "category": "Business & Entrepreneurship",
+  "title": "Geheimnisse: Wahrheiten, die kaum jemand teilt",
+  "lead": "Welche wichtige Wahrheit siehst du, die kaum jemand mit dir teilt? Große Chancen liegen oft dort, wo die Mehrheit sich irrt, aber nur, wenn du recht hast.",
+  "sections": [
+    {
+      "label": "Erklärung",
+      "body": "Thiel stellt in Bewerbungsgesprächen gern die Frage, welcher wichtigen Wahrheit nur wenige Menschen zustimmen. In „Zero to One“ nennt er solche unentdeckten Wahrheiten „Geheimnisse“: Dinge, die noch niemand erkannt hat oder die sich niemand auszusprechen traut. Jedes große Unternehmen, argumentiert er, baut auf einem solchen Geheimnis über die Welt oder über Menschen auf.",
+      "kind": "fact"
+    },
+    {
+      "label": "Warum es wirkt",
+      "body": "Wenn alle dasselbe glauben, ist eine Chance meist schon genutzt oder im Preis enthalten. Ein Vorsprung entsteht nur dort, wo du etwas Richtiges weißt, das andere übersehen. Die Frage zwingt dazu, eigene Beobachtungen ernst zu nehmen, statt den Konsens nachzuerzählen.",
+      "kind": "analysis"
+    },
+    {
+      "label": "Anwendung",
+      "body": "Aus deinen Kundengesprächen könnte ein Geheimnis entstehen, etwa: „Mittelständler wollen keine KI-Strategie, sie wollen einen erledigten Prozess und eine Person, die sie anrufen können.“ Das ist zunächst eine Hypothese. Prüfe sie: In zehn Erstgesprächen bietest du fünf Interessenten einen Strategie-Workshop und fünf einen fertigen Prozess zum Festpreis an. Erst die Abschlussquote zeigt, ob du wirklich etwas weißt, das andere übersehen.",
+      "kind": "application"
+    },
+    {
+      "label": "Grenzen & Gegenargumente",
+      "body": "Die meisten Ansichten, die kaum jemand teilt, sind schlicht falsch; Konsens hat oft gute Gründe. Wer Widerspruch zur Methode macht, verwechselt Originalität mit Erkenntnis. Thiels Beispiele sind im Rückblick ausgewählte Treffer, die vielen Gründer mit falschen „Geheimnissen“ fehlen. Zudem lauert der Bestätigungsfehler: Wer glaubt, ein Geheimnis zu kennen, sucht vor allem Belege dafür. Jede solche These braucht deshalb einen günstigen Test, bevor du darauf baust.",
+      "kind": "critique"
+    }
+  ],
+  "takeaway": "Behandle deine Außenseiter-These als Hypothese und teste sie billig, bevor du darauf setzt.",
+  "source": {
+    "title": "Zero to One",
+    "author": "Peter Thiel mit Blake Masters",
+    "year": 2014,
+    "url": "https://en.wikipedia.org/wiki/Zero_to_One"
+  },
+  "basis": "primary",
+  "reviewed": false
+}

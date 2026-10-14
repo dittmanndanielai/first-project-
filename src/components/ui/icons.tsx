@@ -137,3 +137,14 @@ export const EyeIcon = ({ off, ...p }: Props & { off?: boolean }) => (
     {off ? <path d="M4 4l16 16" /> : null}
   </Svg>
 );
+export const CompassIcon = (p: Props) => (
+  <Svg {...p}>
+    <circle cx="12" cy="12" r="8.5" />
+    <path d="M15.5 8.5l-2 5-5 2 2-5z" />
+  </Svg>
+);
+export const ThumbIcon = ({ filled, ...p }: Props & { filled?: boolean }) => (
+  <Svg size={20} fill={filled ? "currentColor" : "none"} {...p}>
+    <path d="M7.5 10.5v9H5a1 1 0 0 1-1-1v-7a1 1 0 0 1 1-1h2.5zM7.5 10.5l3.6-6.3a1.6 1.6 0 0 1 3 .9l-.6 4.4h4.7a2 2 0 0 1 2 2.3l-1 6.2a2 2 0 0 1-2 1.7H7.5" />
+  </Svg>
+);

@@ -1,0 +1,38 @@
+{
+  "slug": "batna",
+  "category": "Strategy & Power",
+  "title": "BATNA: deine beste Alternative",
+  "lead": "Deine Verhandlungsmacht hängt weniger von Argumenten ab als davon, was du tust, wenn keine Einigung zustande kommt. Diese beste Alternative ist deine Messlatte.",
+  "sections": [
+    {
+      "label": "Erklärung",
+      "body": "Fisher und Ury nennen sie BATNA: Best Alternative to a Negotiated Agreement. Gemeint ist nicht das erhoffte Ergebnis, sondern die konkrete Option, die du ohne diese Einigung wählen würdest. Jedes Angebot misst du daran: Ist es besser als deine BATNA, nimmst du es an; ist es schlechter, gehst du. Die Autoren raten, die eigene Alternative vor dem Gespräch aktiv zu verbessern und die der Gegenseite einzuschätzen.",
+      "kind": "fact"
+    },
+    {
+      "label": "Warum es wirkt",
+      "body": "Eine klare Alternative schützt vor zwei typischen Fehlern: aus Erschöpfung ein schlechtes Angebot anzunehmen und aus Stolz ein gutes abzulehnen. Sie ersetzt ein starres, oft willkürlich gesetztes Limit durch den Vergleich mit einer echten Option. Wer eine starke Alternative hat, verhandelt ruhiger, weil er nicht auf das Ja der Gegenseite angewiesen ist.",
+      "kind": "analysis"
+    },
+    {
+      "label": "Anwendung",
+      "body": "Ein Mittelständler will deine Automatisierung für 4.000 € statt der angebotenen 7.000 €. Bevor du antwortest, schreibst du deine BATNA auf: zwei weitere Leads, einer davon realistisch in vier Wochen, und die freie Zeit für Akquise. Ohne diese Leads wäre deine Alternative „kein Auftrag“, und du würdest zu billig abschließen. Konkreter Schritt: Vor jedem Preisgespräch mindestens einen zweiten Lead so weit bringen, dass ein Nein für dich tragbar ist.",
+      "kind": "application"
+    },
+    {
+      "label": "Grenzen & Gegenargumente",
+      "body": "Die Alternative ist oft unsicher: Ein Lead „in vier Wochen“ ist eine Wahrscheinlichkeit, keine Option. Wer sie überschätzt, lässt gute Abschlüsse platzen. Der reine Vergleich blendet zudem Beziehungswerte aus; ein Erstkunde mit Referenzwert kann ein etwas schlechteres Angebot rechtfertigen. Das Buch wurde früh dafür kritisiert, harte Verteilungskonflikte zu unterschätzen: Bei großem Machtgefälle hilft das Konzept wenig, solange die eigene Alternative objektiv schwach ist. Und offen ausgespielt wirkt eine BATNA schnell wie eine Drohung.",
+      "kind": "critique"
+    }
+  ],
+  "takeaway": "Verbessere vor jeder Verhandlung deine Alternative, nicht deine Argumente.",
+  "source": {
+    "title": "Getting to Yes",
+    "author": "Roger Fisher, William Ury",
+    "year": 1981,
+    "detail": "ab der 2. Auflage (1991) mit Bruce Patton",
+    "url": "https://en.wikipedia.org/wiki/Getting_to_Yes"
+  },
+  "basis": "primary",
+  "reviewed": false
+}

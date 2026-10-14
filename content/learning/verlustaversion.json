@@ -1,0 +1,38 @@
+{
+  "slug": "verlustaversion",
+  "category": "Psychology",
+  "title": "Verlustaversion und ihre Grenzen",
+  "lead": "Verluste wiegen oft schwerer als gleich große Gewinne. Wie stark und wie allgemein das gilt, ist umstrittener, als populäre Bücher nahelegen.",
+  "sections": [
+    {
+      "label": "Erklärung",
+      "body": "In der Prospect Theory (1979) beschreiben Kahneman und Tversky eine Wertfunktion, die für Verluste steiler verläuft als für Gewinne. Spätere Schätzungen liegen häufig um den Faktor 2: Ein Verlust von 100 € fühlt sich dann etwa so schlecht an, wie sich ein Gewinn von 200 € gut anfühlt. Eine Meta-Analyse über mehr als 600 Schätzungen (Brown, Imai, Vieider und Camerer, 2024) kommt im Mittel auf knapp 2.",
+      "kind": "fact"
+    },
+    {
+      "label": "Warum es wirkt",
+      "body": "Eine mögliche Erklärung: Verluste bedrohen die eigene Lage stärker, als gleich große Gewinne sie verbessern. Im Alltag zeigt sich das Muster etwa darin, dass Anleger Verlustpositionen tendenziell länger halten als Gewinner, um den Verlust nicht realisieren zu müssen. Dieser Dispositionseffekt hat allerdings mehrere mögliche Ursachen, nicht nur Verlustaversion.",
+      "kind": "analysis"
+    },
+    {
+      "label": "Anwendung",
+      "body": "Deine erste Aktie liegt 25 % im Minus, und du willst sie halten, „bis sie wieder auf null ist“. Stell die Frage ohne Bezug zum Kaufpreis: Würdest du sie heute zu diesem Kurs neu kaufen? Wenn nicht, entscheidet die Verlustangst, nicht deine Überzeugung. Dasselbe gilt für ein Kundenprojekt, das seit Monaten Geld verbrennt.",
+      "kind": "application"
+    },
+    {
+      "label": "Grenzen & Gegenargumente",
+      "body": "David Gal und Derek Rucker (2018) argumentieren, dass viele klassische Belege auch ohne allgemeine Verlustaversion erklärbar sind, etwa durch eine Vorliebe für den Status quo. Bei kleinen Beträgen ist der Effekt oft schwach oder fehlt, und seine Größe hängt von Versuchsaufbau, Erfahrung und Bezugspunkt ab. Die neuere Meta-Analyse spricht im Mittel zwar für Verlustaversion, die einzelnen Schätzungen streuen aber stark. Fazit: ein häufiges, reales Muster, aber kein Naturgesetz mit der festen Zahl 2.",
+      "kind": "critique"
+    }
+  ],
+  "takeaway": "Beurteile eine Position danach, ob du sie heute kaufen würdest, nicht nach deinem Einstiegspreis.",
+  "source": {
+    "title": "Prospect Theory: An Analysis of Decision under Risk",
+    "author": "Daniel Kahneman, Amos Tversky",
+    "year": 1979,
+    "detail": "Econometrica 47(2); Debatte: Gal & Rucker (2018); Meta-Analyse: Brown et al. (2024)",
+    "url": "https://doi.org/10.2307/1914185"
+  },
+  "basis": "primary",
+  "reviewed": false
+}

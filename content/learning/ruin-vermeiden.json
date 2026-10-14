@@ -1,0 +1,37 @@
+{
+  "slug": "ruin-vermeiden",
+  "category": "Finance & Investing",
+  "title": "Ruin vermeiden: Überleben vor Rendite",
+  "lead": "Die wichtigste Regel beim Geld ist nicht die höchste Rendite, sondern nie in eine Lage zu geraten, in der du nicht mehr weitermachen kannst.",
+  "sections": [
+    {
+      "label": "Erklärung",
+      "body": "Housel unterscheidet in „The Psychology of Money“ zwischen reich werden und reich bleiben. Reich werden verlangt Risiko und Optimismus, reich bleiben eher das Gegenteil: Bescheidenheit, Sparsamkeit und die Sorge, dass das Erreichte genauso schnell wieder verschwinden kann. Weil Zinseszins Zeit braucht, ist Überleben die Voraussetzung jeder langfristigen Rendite. Er rät deshalb zu Puffern und „Raum für Fehler“, statt jede Prognose voll auszureizen.",
+      "kind": "fact"
+    },
+    {
+      "label": "Warum es wirkt",
+      "body": "Verluste wirken asymmetrisch: Nach minus 50 % brauchst du plus 100 %, um wieder bei null zu sein. Ein Totalverlust, ein erzwungener Verkauf in der Krise oder fällige Schulden unterbrechen den Zinseszins endgültig. Wer dagegen durchschnittliche Renditen über Jahrzehnte hält, schlägt oft Anleger, die zwischendurch brillant sind und dann aussteigen müssen.",
+      "kind": "analysis"
+    },
+    {
+      "label": "Anwendung",
+      "body": "Drei Regeln, bevor du investierst oder die Beratung zum Vollzeitjob machst. Erstens: eine Rücklage für sechs Monate Lebenshaltung, getrennt vom Depot. Zweitens: keine Kredite oder Hebelprodukte für Anlagen, also kein Wertpapierkredit und keine Optionsscheine aus Neugier. Drittens: keine Einzelposition über 10 % des Depots. So kann ein schlechtes Jahr wehtun, aber nicht deine Pläne beenden.",
+      "kind": "application"
+    },
+    {
+      "label": "Grenzen & Gegenargumente",
+      "body": "Zu viel Vorsicht kostet ebenfalls: Bargeld verliert durch Inflation an Wert, und wer nie Risiko eingeht, verzichtet auf die Rendite, die Risiko bezahlt. Was als „Ruin“ gilt, ist persönlich; für einen Studenten ohne Verpflichtungen ist ein Verlust von 2.000 € schmerzhaft, aber kein Ruin. Die Regel kann zur Ausrede werden, nie zu gründen oder nie zu investieren. Housel argumentiert mit Geschichten und Plausibilität, nicht mit Studien; die Kernidee, dass große Verluste den Zinseszins brechen, ist allerdings rechnerisch eindeutig.",
+      "kind": "critique"
+    }
+  ],
+  "takeaway": "Investiere so, dass dich auch das schlimmste realistische Jahr nicht zum Aufhören zwingt.",
+  "source": {
+    "title": "The Psychology of Money",
+    "author": "Morgan Housel",
+    "year": 2020,
+    "url": "https://en.wikipedia.org/wiki/The_Psychology_of_Money"
+  },
+  "basis": "primary",
+  "reviewed": false
+}

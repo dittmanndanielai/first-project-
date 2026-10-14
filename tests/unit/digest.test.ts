@@ -58,6 +58,14 @@ describe("storyFromNotion (echte API-Form)", () => {
       sources: 1,
       url: "https://www.ft.com/content/9dbd99db?syn-25a6b1a6=1",
       createdAt: "2026-10-13T06:03:00.000Z",
+      // Altzeile: die seit 14.10.2026 geschriebenen Properties fehlen ganz, das ist kein Fehler
+      points: [],
+      whyRelevant: "",
+      outlook: "",
+      chance: "",
+      impact: null,
+      metric: "",
+      feedName: "",
     });
   });
 
@@ -120,6 +128,13 @@ function s(n: number, over: Partial<Story> = {}): Story {
     sources: 1,
     url: null,
     createdAt: "2026-10-13T06:00:00.000Z", // 08:00 Berlin
+    points: [],
+    whyRelevant: "",
+    outlook: "",
+    chance: "",
+    impact: null,
+    metric: "",
+    feedName: "",
     ...over,
   };
 }

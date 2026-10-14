@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { CalendarIcon, ChartIcon, DigestIcon, MoonIcon, SlidersIcon, SunIcon, TasksIcon } from "@/components/ui/icons";
+import { CalendarIcon, ChartIcon, CompassIcon, DigestIcon, MoonIcon, SlidersIcon, SunIcon, TasksIcon } from "@/components/ui/icons";
 import { OrbVisual } from "@/components/ui/Orb";
 import { useTheme } from "./theme";
 
@@ -11,6 +11,7 @@ const NAV = [
   { href: "/tasks", label: "Tasks", tab: "Tasks", Icon: TasksIcon, inTabBar: true },
   { href: "/calendar", label: "Calendar", tab: "Calendar", Icon: CalendarIcon, inTabBar: true },
   { href: "/digest", label: "Digest", tab: "Digest", Icon: DigestIcon, inTabBar: true },
+  { href: "/discover", label: "Discover", tab: "Discover", Icon: CompassIcon, inTabBar: true },
   { href: "/investments", label: "Investments", tab: "Invest", Icon: ChartIcon, inTabBar: true },
   { href: "/settings", label: "Settings", tab: "Settings", Icon: SlidersIcon, inTabBar: false },
 ] as const;

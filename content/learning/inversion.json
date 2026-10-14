@@ -1,0 +1,38 @@
+{
+  "slug": "inversion",
+  "category": "Mental Models",
+  "title": "Inversion: vom Scheitern her denken",
+  "lead": "Statt zu fragen, wie du Erfolg erreichst, frag, was garantiert scheitern würde, und vermeide genau das. Viele Probleme werden erst rückwärts lösbar.",
+  "sections": [
+    {
+      "label": "Erklärung",
+      "body": "Charlie Munger zitierte gern den Mathematiker Carl Gustav Jacobi: „Umkehren, immer umkehren.“ In seiner Abschlussrede an der Harvard School in Los Angeles 1986 drehte er die übliche Rede um und gab Ratschläge für ein garantiert elendes Leben. Neben Johnny Carsons Liste (Rauschmittel, Neid, Groll) nannte er unter anderem Unzuverlässigkeit, nicht aus den Fehlern anderer zu lernen und nach Rückschlägen liegen zu bleiben. Die Rede ist in „Poor Charlie's Almanack“ abgedruckt.",
+      "kind": "fact"
+    },
+    {
+      "label": "Warum es wirkt",
+      "body": "Erfolg hat viele mögliche Wege, Scheitern meist wenige klare Ursachen. Fehler zu vermeiden ist deshalb oft leichter und verlässlicher, als Brillanz zu planen. Die Umkehrung durchbricht außerdem den Optimismus beim Planen: Wer sich das Scheitern konkret vorstellt, entdeckt Risiken, die beim Vorwärtsdenken unsichtbar bleiben.",
+      "kind": "analysis"
+    },
+    {
+      "label": "Anwendung",
+      "body": "Vor dem Start eines Kundenprojekts schreibst du 15 Minuten lang auf: „Wie würde ich sicherstellen, dass dieses Projekt scheitert?“ Zum Beispiel: niemand beim Kunden zuständig, Datenzugang erst in Woche drei, kein messbares Ziel, Abrechnung nach Aufwand ohne Obergrenze. Aus jedem Punkt wird eine Bedingung im Angebot: benannter Ansprechpartner, Datenzugang vor Start, Zielkennzahl, Festpreis für Phase eins.",
+      "kind": "application"
+    },
+    {
+      "label": "Grenzen & Gegenargumente",
+      "body": "Inversion liefert eine Liste von Dingen, die du vermeiden solltest, aber keine Richtung; wer nur Fehler vermeidet, baut noch nichts Großes. Die Liste möglicher Fehlschläge ist endlos, ohne Gewichtung entstehen Lähmung oder Pessimismus. Die verwandte Pre-Mortem-Methode (Gary Klein) beruft sich auf eine Studie von 1989: Wer sich vorstellt, ein Ereignis sei bereits eingetreten, findet mehr Gründe dafür. Belegt ist dort nur die größere Zahl an Gründen, nicht, dass sie treffender sind. Die Forschung dazu ist insgesamt dünn.",
+      "kind": "critique"
+    }
+  ],
+  "takeaway": "Frag vor jedem Vorhaben, was es sicher scheitern ließe, und schließ genau das aus.",
+  "source": {
+    "title": "Poor Charlie's Almanack",
+    "author": "Charlie Munger, hg. von Peter D. Kaufman",
+    "year": 2005,
+    "detail": "darin die Rede an der Harvard School (1986)",
+    "url": "https://en.wikipedia.org/wiki/Poor_Charlie%27s_Almanack"
+  },
+  "basis": "primary",
+  "reviewed": false
+}

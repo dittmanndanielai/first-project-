@@ -1,0 +1,36 @@
+{
+  "slug": "kreis-der-kompetenz",
+  "category": "Finance & Investing",
+  "title": "Kreis der Kompetenz",
+  "lead": "Du musst nicht viel verstehen, um gut zu investieren. Du musst nur genau wissen, wo dein Verständnis endet, und außerhalb davon die Finger lassen.",
+  "sections": [
+    {
+      "label": "Erklärung",
+      "body": "Warren Buffett schrieb im Aktionärsbrief von Berkshire Hathaway zum Jahr 1996 sinngemäß: Ein Anleger muss nicht Experte für jedes Unternehmen sein, er muss nur Firmen innerhalb seines Kompetenzkreises beurteilen können. Wie groß dieser Kreis ist, sei nicht so wichtig; seine Grenzen zu kennen, sei entscheidend. Charlie Munger nutzte die Idee auch weit über das Investieren hinaus.",
+      "kind": "fact"
+    },
+    {
+      "label": "Warum es wirkt",
+      "body": "Innerhalb deines Kreises erkennst du, ob eine Information neu und wichtig ist oder längst im Preis steckt. Außerhalb davon handelst du nach Geschichten und überschätzt dein Wissen. Wer die Grenze ausdrücklich zieht, lässt sich weniger leicht von einem guten Pitch oder einem Trend in Bereiche ziehen, in denen andere systematisch besser informiert sind.",
+      "kind": "analysis"
+    },
+    {
+      "label": "Anwendung",
+      "body": "Schreib eine Liste: Welche Branchen verstehst du so gut, dass du erklären kannst, wie die Firmen Geld verdienen und was sie in fünf Jahren bedroht? Vermutlich Software für kleine Betriebe und KI-Dienstleistungen, eher nicht Biotech oder Rohstoffe. Einzelinvestments nur innerhalb dieser Liste, alles andere über einen breiten Index. Im Praktikum heißt das: Bei Fragen außerhalb deines Kreises sagst du „weiß ich nicht, ich schaue nach“, statt zu raten.",
+      "kind": "application"
+    },
+    {
+      "label": "Grenzen & Gegenargumente",
+      "body": "Die Grenze des eigenen Kreises ist schwer zu sehen: Wer wenig weiß, überschätzt oft, wie viel er weiß. Märkte verändern sich, und Wissen veraltet; ein Kreis muss gepflegt und erweitert werden, sonst wird er zur Ausrede gegen Neues. Buffett selbst mied lange Technologiewerte und kaufte erst ab 2016 Apple-Aktien. Und auch innerhalb ihres Kreises schlagen die meisten Privatanleger den Markt nicht; für Einsteiger ist der Kreis oft so klein, dass ein Indexfonds die ehrlichere Wahl ist.",
+      "kind": "critique"
+    }
+  ],
+  "takeaway": "Zieh die Grenze deines Wissens schriftlich und investiere einzeln nur innerhalb davon.",
+  "source": {
+    "title": "Brief an die Aktionäre von Berkshire Hathaway",
+    "author": "Warren Buffett",
+    "detail": "Brief zum Geschäftsjahr 1996"
+  },
+  "basis": "primary",
+  "reviewed": false
+}

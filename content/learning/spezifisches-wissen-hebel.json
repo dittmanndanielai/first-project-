@@ -1,0 +1,37 @@
+{
+  "slug": "spezifisches-wissen-hebel",
+  "category": "Business & Entrepreneurship",
+  "title": "Spezifisches Wissen und Hebel",
+  "lead": "Vermögen entsteht aus Wissen, das sich kaum anlernen lässt, multipliziert mit Hebeln, die ohne deine Arbeitszeit wirken, vor allem Code und Medien.",
+  "sections": [
+    {
+      "label": "Erklärung",
+      "body": "In seinem Thread „How to Get Rich (without getting lucky)“ von 2018 unterscheidet Naval Ravikant zwischen verkaufter Arbeitszeit und Hebeln. Spezifisches Wissen ist für ihn Wissen, das aus eigener Neugier und Erfahrung entsteht und sich kaum in Kursen vermitteln lässt. Hebel gibt es in drei Formen: die Arbeit anderer, Kapital sowie Code und Medien. Die letzten beiden nennt er erlaubnisfrei, weil niemand zustimmen muss, damit du sie nutzt.",
+      "kind": "fact"
+    },
+    {
+      "label": "Warum es wirkt",
+      "body": "Wer Zeit gegen Geld tauscht, ist durch seine Stunden begrenzt. Software und Inhalte lassen sich nahezu ohne Zusatzkosten vervielfältigen, ein gutes Stück davon kann also tausendfach wirken. Spezifisches Wissen schützt dabei den Preis, weil es nur wenige Anbieter gibt, die dasselbe können.",
+      "kind": "analysis"
+    },
+    {
+      "label": "Anwendung",
+      "body": "Deine Beratung verkauft heute Stunden. Dein spezifisches Wissen: Du kennst die Abläufe kleiner Betriebe und die KI-Werkzeuge zugleich. Hebel: Den Prozess, den du für drei Kunden gebaut hast, verpackst du als wiederverwendbares Modul mit Monatsgebühr (Code), und du schreibst eine Fallstudie mit echten Zahlen (Medien). Ziel fürs nächste Quartal: ein Fünftel des Umsatzes, der nicht an deine Stunden gebunden ist.",
+      "kind": "application"
+    },
+    {
+      "label": "Grenzen & Gegenargumente",
+      "body": "Die Ideen stammen aus Tweets und Podcasts, nicht aus Forschung; sie beschreiben Ravikants eigenen Weg. Wer sie formuliert, ist ein extremer Erfolgsfall, viele mit gleichem Ansatz bleiben erfolglos und unsichtbar. Märkte für Software und Medien folgen oft dem Prinzip „The winner takes it all“: Wenige bekommen fast alles. Spezifisches Wissen ist im Nachhinein leicht zu erkennen, im Voraus kaum. Und bezahlte Stunden finanzieren am Anfang oft genau das Lernen, aus dem später Hebel entsteht.",
+      "kind": "critique"
+    }
+  ],
+  "takeaway": "Bau aus jedem wiederholten Kundenprojekt ein Stück, das ohne deine Stunden verkauft.",
+  "source": {
+    "title": "How to Get Rich (without getting lucky)",
+    "author": "Naval Ravikant",
+    "year": 2018,
+    "detail": "Thread auf Twitter; gesammelt in Eric Jorgenson, „The Almanack of Naval Ravikant“ (2020)"
+  },
+  "basis": "primary",
+  "reviewed": false
+}

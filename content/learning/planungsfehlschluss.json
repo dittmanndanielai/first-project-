@@ -1,0 +1,38 @@
+{
+  "slug": "planungsfehlschluss",
+  "category": "Psychology",
+  "title": "Planungsfehlschluss",
+  "lead": "Wir unterschätzen, wie lange unsere eigenen Vorhaben dauern, obwohl wir wissen, dass ähnliche Vorhaben früher länger gedauert haben.",
+  "sections": [
+    {
+      "label": "Erklärung",
+      "body": "Kahneman und Tversky prägten den Begriff 1979. Buehler, Griffin und Ross (1994) fragten unter anderem Studierende, wann sie ihre Abschlussarbeit fertig haben würden. Im Schnitt schätzten sie rund 34 Tage, tatsächlich brauchten sie rund 55, und nur etwa ein Drittel wurde zum eigenen Termin fertig. Selbst die Termine, die sie für den schlimmsten Fall angaben, wurden im Mittel überschritten.",
+      "kind": "fact"
+    },
+    {
+      "label": "Warum es wirkt",
+      "body": "Beim Planen stellen wir uns ein konkretes Szenario vor, in dem alles wie gedacht läuft. Frühere Verzögerungen erklären wir als Ausnahmen („da kam eine Krankheit dazwischen“), statt sie als Muster zu zählen. Hinzu kommt Wunschdenken: Der Termin, den wir uns wünschen, färbt die Schätzung.",
+      "kind": "analysis"
+    },
+    {
+      "label": "Anwendung",
+      "body": "Ein Kunde fragt, wann die Automatisierung seines Rechnungseingangs live ist. Dein Bauchgefühl sagt zwei Wochen. Schau stattdessen auf deine letzten drei Projekte: geplant zwei, drei und zwei Wochen, tatsächlich vier, fünf und drei. Du nennst fünf Wochen mit einem Zwischenstand nach zwei. Fürs Studium gilt dasselbe: Plane die Hausarbeit mit dem Faktor, um den du dich zuletzt verschätzt hast.",
+      "kind": "application"
+    },
+    {
+      "label": "Grenzen & Gegenargumente",
+      "body": "Der Befund ist gut belegt, stammt aber überwiegend aus Befragungen und Laborstudien, oft mit Studierenden; wie groß die Verzerrung ist, hängt stark von Aufgabe und Anreiz ab. Optimismus hat auch eine Funktion: Er senkt die Hürde, überhaupt anzufangen, und viele Gründungen entstehen nur, weil der Aufwand unterschätzt wird. Gegenüber Kunden kann ein sehr vorsichtiger Termin Aufträge kosten. Die Kunst ist, intern realistisch zu planen und extern mit Zwischenständen zu arbeiten.",
+      "kind": "critique"
+    }
+  ],
+  "takeaway": "Schätze die Dauer aus deinen letzten Projekten, nicht aus deinem Plan.",
+  "source": {
+    "title": "Exploring the „planning fallacy“: Why people underestimate their task completion times",
+    "author": "Roger Buehler, Dale Griffin, Michael Ross",
+    "year": 1994,
+    "detail": "Journal of Personality and Social Psychology 67(3); Begriff: Kahneman & Tversky (1979)",
+    "url": "https://doi.org/10.1037/0022-3514.67.3.366"
+  },
+  "basis": "primary",
+  "reviewed": false
+}
