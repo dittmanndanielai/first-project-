@@ -10,7 +10,7 @@ export function PageHeader({
 }: {
   dateLabel: string;
   title: string;
-  summary?: string;
+  summary?: React.ReactNode;
   synced?: boolean;
 }) {
   return (

@@ -1,6 +1,6 @@
 # Personal OS: Vorgehen, Stand und Kalender-Vorschlag
 
-Stand 13.10.2026
+Stand 14.10.2026
 
 ## So arbeiten wir
 
@@ -27,7 +27,7 @@ Stand 13.10.2026
 | Uhr auf „Daniel’s Headquarters“ | entfernt (Audit-Log N18) |
 | Meetings | bleibt wie bisher: Teams → Notion → To-dos. Nichts gebaut |
 | Mail-Check | später. Datenschutz-Konzept steht: Postfach-Filter, Regel-Filter ohne KI, keine Speicherung |
-| Kalender | Vorschlag unten, Entscheidung offen |
+| Kalender | iCloud gebaut (14.10.): Upcoming-Karte auf Today, Seite Tag/Woche, Refresh. Live, sobald `ICLOUD_CALENDAR_URL` in Vercel steht. Outlook vorerst nicht |
 | Investments | Platzhalter |
 
 **Offen:**
@@ -35,7 +35,20 @@ Stand 13.10.2026
 - Zugangsschutz für den ElevenLabs-Agenten (`enable_auth`, Phase 2)
 - Optional: n8n-Digest speichert Leittext, Reihenfolge und Quelle (braucht Freigabe)
 
-## Kalender-Vorschlag
+## Kalender: Entscheidung und Einrichtung (14.10.)
+
+**Entscheidung:** nur iCloud über den öffentlichen Link (Option 1), Outlook vorerst nicht. Begründung und Technik:
+`docs/decisions/0001-icloud-kalender.md`.
+
+**Einrichtung (einmalig, 2 Minuten):**
+1. iPhone: Kalender-App › Kalender › (i) neben dem Kalender › „Öffentlicher Kalender“ an › „Link teilen“ › Kopieren.
+2. Vercel › Project › Settings › Environment Variables › `ICLOUD_CALENDAR_URL` = der Link (nur **Production**),
+   mehrere Kalender durch Komma. Nicht in Preview eintragen, nicht in Chat oder Repo.
+3. Neu deployen (Deployments › … › Redeploy). Settings › Integrations zeigt „iCloud Calendar · Configured“.
+
+**Link widerrufen:** „Öffentlicher Kalender“ aus- und wieder einschalten erzeugt einen neuen Link; den alten in Vercel ersetzen.
+
+## Kalender-Vorschlag (13.10., Grundlage der Entscheidung)
 
 **Empfehlung:** Jeder Kalender bekommt einen Freigabe-Link (ICS). Die App liest alle Links alle 5 Minuten und zeigt die Termine zusammen an.
 - Das funktioniert gleich für iCloud, Outlook/Teams und Google.

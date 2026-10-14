@@ -26,6 +26,7 @@ ElevenLabs = Voice. Keine eigene Datenbank.
 - Server-Cache = `fetch`-Cache mit Tags (`lib/notion.ts`, persistiert auf Vercel). `use cache` hält auf
   Serverless nur pro Instanz und ist dafür nicht gedacht. Tags nur aus `lib/cache-tags.ts`.
   Nach Mutation: `updateTag()` in Server Actions, `revalidateTag(tag, { expire: 0 })` in Route Handlers.
+  Ausnahme Kalender: `unstable_cache` mit dem geparsten Ergebnis, ICS-Abruf `no-store` (ADR `docs/decisions/0001`).
 - Pro Request höchstens eine Notion-Abfrage pro Quelle (`listTasks` ist mit React `cache()` dedupliziert).
   Today, Tasks, Badge und Kopfzeile leiten alles aus derselben Liste ab (`deriveToday`).
 - Geschäftsregeln rein und getestet in `features/tasks/rules.ts`; dieselben Regeln nutzt die optimistische UI.

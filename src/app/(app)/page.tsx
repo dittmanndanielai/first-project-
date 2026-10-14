@@ -2,8 +2,8 @@ import { Suspense } from "react";
 import { requireSession } from "@/lib/auth";
 import { env } from "@/lib/env";
 import { logError } from "@/lib/log";
-import { dateLabel, dayOfYear, greeting, isoDate, minutesOfDay } from "@/lib/time";
-import { classifyEvents, DEMO_EVENTS } from "@/features/calendar/upcoming";
+import { dateLabel, dayOfYear, greeting, isoDate } from "@/lib/time";
+import { NextEventSummary, TodayCalendarCard, UpcomingSkeleton } from "@/features/calendar/components/UpcomingCard";
 import { HeaderSkeleton, PageHeader } from "@/features/shell/PageHeader";
 import { deriveToday } from "@/features/tasks/rules";
 import { listTasks } from "@/features/tasks/store";
@@ -34,14 +34,13 @@ async function Today() {
     logError("today.tasks", err);
   }
 
-  // Kalender folgt in Phase 4 (iCal). Bis dahin Demo-Termine nur im Mock-Modus.
-  const calendarConnected = e.DATA_SOURCE === "mock";
-  const { events, next, inMinutes } = classifyEvents(calendarConnected ? DEMO_EVENTS : [], minutesOfDay(now, tz));
-
-  const { progress } = deriveToday(tasks);
-  const summary = [`${progress.left} tasks left`, next ? `${next.title.split(" — ")[0]} at ${next.start}` : null]
-    .filter(Boolean)
-    .join(" · ");
+  // Kalender (iCloud) in eigenen Suspense-Grenzen: Aufgaben erscheinen sofort, Termine kommen nach.
+  const tasksLeft = `${deriveToday(tasks).progress.left} tasks left`;
+  const summary = (
+    <Suspense fallback={tasksLeft}>
+      <NextEventSummary prefix={tasksLeft} />
+    </Suspense>
+  );
 
   return (
     <>
@@ -49,9 +48,11 @@ async function Today() {
       <TodayBoard
         tasks={tasks}
         today={isoDate(now, tz)}
-        events={events}
-        nextIn={inMinutes}
-        calendarConnected={calendarConnected}
+        calendar={
+          <Suspense fallback={<UpcomingSkeleton />}>
+            <TodayCalendarCard />
+          </Suspense>
+        }
         lawIndex={lawIndexForDay(dayOfYear(now, tz))}
       />
     </>

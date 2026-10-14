@@ -78,6 +78,11 @@ export const RescheduleIcon = (p: Props) => (
     <path d="M20 4v4h-4" />
   </Svg>
 );
+export const RefreshIcon = (p: Props) => (
+  <Svg {...p}>
+    <path d="M19.5 12a7.5 7.5 0 1 1-2.2-5.3M19.5 4.5v4.2h-4.2" />
+  </Svg>
+);
 export const ExternalIcon = (p: Props) => (
   <Svg size={15} {...p}>
     <path d="M14 5h5v5M19 5l-8 8M18 14v4a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h4" />

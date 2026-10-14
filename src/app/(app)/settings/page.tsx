@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import { requireSession } from "@/lib/auth";
 import { captureTokenHashes, env } from "@/lib/env";
+import { calendarUrls } from "@/features/calendar/source";
 import { dateLabel } from "@/lib/time";
 import { HeaderSkeleton, PageHeader } from "@/features/shell/PageHeader";
 import { AppearanceControl } from "@/features/shell/AppearanceControl";
@@ -15,6 +16,16 @@ export default function SettingsPage() {
 }
 
 type Row = { name: string; detail: string; status: string; ok: boolean };
+
+function calendarRow(raw: string | undefined): Row {
+  const { urls, invalid } = calendarUrls(raw);
+  if (urls.length) {
+    const detail = `Read-only public feed · ${urls.length} calendar${urls.length === 1 ? "" : "s"}${invalid ? ` · ${invalid} invalid link${invalid === 1 ? "" : "s"}` : ""}`;
+    return { name: "iCloud Calendar", detail, status: "Configured", ok: invalid === 0 };
+  }
+  if (invalid) return { name: "iCloud Calendar", detail: "ICLOUD_CALENDAR_URL is not an iCloud link", status: "Invalid", ok: false };
+  return { name: "iCloud Calendar", detail: "Set ICLOUD_CALENDAR_URL in Vercel", status: "Not set", ok: false };
+}
 
 async function Settings() {
   await requireSession();
@@ -39,8 +50,7 @@ async function Settings() {
       ok: Boolean(e.ELEVENLABS_API_KEY),
     },
     { name: "Siri & Shortcuts", detail: `${tokens} device token${tokens === 1 ? "" : "s"} for Quick Capture`, status: tokens ? "Ready" : "No tokens", ok: tokens > 0 },
-    { name: "Google Calendar", detail: "Read-only iCal feed", status: "Phase 4", ok: false },
-    { name: "Apple Calendar", detail: "Future integration", status: "Planned", ok: false },
+    calendarRow(e.ICLOUD_CALENDAR_URL),
   ];
 
   return (

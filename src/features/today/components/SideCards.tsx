@@ -4,7 +4,6 @@ import Link from "next/link";
 import { useState } from "react";
 import { ChevronLeftIcon, ChevronRightIcon, EyeIcon, MicIcon, TranscriptIcon } from "@/components/ui/icons";
 import { OrbVisual } from "@/components/ui/Orb";
-import { relativeLabel, type UpcomingEvent } from "@/features/calendar/upcoming";
 import { ALLOCATION, DEMO_TODAY, DEMO_TOTAL, eur, sparkPaths } from "@/features/investments/mock";
 import { LAWS } from "../laws";
 
@@ -60,74 +59,6 @@ export function AssistantCard() {
           <TranscriptIcon />
         </Link>
       </div>
-    </section>
-  );
-}
-
-export function UpcomingCard({ events, nextIn, connected }: { events: UpcomingEvent[]; nextIn: number | null; connected: boolean }) {
-  const [open, setOpen] = useState<string | null>(null);
-  const next = events.find((e) => e.state === "next");
-  return (
-    <section className="card m-upcoming" style={{ padding: "20px 14px 14px", display: "flex", flexDirection: "column", gap: 12 }} aria-labelledby="up-h">
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "0 6px" }}>
-        <h2 id="up-h" className="card-title">
-          Upcoming
-        </h2>
-        <Link href="/calendar" className="mini" aria-label="Open calendar">
-          <ChevronRightIcon size={15} />
-        </Link>
-      </div>
-      {!connected ? (
-        <div style={{ margin: "0 6px 6px", padding: "14px 16px", borderRadius: 16, background: "var(--fill)", fontSize: 13, color: "var(--text2)", lineHeight: 1.45 }}>
-          Google Calendar connects in Phase 4 (read-only iCal).
-        </div>
-      ) : events.length === 0 ? (
-        <div style={{ padding: "16px 8px", textAlign: "center", fontSize: 13.5, color: "var(--text2)" }}>No events today.</div>
-      ) : (
-        <>
-          {next && nextIn !== null ? (
-            <div style={{ margin: "0 4px", padding: "14px 16px", borderRadius: 16, background: "var(--accentSoft)", display: "flex", flexDirection: "column", gap: 4 }}>
-              <div style={{ fontSize: 11.5, fontWeight: 600, color: "var(--accent)", textTransform: "uppercase", letterSpacing: ".06em" }}>
-                Next · {relativeLabel(nextIn)}
-              </div>
-              <div style={{ fontSize: 16, fontWeight: 650, letterSpacing: "-.01em" }}>{next.title}</div>
-              <div style={{ fontSize: 12.5, color: "var(--text2)" }}>
-                {next.start} – {next.end} · {next.where}
-              </div>
-            </div>
-          ) : null}
-          <div style={{ display: "flex", flexDirection: "column", position: "relative" }}>
-            <div aria-hidden="true" style={{ position: "absolute", left: 14, top: 16, bottom: 16, width: 1, background: "var(--line2)" }} />
-            {events.map((e) => (
-              <button
-                key={e.id}
-                type="button"
-                className={`ev ${e.state === "past" ? "past" : ""} ${e.state === "next" ? "next" : ""}`}
-                onClick={() => setOpen(open === e.id ? null : e.id)}
-                aria-expanded={open === e.id}
-                style={{ position: "relative" }}
-              >
-                <span className="ev-dot" />
-                <span style={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column", gap: 2 }}>
-                  <span style={{ display: "flex", justifyContent: "space-between", gap: 8 }}>
-                    <span style={{ fontSize: 13.5, fontWeight: 550 }}>{e.title}</span>
-                    <span style={{ fontSize: 12, color: "var(--text2)", fontVariantNumeric: "tabular-nums" }}>{e.start}</span>
-                  </span>
-                  {open === e.id ? (
-                    <span style={{ fontSize: 12.5, color: "var(--text2)", lineHeight: 1.45, display: "flex", flexDirection: "column", gap: 3, paddingTop: 4 }}>
-                      <span>
-                        {e.start} – {e.end} · {e.where}
-                      </span>
-                      <span>{e.people}</span>
-                      <span style={{ color: "var(--text)" }}>{e.notes}</span>
-                    </span>
-                  ) : null}
-                </span>
-              </button>
-            ))}
-          </div>
-        </>
-      )}
     </section>
   );
 }
