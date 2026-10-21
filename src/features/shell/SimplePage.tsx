@@ -22,15 +22,3 @@ async function Frame({ title, children }: { title: string; children: React.React
     </>
   );
 }
-
-export function PlannedCard({ phase, children }: { phase: string; children: React.ReactNode }) {
-  return (
-    <section className="card" style={{ padding: "24px 26px", display: "flex", flexDirection: "column", gap: 10, maxWidth: 720 }}>
-      <span className="chip" style={{ alignSelf: "flex-start" }}>
-        <span className="dot off" />
-        {phase}
-      </span>
-      <div style={{ fontSize: 14, lineHeight: 1.55, color: "var(--text2)" }}>{children}</div>
-    </section>
-  );
-}

@@ -53,7 +53,6 @@ function buildSchema(isProd: boolean) {
 
       // Komma-getrennte SHA-256-Hashes der Geräte-Tokens für /api/capture (Siri, Mac).
       CAPTURE_TOKENS: optional,
-      REVALIDATE_SECRET: optional,
     })
     .superRefine((env, ctx) => {
       if (env.DATA_SOURCE === "notion" && !env.NOTION_TOKEN) {

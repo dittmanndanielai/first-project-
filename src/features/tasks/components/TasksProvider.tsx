@@ -6,13 +6,12 @@ import { useToast } from "@/features/shell/Toast";
 import {
   completeTask,
   deleteTask,
-  moveTask,
   reopenTask,
   rescheduleTask,
   setFocus,
   undoDeleteTask,
 } from "../actions";
-import { applyPatch, nextList, planComplete, planFocus, planMove, planReopen, planReschedule, RuleError } from "../rules";
+import { applyPatch, nextList, planComplete, planFocus, planReopen, planReschedule, RuleError } from "../rules";
 import type { Task, TaskList, TaskPatch } from "../types";
 
 type Op = { type: "patch"; id: string; patch: TaskPatch } | { type: "remove"; id: string } | { type: "add"; task: Task };
@@ -35,7 +34,6 @@ type Api = {
   today: string;
   toggleDone: (task: Task) => void;
   reschedule: (task: Task) => void;
-  move: (task: Task, list: TaskList) => void;
   toggleFocus: (task: Task) => boolean;
   remove: (task: Task) => void;
 };
@@ -76,9 +74,6 @@ export function TasksProvider({ tasks, today, children }: { tasks: Task[]; today
     reschedule(task) {
       const to = nextList(task.list);
       run({ type: "patch", id: task.id, patch: planReschedule(task) }, () => rescheduleTask({ id: task.id }), `Moved to ${LIST_LABEL[to]}`);
-    },
-    move(task, list) {
-      run({ type: "patch", id: task.id, patch: planMove(task, list) }, () => moveTask({ id: task.id, list }), `Moved to ${LIST_LABEL[list]}`);
     },
     toggleFocus(task) {
       const on = !task.focus;

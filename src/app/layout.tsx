@@ -14,7 +14,7 @@ const serif = localFont({
 
 export const metadata: Metadata = {
   title: "Personal OS",
-  description: "Tasks, calendar, investments and your voice assistant in one place.",
+  description: "Tasks, calendar, reading and your voice assistant in one place.",
   applicationName: "Personal OS",
   appleWebApp: { capable: true, title: "Personal OS", statusBarStyle: "black-translucent" },
   robots: { index: false, follow: false },

@@ -44,12 +44,6 @@ export const DigestIcon = (p: Props) => (
     <path d="M17 9h2a1 1 0 0 1 1 1v9a1.5 1.5 0 0 1-3 0M7.5 8.5h6M7.5 12h6M7.5 15.5h4" />
   </Svg>
 );
-export const ChartIcon = (p: Props) => (
-  <Svg {...p}>
-    <path d="M4 4v16h16" />
-    <path d="M7.5 15l3.5-4 3 2.5L19.5 7" />
-  </Svg>
-);
 export const SlidersIcon = (p: Props) => (
   <Svg {...p}>
     <path d="M4 7h9M17 7h3M4 17h3M11 17h9" />
@@ -128,19 +122,6 @@ export const ChevronLeftIcon = (p: Props) => (
 export const ChevronRightIcon = (p: Props) => (
   <Svg size={14} strokeWidth={1.8} {...p}>
     <path d="M9 6l6 6-6 6" />
-  </Svg>
-);
-export const EyeIcon = ({ off, ...p }: Props & { off?: boolean }) => (
-  <Svg size={17} {...p}>
-    <path d="M3 12s3.3-6.5 9-6.5S21 12 21 12s-3.3 6.5-9 6.5S3 12 3 12z" />
-    <circle cx="12" cy="12" r="2.8" />
-    {off ? <path d="M4 4l16 16" /> : null}
-  </Svg>
-);
-export const CompassIcon = (p: Props) => (
-  <Svg {...p}>
-    <circle cx="12" cy="12" r="8.5" />
-    <path d="M15.5 8.5l-2 5-5 2 2-5z" />
   </Svg>
 );
 export const ThumbIcon = ({ filled, ...p }: Props & { filled?: boolean }) => (

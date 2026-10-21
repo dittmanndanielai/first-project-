@@ -5,7 +5,7 @@ export default function manifest(): MetadataRoute.Manifest {
   return {
     name: "Personal OS",
     short_name: "Personal OS",
-    description: "Tasks, calendar, investments and your voice assistant.",
+    description: "Tasks, calendar, reading and your voice assistant.",
     start_url: "/",
     scope: "/",
     display: "standalone",

@@ -59,6 +59,24 @@ Rollenverteilung: Notion hält Wissen und Konfiguration, n8n führt aus und logg
 
 Hinweis: Die IDs aus Session 1 (`agent_9401…`, `tool_6401…`) tauchen im Connector nicht mehr auf. Der Connector sieht genau einen Agenten mit den neuen IDs, angelegt 11.10. 21:47 Uhr. Das ist sehr wahrscheinlich der Umzug nach „My Workspace“ aus einem anderen Chat. Bitte einmal in der ElevenLabs-Oberfläche bestätigen (siehe Offen O6).
 
+## Änderung 21.10.2026: Status-Kachel entlastet (D2)
+
+Freigabe D2 durch Daniel („D2 agree“, 21.10.2026), Grundlage `docs/personal-os/ROADMAP.md`. Anlass: `M_cockpit_status`
+erzeugte 25 von 70 Ausführungen pro Tag (18 stündlich, 7 nach Log-Einträgen) und hatte eine ungeschützte HTML-Ansicht.
+
+| # | Aktion | Objekt | Details |
+|---|---|---|---|
+| W42 | Node entfernt | `SUB_log` „Status-Kachel anstoßen“ | „Notion: Log-Zeile anlegen“ jetzt direkt mit „Ergebnis“ verbunden; „Ergebnis“ liest unverändert den Notion-Node. Veröffentlicht (Version `fef99be0`, vorher `0e838de4`). |
+| W43 | Trigger entfernt, Zeitplan | `M_cockpit_status` | Trigger „Nach jedem Log-Eintrag“ gelöscht. Zeitplan „Stündlich 06-23 Uhr“ (`5 6-23 * * *`) → „Täglich 07, 13, 19 Uhr“ (`5 7,13,19 * * *`, Europe/Berlin). Beschreibung angepasst. |
+| W44 | Nodes gelöscht | `M_cockpit_status` HTML-Ansicht | Webhook „Ansicht (Notion-Embed)“ (ohne Auth, seit W35 nirgends eingebunden), „Log laden (Ansicht)“, „HTML bauen“, „Ansicht ausliefern“. W43 + W44 veröffentlicht als Version `4d51e38b` (vorher `dcbce84b`). |
+
+Geprüft (nur lesend): Versions-Diff zeigt genau diese 5 entfernten Nodes und die geänderte Cron-Zeile; Verbindung
+Zeitplan → „Agent Log laden“ besteht; aktiver Trigger nur noch der Zeitplan. Kachel-Logik, Credentials und alle anderen
+Workflows unverändert. Erwartete Wirkung 📊: −22 Ausführungen/Tag (≈ −660/Monat). Die Kachel ist bis zu 6 h alt statt ≤ 1 h.
+
+Rückweg: in n8n je Workflow die Vorgängerversion (`0e838de4` für SUB_log, `dcbce84b` für M_cockpit_status)
+wiederherstellen und veröffentlichen, zuerst M_cockpit_status (Trigger wieder da), danach SUB_log.
+
 ## Änderung 13.10.2026: Uhr aus Headquarters entfernt
 
 Auf ausdrücklichen Wunsch von Daniel.

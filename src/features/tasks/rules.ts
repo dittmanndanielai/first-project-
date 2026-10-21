@@ -1,4 +1,4 @@
-import { LISTS, type Priority, type Task, type TaskList, type TaskPatch } from "./types";
+import { LISTS, type Task, type TaskList, type TaskPatch } from "./types";
 
 // Reine Geschäftsregeln ohne I/O. Gleiche Semantik wie SUB_todos_apply in n8n
 // (Zähler steigt nur beim Verschieben in eine spätere Liste).
@@ -43,10 +43,6 @@ export function planFocus(task: Task, on: boolean, all: Task[]): TaskPatch {
   if (task.status === "done") throw new RuleError("Completed tasks can't be in Top 3");
   if (openFocusCount(all, task.id) >= FOCUS_LIMIT) throw new RuleError("Top 3 is full — unstar one first");
   return task.list === "today" ? { focus: true } : { focus: true, list: "today" };
-}
-
-export function planPriority(priority: Priority | null): TaskPatch {
-  return { priority };
 }
 
 export function isStale(task: Task): boolean {

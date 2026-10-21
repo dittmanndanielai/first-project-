@@ -9,7 +9,7 @@ export type Story = {
   title: string;
   takeaway: string; // „Kernaussage“
   date: string; // YYYY-MM-DD
-  topics: Topic[]; // Reihenfolge wie in Notion, das erste Thema bestimmt die Rubrik
+  topics: Topic[]; // Reihenfolge wie in Notion, das erste Thema ist die angezeigte Kategorie in Read
   sources: number; // „Source Count“
   url: string | null; // Original-Artikel, nur http(s); Economist-Zeilen haben oft keinen
   createdAt: string; // ISO-Zeitpunkt des Schreibens, trennt Morgen- (08:00) und Abendausgabe (17:00)
@@ -23,17 +23,4 @@ export type Story = {
   feedName: string; // „Quelle“: Feedname wie im Digest Feedback, oft leer
 };
 
-export type Section = { lead: Story; items: Story[] };
-
 export type EditionRun = "morning" | "evening";
-
-export type Edition = {
-  date: string;
-  run: EditionRun;
-  brief: Section | null; // Geopolitik, KI
-  markets: Section | null; // Wirtschaft, VC
-  count: number; // angezeigte Stories
-  hidden: number; // über SECTION_SIZE hinaus, nur im Notion-Archiv
-};
-
-export type ForYouItem = { title: string; detail: string };

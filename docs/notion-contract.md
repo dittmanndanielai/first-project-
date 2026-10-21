@@ -30,28 +30,29 @@ Data Source: `b8065b38-5580-43fc-b022-e8708fc1b680` · API-Version `2025-09-03`
 # Notion-Vertrag: Digest Archive (nur lesend)
 
 Schreiber ist ausschließlich n8n `B_news_digest` (täglich 08:00 und 17:00, Europe/Berlin, je Lauf bis zu 8 Stories).
-Personal OS liest nur (`src/features/digest/notion-map.ts`). Voraussetzung: Datenbank mit der Connection
-„Personal OS Web“ geteilt.
+Personal OS liest nur (`src/features/digest/notion-map.ts`) und zeigt die letzten 7 Tage in Read (`/read`, Modul
+`features/discover`; die frühere Digest-Seite ist seit 21.10.2026 entfallen). Voraussetzung: Datenbank mit der
+Connection „Personal OS Web“ geteilt.
 
 Data Source: `42a6a120-423e-4375-8a43-f7d5002a2d11` · API-Version `2025-09-03`
 
 | Property | Typ | Werte | Personal OS |
 |---|---|---|---|
-| `Titel` | title | deutsche Überschrift (LLM) | Überschrift |
-| `Kernaussage` | rich_text | ein Satz | Teaser |
-| `Datum` | date | Tag der Ausgabe | jüngster Tag = aktuelle Ausgabe |
-| `Themenfeld` | multi_select | `Geopolitik`, `Wirtschaft`, `KI`, `VC` | erstes Feld bestimmt die Rubrik: Wirtschaft/VC → Markets & Money, Rest → Daily Brief |
-| `Source Count` | number | Quellen im Cluster | Reihenfolge (mehr Quellen zuerst) |
-| `Canonical URL` | url | Original-Artikel, bei Economist oft leer | Link (nur http/https) |
-| `Story ID` | rich_text | Hash der URL bzw. `economist:<datum>:<n>` | Duplikate je Ausgabe entfernen |
-| (Seite) `created_time` | – | Schreibzeit | Morgen- (vor 14 Uhr) vs. Abendausgabe |
-| `Kernpunkte` | rich_text | Stichpunkte, getrennt durch `\n` (seit 14.10.2026) | Discover: 3 auf der Karte, alle in „Mehr lesen“ |
-| `Warum relevant` | rich_text | Einordnung (seit 14.10.2026) | Discover: Analyse; leer = Thin-Card |
-| `Was folgen könnte` | rich_text | Ausblick (seit 14.10.2026) | Discover: Einschätzung |
-| `Chance` | rich_text | mögliche Chance (seit 14.10.2026) | Discover: „Chance für dich“ |
-| `Impact` | select | `Hoch`, `Mittel`, `Niedrig` (seit 14.10.2026) | Discover: Reihenfolge im Tag, Punkt bei Hoch |
-| `Kennzahl` | rich_text | „Wert – Label“ (seit 14.10.2026) | Discover: große Zahl, getrennt am ersten „ – “ |
-| `Quelle` | rich_text | Feedname, z. B. „The Decoder“ (seit 14.10.2026) | Discover: Quellenname; Feedback übernimmt ihn unverändert |
+| `Titel` | title | deutsche Überschrift (LLM) | Kartentitel |
+| `Kernaussage` | rich_text | ein Satz | Lead der Karte (gekürzt auf 240 Zeichen) |
+| `Datum` | date | Tag der Ausgabe | Zeitfenster (heute + 6 Vortage), Reihenfolge Tag absteigend |
+| `Themenfeld` | multi_select | `Geopolitik`, `Wirtschaft`, `KI`, `VC` | Kategorien und Filter (alle Felder), erstes Feld = angezeigte Kategorie |
+| `Source Count` | number | Quellen im Cluster | Hinweis „n Quellen im Cluster“ ab 2 |
+| `Canonical URL` | url | Original-Artikel, bei Economist oft leer | Link „Quelle“ (nur http/https), Hostname als Quellenname-Ersatz |
+| `Story ID` | rich_text | Hash der URL bzw. `economist:<datum>:<n>` | eine Karte pro Story ID; Schlüssel für „Relevant“-Feedback |
+| (Seite) `created_time` | – | Schreibzeit | Morgen- (vor 14 Uhr) vs. Abendlauf; im Tag Abendlauf zuerst |
+| `Kernpunkte` | rich_text | Stichpunkte, getrennt durch `\n` (seit 14.10.2026) | Read: 3 auf der Karte, alle in „Mehr lesen“ |
+| `Warum relevant` | rich_text | Einordnung (seit 14.10.2026) | Read: Analyse; leer = Thin-Card |
+| `Was folgen könnte` | rich_text | Ausblick (seit 14.10.2026) | Read: Einschätzung |
+| `Chance` | rich_text | mögliche Chance (seit 14.10.2026) | Read: „Chance für dich“ |
+| `Impact` | select | `Hoch`, `Mittel`, `Niedrig` (seit 14.10.2026) | Read: Reihenfolge im Tag, Punkt bei Hoch |
+| `Kennzahl` | rich_text | „Wert – Label“ (seit 14.10.2026) | Read: große Zahl, getrennt am ersten „ – “ |
+| `Quelle` | rich_text | Feedname, z. B. „The Decoder“ (seit 14.10.2026) | Read: Quellenname; Feedback übernimmt ihn unverändert |
 
 Ältere Zeilen haben die Felder ab `Kernpunkte` leer oder gar nicht; die App behandelt das wie leer.
 Nicht gespeichert und daher nicht in der App: Rang/Score, Rubrik, Lead-Text, „Dein Move heute“.

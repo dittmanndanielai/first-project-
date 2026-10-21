@@ -8,17 +8,18 @@ import { LEARNING_CARDS } from "@/features/discover/learning-content";
 import { nextDigestLabel } from "@/features/discover/rules";
 import { getIntelligenceFeed } from "@/features/discover/store";
 
+// Read: der einzige Lesebereich (Intelligence aus dem Digest Archive + Learning-Bibliothek, Modul features/discover).
 // Inhalte fassen Paywall-Artikel zusammen: erst die Session prüfen (in Suspense), dann Daten laden.
 // So landet nichts davon im prerenderten statischen Shell.
-export default function DiscoverPage() {
+export default function ReadPage() {
   return (
     <Suspense fallback={<DiscoverSkeleton />}>
-      <Discover />
+      <Read />
     </Suspense>
   );
 }
 
-async function Discover() {
+async function Read() {
   await requireSession();
   const e = env();
   const now = new Date();

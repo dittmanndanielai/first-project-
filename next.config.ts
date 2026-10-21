@@ -24,6 +24,15 @@ const nextConfig: NextConfig = {
   async headers() {
     return [{ source: "/:path*", headers: securityHeaders }];
   },
+  // Slice 1 (21.10.2026): Digest und Discover sind in „Read“ aufgegangen, Investments entfällt.
+  // Temporär (307), damit alte Lesezeichen und Kurzbefehle weiter funktionieren und der Schritt umkehrbar bleibt.
+  async redirects() {
+    return [
+      { source: "/digest", destination: "/read", permanent: false },
+      { source: "/discover", destination: "/read", permanent: false },
+      { source: "/investments", destination: "/", permanent: false },
+    ];
+  },
 };
 
 export default nextConfig;

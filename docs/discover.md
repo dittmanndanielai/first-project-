@@ -1,6 +1,7 @@
 # Discover V1
 
-Stand 14.10.2026 · Branch `feature/discover` · Route `/discover` (Sidebar und Tab Bar)
+Stand 14.10.2026 · Branch `feature/discover` · Seit 21.10.2026 als **Read** unter `/read` (Sidebar und Tab Bar);
+`/discover` und `/digest` leiten temporär dorthin um (Slice 1, `docs/personal-os/ROADMAP.md`).
 
 Vertikaler Card-Feed mit zwei Modi: **Intelligence** (Stories der letzten 7 Tage aus dem Notion „Digest Archive“) und
 **Learning** (24 kuratierte Karten im Repo). Kein Social Feed: festes Ende, keine Likes, kein Nachladen.
@@ -22,7 +23,7 @@ Vertikaler Card-Feed mit zwei Modi: **Intelligence** (Stories der letzten 7 Tage
   (Zod-Schema, Reihenfolge), `learning-content.ts` (Liste der JSON-Dateien), `rules.ts`, `store.ts` (Notion, Cache),
   `feedback.ts` + `notion-map.ts` (Digest Feedback), `components/` (Client-UI).
 - `content/learning/*.json`: 24 Karten, eine Datei pro Karte. Prüfliste: `docs/learning-review.md`.
-- `src/app/(app)/discover/page.tsx`, `src/app/api/discover/feedback/route.ts`.
+- `src/app/(app)/read/page.tsx`, `src/app/api/discover/feedback/route.ts`.
 - Tests: `tests/unit/discover.test.ts`, `learning.test.ts`, `discover-feedback.test.ts`.
 
 ## Entscheidungen

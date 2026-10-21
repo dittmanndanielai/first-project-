@@ -5,7 +5,7 @@ import { CaptureBar } from "@/features/capture/CaptureBar";
 import { TasksProvider } from "@/features/tasks/components/TasksProvider";
 import type { Task } from "@/features/tasks/types";
 import { FocusCard, MyTasksCard, ProgressCard } from "./TaskCards";
-import { AssistantCard, InvestmentsTeaser, LawCard } from "./SideCards";
+import { AssistantCard, LawCard } from "./SideCards";
 
 type Props = {
   tasks: Task[];
@@ -19,25 +19,22 @@ type Props = {
 export function TodayBoard({ tasks, today, calendar, lawIndex }: Props) {
   return (
     <TasksProvider tasks={tasks} today={today}>
-      <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
-        <div className="grid3">
-          <div className="col">
-            <FocusCard />
-            <MyTasksCard />
-          </div>
-          <div className="col col-center">
-            <Suspense fallback={null}>
-              <CaptureBar />
-            </Suspense>
-            <AssistantCard />
-          </div>
-          <div className="col">
-            {calendar}
-            <ProgressCard />
-            <LawCard initialIndex={lawIndex} />
-          </div>
+      <div className="grid3">
+        <div className="col">
+          <FocusCard />
+          <MyTasksCard />
         </div>
-        <InvestmentsTeaser />
+        <div className="col col-center">
+          <Suspense fallback={null}>
+            <CaptureBar />
+          </Suspense>
+          <AssistantCard />
+        </div>
+        <div className="col">
+          {calendar}
+          <ProgressCard />
+          <LawCard initialIndex={lawIndex} />
+        </div>
       </div>
     </TasksProvider>
   );

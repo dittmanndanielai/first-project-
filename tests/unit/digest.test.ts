@@ -1,8 +1,7 @@
 import { describe, expect, it } from "vitest";
-import { archiveUrlFromNotion, recentStoriesQuery, safeUrl, storyFromNotion } from "@/features/digest/notion-map";
-import { forYou, isMarketStory, latestEdition, runOf, SECTION_SIZE } from "@/features/digest/rules";
+import { recentStoriesQuery, safeUrl, storyFromNotion } from "@/features/digest/notion-map";
+import { runOf } from "@/features/digest/rules";
 import type { Story } from "@/features/digest/types";
-import type { Task } from "@/features/tasks/types";
 
 const TZ = "Europe/Berlin";
 
@@ -90,11 +89,6 @@ describe("storyFromNotion (echte API-Form)", () => {
     expect(storyFromNotion({ ...realRow, properties: { ...realRow.properties, Datum: { date: null } } })).toBeNull();
     expect(storyFromNotion(null)).toBeNull();
   });
-
-  it("baut den Archiv-Link aus der Datenbank-ID", () => {
-    expect(archiveUrlFromNotion(realRow)).toBe("https://www.notion.so/150db8467a314a99953820c2d5d20680");
-    expect(archiveUrlFromNotion({ ...realRow, parent: { type: "data_source_id" } })).toBeNull();
-  });
 });
 
 describe("safeUrl", () => {
@@ -138,120 +132,10 @@ function s(n: number, over: Partial<Story> = {}): Story {
     ...over,
   };
 }
-const EVENING = "2026-10-13T15:00:00.000Z"; // 17:00 Berlin
 
-describe("latestEdition", () => {
-  it("nimmt den neuesten Tag und dort den Abendlauf", () => {
-    const e = latestEdition(
-      [s(1, { date: "2026-10-12", createdAt: "2026-10-12T15:00:00.000Z" }), s(2), s(3, { createdAt: EVENING }), s(4, { createdAt: EVENING })],
-      TZ,
-    );
-    expect(e).toMatchObject({ date: "2026-10-13", run: "evening", count: 2, hidden: 0 });
-    expect(e?.brief?.lead.id).toBe("p3");
-  });
-
-  it("nimmt den Morgenlauf, solange abends noch nichts da ist", () => {
-    expect(latestEdition([s(1), s(2)], TZ)).toMatchObject({ run: "morning", count: 2 });
-  });
-
-  it("ordnet nach erstem Themenfeld: Wirtschaft/VC in Markets, Rest in Daily Brief", () => {
-    const e = latestEdition(
-      [s(1, { topics: ["geopolitics", "economy"] }), s(2, { topics: ["economy", "ai"] }), s(3, { topics: ["vc"] }), s(4, { topics: [] })],
-      TZ,
-    );
-    expect(e?.brief?.lead.id).toBe("p1");
-    expect(e?.brief?.items.map((i) => i.id)).toEqual(["p4"]);
-    expect(e?.markets?.lead.id).toBe("p2");
-    expect(e?.markets?.items.map((i) => i.id)).toEqual(["p3"]);
-    expect(isMarketStory(s(9, { topics: [] }))).toBe(false);
-  });
-
-  it("stellt Stories mit mehr Quellen nach vorn und behält sonst die Reihenfolge", () => {
-    const e = latestEdition([s(1), s(2, { sources: 3 }), s(3), s(4, { sources: 3 })], TZ);
-    expect([e?.brief?.lead.id, ...(e?.brief?.items.map((i) => i.id) ?? [])]).toEqual(["p2", "p4", "p1", "p3"]);
-  });
-
-  it("nimmt bei zwei Läufen am selben Nachmittag nur den jüngsten (n8n schreibt dann neue Story-IDs)", () => {
-    const first = Array.from({ length: 7 }, (_, i) => s(i + 1, { createdAt: "2026-10-12T15:02:00.000Z" }));
-    const second = Array.from({ length: 8 }, (_, i) => s(i + 11, { createdAt: "2026-10-12T15:57:30.000Z" }));
-    const e = latestEdition([...first, ...second].map((x) => ({ ...x, date: "2026-10-12" })), TZ);
-    expect(e).toMatchObject({ run: "evening", count: 8, hidden: 0 });
-    expect(e?.brief?.lead.id).toBe("p11");
-  });
-
-  it("zeigt einen vollen Lauf mit 8 Stories vollständig, auch wenn fast alle in eine Rubrik fallen", () => {
-    const e = latestEdition(
-      [...Array.from({ length: 6 }, (_, i) => s(i + 1)), s(7, { topics: ["economy"] }), s(8, { topics: ["economy"] })],
-      TZ,
-    );
-    expect(e).toMatchObject({ count: 8, hidden: 0 });
-    expect(e?.brief?.items).toHaveLength(5);
-    expect(e?.markets?.items).toHaveLength(1);
-  });
-
-  it("zählt doppelte Story-IDs nur einmal und meldet, was über die Rubrik hinausgeht", () => {
-    const many = Array.from({ length: 9 }, (_, i) => s(i + 1));
-    const e = latestEdition([...many, s(20, { storyId: "s1" })], TZ);
-    expect(1 + (e?.brief?.items.length ?? 0)).toBe(SECTION_SIZE);
-    expect(e).toMatchObject({ count: SECTION_SIZE, hidden: 1, markets: null });
-  });
-
-  it("liefert null ohne Stories und trennt Läufe um 14 Uhr Berliner Zeit", () => {
-    expect(latestEdition([], TZ)).toBeNull();
+describe("runOf", () => {
+  it("trennt Morgen- und Abendlauf um 14 Uhr Berliner Zeit", () => {
     expect(runOf(s(1, { createdAt: "2026-10-13T11:59:00.000Z" }), TZ)).toBe("morning"); // 13:59
     expect(runOf(s(1, { createdAt: "2026-10-13T12:00:00.000Z" }), TZ)).toBe("evening"); // 14:00
-  });
-});
-
-function t(n: number, over: Partial<Task> = {}): Task {
-  return {
-    id: `t${n}`,
-    url: "",
-    title: `Task ${n}`,
-    list: "today",
-    priority: null,
-    status: "open",
-    focus: false,
-    deadline: null,
-    doneAt: null,
-    postponed: 0,
-    goal: null,
-    createdBy: "user",
-    createdAt: "2026-10-01T00:00:00.000Z",
-    ...over,
-  };
-}
-
-describe("forYou", () => {
-  const today = "2026-10-13";
-
-  it("meldet Verschobenes, Überfälliges, heute Fälliges und offene Top 3", () => {
-    const items = forYou(
-      [
-        t(1, { postponed: 3 }),
-        t(2, { postponed: 4 }),
-        t(3, { deadline: "2026-10-12" }),
-        t(4, { deadline: today, focus: true }),
-        t(5, { status: "done", postponed: 5 }),
-      ],
-      today,
-    );
-    expect(items.map((i) => i.title)).toEqual([
-      "2 tasks are past three postponements",
-      "1 task is overdue",
-      "1 task is due today",
-      "1 Top 3 task still open",
-    ]);
-    expect(items[0].detail).toBe("Task 1 and Task 2 need a decision.");
-  });
-
-  it("erinnert an Top 3, wenn sonst nichts ansteht", () => {
-    expect(forYou([t(1)], today)).toEqual([{ title: "No Top 3 set yet", detail: "Star up to three tasks to set your day." }]);
-  });
-
-  it("kürzt lange Listen und Titel", () => {
-    const long = "A very long task title that keeps going and going beyond the limit";
-    const [first] = forYou([t(1, { postponed: 3, title: long }), t(2, { postponed: 3 }), t(3, { postponed: 3 })], today);
-    expect(first.detail).toMatch(/^A very long task title that keeps going a…, Task 2 and 1 more need a decision\.$/);
   });
 });

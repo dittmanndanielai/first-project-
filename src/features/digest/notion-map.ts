@@ -32,7 +32,6 @@ const page = z.object({
   id: z.string(),
   created_time: z.string(),
   in_trash: z.boolean().optional(),
-  parent: z.object({ database_id: z.string().optional() }).partial().optional(),
   properties: z.record(z.string(), z.unknown()),
 });
 const richText = z.array(z.object({ plain_text: z.string() }));
@@ -97,14 +96,7 @@ export function storyFromNotion(raw: unknown): Story | null {
   };
 }
 
-/** Link auf die Archiv-Datenbank in Notion, aus dem Parent einer Story (spart eine eigene Konfiguration). */
-export function archiveUrlFromNotion(raw: unknown): string | null {
-  const parsed = page.safeParse(raw);
-  const id = parsed.success ? parsed.data.parent?.database_id : undefined;
-  return id ? `https://www.notion.so/${id.replaceAll("-", "")}` : null;
-}
-
-/** Stories der letzten Tage, neueste zuerst. Die App zeigt davon nur die jüngste Ausgabe. */
+/** Stories ab einem Stichtag, neueste zuerst (Read zeigt die letzten 7 Tage). */
 export function recentStoriesQuery(since: string, cursor?: string) {
   return {
     filter: { property: PROP.date, date: { on_or_after: since } },

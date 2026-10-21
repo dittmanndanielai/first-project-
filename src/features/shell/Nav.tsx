@@ -2,23 +2,18 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { CalendarIcon, ChartIcon, CompassIcon, DigestIcon, MoonIcon, SlidersIcon, SunIcon, TasksIcon } from "@/components/ui/icons";
+import { CalendarIcon, DigestIcon, MoonIcon, SlidersIcon, SunIcon, TasksIcon } from "@/components/ui/icons";
 import { OrbVisual } from "@/components/ui/Orb";
+import { isActive, NAV, type NavIcon } from "./nav-items";
 import { useTheme } from "./theme";
 
-const NAV = [
-  { href: "/", label: "Today", tab: "Today", Icon: SunIcon, inTabBar: true },
-  { href: "/tasks", label: "Tasks", tab: "Tasks", Icon: TasksIcon, inTabBar: true },
-  { href: "/calendar", label: "Calendar", tab: "Calendar", Icon: CalendarIcon, inTabBar: true },
-  { href: "/digest", label: "Digest", tab: "Digest", Icon: DigestIcon, inTabBar: true },
-  { href: "/discover", label: "Discover", tab: "Discover", Icon: CompassIcon, inTabBar: true },
-  { href: "/investments", label: "Investments", tab: "Invest", Icon: ChartIcon, inTabBar: true },
-  { href: "/settings", label: "Settings", tab: "Settings", Icon: SlidersIcon, inTabBar: false },
-] as const;
-
-function isActive(pathname: string, href: string) {
-  return href === "/" ? pathname === "/" : pathname === href || pathname.startsWith(href + "/");
-}
+const ICONS: Record<NavIcon, typeof SunIcon> = {
+  today: SunIcon,
+  tasks: TasksIcon,
+  calendar: CalendarIcon,
+  read: DigestIcon,
+  settings: SlidersIcon,
+};
 
 /** Sidebar für Mac und iPad quer. `badge` = offene Aufgaben in „Heute“ (null während des Ladens). */
 export function Sidebar({ badge }: { badge: number | null }) {
@@ -31,8 +26,9 @@ export function Sidebar({ badge }: { badge: number | null }) {
         <div style={{ fontSize: 15, fontWeight: 650, letterSpacing: "-.02em" }}>Personal OS</div>
       </div>
       <nav aria-label="Main" style={{ display: "flex", flexDirection: "column", gap: 2 }}>
-        {NAV.map(({ href, label, Icon }) => {
+        {NAV.map(({ href, label, icon }) => {
           const active = isActive(pathname, href);
+          const Icon = ICONS[icon];
           return (
             <Link key={href} href={href} className={`nav-item ${active ? "active" : ""}`} aria-current={active ? "page" : undefined}>
               <Icon />
@@ -59,12 +55,13 @@ export function TabBar() {
   const pathname = usePathname();
   return (
     <nav className="tabbar" aria-label="Main">
-      {NAV.filter((n) => n.inTabBar).map(({ href, tab, Icon }) => {
+      {NAV.filter((n) => n.inTabBar).map(({ href, label, icon }) => {
         const active = isActive(pathname, href);
+        const Icon = ICONS[icon];
         return (
           <Link key={href} href={href} className={`tab ${active ? "on" : ""}`} aria-current={active ? "page" : undefined}>
             <Icon size={22} strokeWidth={1.7} />
-            <span>{tab}</span>
+            <span>{label}</span>
           </Link>
         );
       })}

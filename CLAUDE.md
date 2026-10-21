@@ -17,8 +17,7 @@ ElevenLabs = Voice. Keine eigene Datenbank.
 
 ## Befehle
 - `npm run dev` (Mock-Daten, lokales Passwort `dev`)
-- `npm run check` = typecheck + lint + Unit-Tests. Vor jedem Commit grün. Frischer Clone: vorher `npx next typegen`
-  (sonst fehlen `PageProps`/`LayoutProps`; Fix in Slice 1).
+- `npm run check` = `next typegen` + typecheck + lint + Unit-Tests. Vor jedem Commit grün.
 - `npm run build` prüft zusätzlich die Cache-Components-Regeln (Request-Daten nur innerhalb von Suspense).
 - `npm run hash-password`, `npm run capture-token <gerät>` erzeugen Werte für Vercel.
 

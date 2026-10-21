@@ -4,7 +4,7 @@ import { updateTag } from "next/cache";
 import { z } from "zod";
 import { authedAction, UserError } from "@/lib/action";
 import { TAGS } from "@/lib/cache-tags";
-import { planComplete, planFocus, planMove, planPriority, planReopen, planReschedule, RuleError } from "./rules";
+import { planComplete, planFocus, planReopen, planReschedule, RuleError } from "./rules";
 import { listTasks, patchTask, restoreTask, todayISO, trashTask } from "./store";
 import type { Task, TaskPatch } from "./types";
 
@@ -40,20 +40,8 @@ export const rescheduleTask = authedAction("rescheduleTask", z.object({ id }), a
   apply(i.id, (task) => planReschedule(task)),
 );
 
-export const moveTask = authedAction(
-  "moveTask",
-  z.object({ id, list: z.enum(["today", "week", "later"]) }),
-  async (i) => apply(i.id, (task) => planMove(task, i.list)),
-);
-
 export const setFocus = authedAction("setFocus", z.object({ id, on: z.boolean() }), async (i) =>
   apply(i.id, (task, all) => planFocus(task, i.on, all)),
-);
-
-export const setPriority = authedAction(
-  "setPriority",
-  z.object({ id, priority: z.enum(["high", "medium", "low"]).nullable() }),
-  async (i) => apply(i.id, () => planPriority(i.priority)),
 );
 
 export const deleteTask = authedAction("deleteTask", z.object({ id }), async (i) => {

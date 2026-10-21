@@ -6,7 +6,7 @@ import { checkSessionToken, createSessionToken, SESSION_COOKIE, sessionCookieOpt
 // in jeder Page, Server Action und Route (requireSession / Token-Prüfung).
 
 // Diese Routen authentifizieren sich selbst (Bearer-Token, Secret) oder sind öffentlich.
-const PUBLIC_PATHS = ["/login", "/api/capture", "/api/health", "/api/hooks/"];
+const PUBLIC_PATHS = ["/login", "/api/capture", "/api/health"];
 
 function isPublic(pathname: string) {
   return PUBLIC_PATHS.some((p) => pathname === p || pathname.startsWith(p.endsWith("/") ? p : p + "/"));

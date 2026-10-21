@@ -5,7 +5,6 @@ export const TAGS = {
   goals: "goals",
   calendar: "calendar",
   digest: "digest",
-  status: "status",
 } as const;
 
 export type CacheTag = (typeof TAGS)[keyof typeof TAGS];
@@ -15,7 +14,5 @@ export const TTL = {
   tasks: 60,
   goals: 60 * 60 * 24,
   calendar: 5 * 60,
-  digest: 15 * 60, // neue Ausgabe kommt morgens einmal, kurze TTL hält das Warten danach klein
-  discover: 30 * 60, // Discover-Feed (7 Tage Digest Archive, Tag „digest“); bewusst ohne manuelle Invalidierung
-  status: 5 * 60,
+  discover: 30 * 60, // Read-Feed (7 Tage Digest Archive, Tag „digest“); bewusst ohne manuelle Invalidierung
 } as const;
