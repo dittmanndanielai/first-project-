@@ -5,6 +5,10 @@ Grundlage: Design-Artefakt „Personal OS“ (7 Boards: Desktop hell/dunkel, iPh
 
 **Belegstatus:** ✅ verifiziert (live geprüft oder aus Paketquelle) · 🔶 Annahme · 📊 Schätzung · ❓ vor Implementierung prüfen
 
+> Seit 21.10.2026 gilt für den Ist-Zustand [`../personal-os/ARCHITECTURE.md`](../personal-os/ARCHITECTURE.md) und für
+> Prioritäten und Status [`../personal-os/ROADMAP.md`](../personal-os/ROADMAP.md). Dieses Dokument bleibt als
+> Planungsgrundlage mit Begründungen erhalten; sein Umsetzungsstand und Abschnitt I werden nicht mehr fortgeschrieben.
+
 ## Umsetzungsstand (12.10.2026, nach Freigabe „lets go“)
 
 | Bereich | Stand |

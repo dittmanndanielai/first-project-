@@ -1,6 +1,6 @@
 # Personal OS: Vorgehen, Stand und Kalender-Vorschlag
 
-Stand 14.10.2026
+Stand 14.10.2026 · Aktueller Status: [`personal-os/ROADMAP.md`](personal-os/ROADMAP.md)
 
 ## So arbeiten wir
 

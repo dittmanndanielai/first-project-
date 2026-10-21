@@ -3,7 +3,8 @@
 Persönliches AI Operating System für iPhone, iPad und Mac: Today-Dashboard, Aufgaben aus Notion,
 Quick Capture über n8n, ElevenLabs-Sprachassistent als Orb. Next.js 16 auf Vercel, keine eigene Datenbank.
 
-- Architektur und Roadmap: [`docs/architecture/personal-os-blueprint.md`](docs/architecture/personal-os-blueprint.md)
+- Ist-Architektur: [`docs/personal-os/ARCHITECTURE.md`](docs/personal-os/ARCHITECTURE.md) · Roadmap und Status: [`docs/personal-os/ROADMAP.md`](docs/personal-os/ROADMAP.md)
+- Planungsstand 12.10. mit Begründungen: [`docs/architecture/personal-os-blueprint.md`](docs/architecture/personal-os-blueprint.md)
 - Regeln für die Weiterentwicklung: [`CLAUDE.md`](CLAUDE.md)
 - Notion-Vertrag mit n8n: [`docs/notion-contract.md`](docs/notion-contract.md)
 - Betrieb n8n/ElevenLabs: [`claude/daily-todo-call-setup.md`](claude/daily-todo-call-setup.md)
