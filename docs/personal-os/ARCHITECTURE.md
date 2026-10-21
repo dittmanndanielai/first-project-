@@ -1,7 +1,7 @@
 # Personal OS: Ist-Architektur
 
 Stand 21.10.2026 · Geprüft am Code (`c09f285`), live in n8n, Notion und ElevenLabs (nur lesend).
-Nachgeführt nach Slice 1 (Branch `claude/slice-1-focus-shell`, noch nicht deployt) und D2 (n8n, live seit 22.10., 01:02 Berlin).
+Nachgeführt nach Slice 1 (auf Production gemergt 22.10.) und D2 (n8n, live seit 22.10., 01:02 Berlin).
 Prioritäten und Status: [`ROADMAP.md`](ROADMAP.md). Planungsstand und Begründungen vom 12.10.:
 [`../architecture/personal-os-blueprint.md`](../architecture/personal-os-blueprint.md).
 
