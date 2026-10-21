@@ -302,7 +302,7 @@ export function DiscoverApp({ intelligence, status, learning, nextDigest, today 
   return (
     <div className={`dc ${ready ? "is-ready" : ""}`} inert={modal}>
       <header className="dc-head">
-        <h1 className="dc-h1">Discover</h1>
+        <h1 className="dc-h1">Read</h1>
         <div className="dc-head-row">
           <div className="dc-seg" role="group" aria-label="Feed">
             {FEEDS.map((f) => (

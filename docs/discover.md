@@ -14,7 +14,7 @@ Vertikaler Card-Feed mit zwei Modi: **Intelligence** (Stories der letzten 7 Tage
 | Archiv-Adapter `features/digest/notion-map.ts` | `storyFromNotion`, `recentStoriesQuery`, `safeUrl` | 7 neue Properties (Kernpunkte … Quelle), `storyByIdQuery`, `TOPIC_TO_NOTION`; fehlende Properties → leere Werte, nie ein Fehler |
 | Auth `requireSession()` / `hasSession()`, Proxy | Page in `<Suspense>`, Route Handler mit `hasSession` | – |
 | Zeit `lib/time.ts` (Europe/Berlin) | `isoDate`, `minutesOfDay`, `minusDays` | `germanDayLabel` („Di. 13. Okt.“) |
-| Design-Tokens `globals.css`, Toast, Icons, Nav | alle Repo-Tokens (`--card`, `--text`, `--accent` …) | Themenfarben `--tone-*` und `--economist` (fehlten), Icons Kompass und Daumen |
+| Design-Tokens `globals.css`, Toast, Icons, Nav | alle Repo-Tokens (`--card`, `--text`, `--accent` …) | Themenfarben `--tone-*` und `--economist` (fehlten), Icons Kompass (seit Slice 1 entfernt, Read nutzt das Digest-Icon) und Daumen |
 | Env `lib/env.ts` (Zod, server-only) | – | `NOTION_FEEDBACK_DS_ID`, `DISCOVER_FEEDBACK_WRITE` |
 
 ## Wo Discover liegt
@@ -28,7 +28,7 @@ Vertikaler Card-Feed mit zwei Modi: **Intelligence** (Stories der letzten 7 Tage
 
 ## Entscheidungen
 
-1. **Cache = fetch-Cache** wie die Digest-Seite (Tag `digest`, 30 min, persistiert auf Vercel), kein `unstable_cache`.
+1. **Cache = fetch-Cache** (Tag `digest`, `TTL.discover` = 30 min, persistiert auf Vercel), kein `unstable_cache`.
    Kein Endpunkt zur manuellen Invalidierung. Der ganze Feed kommt in einer Antwort; Swipen lädt nichts (gemessen: 0 Requests).
 2. **Learning-Validierung** per Zod beim Laden des Moduls: ein ungültiger Eintrag bricht `next build` und die Tests ab.
 3. **Reihenfolge Intelligence:** Tag absteigend; im Tag volle Karten vor Thin-Cards, Impact Hoch → Niedrig, dann der jüngere

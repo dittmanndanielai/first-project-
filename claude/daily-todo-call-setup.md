@@ -59,9 +59,9 @@ Rollenverteilung: Notion hält Wissen und Konfiguration, n8n führt aus und logg
 
 Hinweis: Die IDs aus Session 1 (`agent_9401…`, `tool_6401…`) tauchen im Connector nicht mehr auf. Der Connector sieht genau einen Agenten mit den neuen IDs, angelegt 11.10. 21:47 Uhr. Das ist sehr wahrscheinlich der Umzug nach „My Workspace“ aus einem anderen Chat. Bitte einmal in der ElevenLabs-Oberfläche bestätigen (siehe Offen O6).
 
-## Änderung 21.10.2026: Status-Kachel entlastet (D2)
+## Änderung 22.10.2026, 01:02 Berlin: Status-Kachel entlastet (D2)
 
-Freigabe D2 durch Daniel („D2 agree“, 21.10.2026), Grundlage `docs/personal-os/ROADMAP.md`. Anlass: `M_cockpit_status`
+Freigabe D2 durch Daniel („D2 agree“, Nacht 21./22.10.2026), Grundlage `docs/personal-os/ROADMAP.md`. Anlass: `M_cockpit_status`
 erzeugte 25 von 70 Ausführungen pro Tag (18 stündlich, 7 nach Log-Einträgen) und hatte eine ungeschützte HTML-Ansicht.
 
 | # | Aktion | Objekt | Details |
@@ -72,7 +72,12 @@ erzeugte 25 von 70 Ausführungen pro Tag (18 stündlich, 7 nach Log-Einträgen) 
 
 Geprüft (nur lesend): Versions-Diff zeigt genau diese 5 entfernten Nodes und die geänderte Cron-Zeile; Verbindung
 Zeitplan → „Agent Log laden“ besteht; aktiver Trigger nur noch der Zeitplan. Kachel-Logik, Credentials und alle anderen
-Workflows unverändert. Erwartete Wirkung 📊: −22 Ausführungen/Tag (≈ −660/Monat). Die Kachel ist bis zu 6 h alt statt ≤ 1 h.
+Workflows unverändert. Erwartete Wirkung 📊: −22 Ausführungen/Tag (≈ −660/Monat). Die Kachel ist tagsüber bis zu 6 h, über Nacht (19:05 → 07:05)
+bis zu 12 h alt; vorher wurde sie nach jedem Log-Eintrag aktualisiert. Fehler meldet weiterhin sofort die Mail aus `ERR_notify`.
+Geprüft: kein anderer Workflow ruft `M_cockpit_status` auf (alle aktiven Workflows durchsucht).
+
+Offen (braucht Freigabe, ROADMAP D6): Notion „Agent Cockpit“ beschreibt in „Funktionen“ und im Strukturbild noch die alten
+Auslöser („nach jedem Lauf + stündlich“, Kante SUB_log → Status-Kachel).
 
 Rückweg: in n8n je Workflow die Vorgängerversion (`0e838de4` für SUB_log, `dcbce84b` für M_cockpit_status)
 wiederherstellen und veröffentlichen, zuerst M_cockpit_status (Trigger wieder da), danach SUB_log.

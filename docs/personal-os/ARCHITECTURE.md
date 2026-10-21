@@ -1,7 +1,7 @@
 # Personal OS: Ist-Architektur
 
 Stand 21.10.2026 · Geprüft am Code (`c09f285`), live in n8n, Notion und ElevenLabs (nur lesend).
-Nachgeführt nach Slice 1 (Branch `claude/slice-1-focus-shell`, noch nicht deployt) und D2 (n8n, live).
+Nachgeführt nach Slice 1 (Branch `claude/slice-1-focus-shell`, noch nicht deployt) und D2 (n8n, live seit 22.10., 01:02 Berlin).
 Prioritäten und Status: [`ROADMAP.md`](ROADMAP.md). Planungsstand und Begründungen vom 12.10.:
 [`../architecture/personal-os-blueprint.md`](../architecture/personal-os-blueprint.md).
 
@@ -90,7 +90,7 @@ Secrets nur in `lib/env.ts` (server-only, Zod).
 | TODOS | `b8065b38-…-e8708fc1b680` | App (Status, Liste, Prio, Fokus, Papierkorb), n8n Capture/Post-Call/`SUB_todos_apply`/Hygiene | App, `SUB_todos` |
 | Goals | `467d56b3-…-08d47c443b7b` | Daniel | App (Chip), `B_news_digest` (Scoring, `Status = aktiv`) |
 | Digest Archive | `42a6a120-…-f7d5002a2d11` | `B_news_digest` (2×/Tag, ≤ 8 Stories/Lauf) | App `/read`, Digest-Dedupe |
-| Digest Feedback | `dc9965a6-…-4d95894363ec` | `B_feedback` (Mail-Klicks, „Moves“), App „Relevant“ (Dry-Run per Default) | Digest-Scoring (60 Tage) |
+| Digest Feedback | `dc9965a6-…-4d95894363ec` | `B_feedback` (Mail-Klicks, „Moves“), App „Relevant“ (Dry-Run per Default) | Digest-Scoring (Bonus für `klick` der letzten 30 Tage; Abfrage lädt 60 Tage) |
 | 🧠 Knowledge | `e699b992-…-fdf013a7a0fe` | `B_news_digest` (≤ 2 Konzepte/Lauf) | **niemand** ✅ (Feld „Zuletzt abgefragt“ in Stichproben leer) |
 | Agent Log | `b3790be9-…-09d171cd1622` | `SUB_log` | `M_cockpit_status`, `M_improve`, Meta-Review |
 | Agent Config, Prompts | `d62ed4d7-…`, `c768fdf4-…` | Daniel, **`M_improve` (nächtlich, ändert Prompts selbst)** | `SUB_config` |
@@ -122,7 +122,7 @@ Sub-Workflow. `M_cockpit_status` allein: 25 (18 Zeitplan + 7 nach Log-Einträgen
 Einstiegs-Ausführungen. Ein Capture erzeugt 7 Ausführungen (`D_todo_capture`, `SUB_llm`, 2× `SUB_config`, `SUB_cost`,
 `SUB_log`, `M_cockpit_status`). Kontingent laut Status-Kachel 2.500/Monat; ob Sub-Workflows zählen ❓.
 📊 Hochgerechnet ≈ 780 (nur Einstiege) bis ≈ 2.100 (alle) Ausführungen/Monat, davon `M_cockpit_status` ≈ 540–750.
-**Seit D2 (21.10., 23:02):** `M_cockpit_status` 3×/Tag, kein Anstoß mehr aus `SUB_log`, ein Capture erzeugt 6 statt 7
+**Seit D2 (22.10., 01:02 Berlin = 21.10., 23:02 UTC):** `M_cockpit_status` 3×/Tag, kein Anstoß mehr aus `SUB_log`, ein Capture erzeugt 6 statt 7
 Ausführungen. Erwartet 📊 −22 Ausführungen/Tag; Nachmessung in ROADMAP M3.
 
 ## 5. ElevenLabs (live geprüft 21.10.) ✅

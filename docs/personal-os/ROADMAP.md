@@ -51,7 +51,7 @@ täglich als Zeitung und Discover nicht (nicht messbar, F16) → dann Read = Dig
 |---|---|---|---|
 | M1 | S1 | 4 Tabs, kein Demo-Inhalt, `check` + `build` grün auf frischem Clone | ✅ verifiziert 21.10. (Branch); Deploy wartet auf Freigabe |
 | M2 | S2 | Nach 2 Wochen keine offene Aufgabe länger als 7 Tage auf Heute ohne Entscheidung (Weekly Review zählt) | offen |
-| M3 | S3 | n8n-Einstiegs-Ausführungen/Tag −50 % (Basis 26 am 21.10.); Agent nur mit Token; `/postcall` mit falscher Signatur ändert nichts; ein echter Voice-Call lädt die Liste | Lastteil live seit 21.10. (Nachmessung ab 23.10.); Sicherheitsteil verschoben (D3) |
+| M3 | S3 | n8n-Einstiegs-Ausführungen/Tag −50 % (Basis 26 am 21.10.); Agent nur mit Token; `/postcall` mit falscher Signatur ändert nichts; ein echter Voice-Call lädt die Liste | Lastteil live seit 22.10., 01:02 Berlin (Nachmessung ab 23.10.); Sicherheitsteil verschoben (D3) |
 | M4 | S4 | Eine Lernquelle in der App, alle Karten geprüft, Knowledge wird gelesen | offen |
 | M5 | S5 | Task-Regeln nur noch in `rules.ts`, n8n ohne eigene Notion-Patch-Logik für TODOS | offen, erst bei Voice/Chat-Nutzung |
 | M6 | S6 | Weekly Review enthält App-Nutzung und Zielbezug | wartet auf D4 |
@@ -89,6 +89,12 @@ täglich als Zeitung und Discover nicht (nicht messbar, F16) → dann Read = Dig
 | A8 | `npm run build` grün, alle App-Routen ◐ | Build-Ausgabe | ✅ alle App-Routen ◐, `/digest`, `/discover`, `/investments` nicht mehr im Build |
 | A9 | Netto weniger Zeilen in `src/` | `git diff --stat` | ✅ `src/`: +66 / −798 Zeilen; mit Tests und Konfiguration +125 / −921 |
 
+**Unabhängiges Review (21./22.10.):** 5 Prüfer mit getrennten Blickwinkeln (Korrektheit, Next.js/Sicherheit, Doku,
+n8n-D2 live, UI) plus je eine Gegenprüfung. 13 Befunde bestätigt, 0 Blocker, 2 verworfen. Behoben: Überschrift „Discover“ →
+„Read“, veraltete Kommentare/Doku, D2-Zeit in Berliner Zeit, Scoring-Fenster 30 Tage, Hinweis zu veralteten
+`.next/dev`-Typen. Offen: Notion-Cockpit-Text (D6). Bekannt und unverändert: Capture liegt beim ersten Laden auf dem
+iPhone unter der Tab-Bar; `/read` hat auf dem iPhone keinen Avatar-Zugang zu Settings.
+
 **Rollback:** Revert des Merge-Commits. Redirects sind temporär (307), Daten sind nicht betroffen.
 **Auslieferung:** Merge auf `claude/personal-os-architecture-nav59w` = Production-Deploy → nur nach Freigabe; danach
 Abnahme durch Daniel auf dem iPhone.
@@ -98,10 +104,11 @@ Abnahme durch Daniel auf dem iPhone.
 | ID | Frage | Entscheidung |
 |---|---|---|
 | D1 | Navigation weicht vom Design-Board ab: 4 Ziele, Read = Discover, Digest-Seite und Investments entfallen? | ✅ freigegeben 21.10. → Slice 1 |
-| D2 | `M_cockpit_status`: Trigger „nach jedem Log-Eintrag“ entfernen, Zeitplan auf 3×/Tag (07, 13, 19 Uhr), ungeschützte HTML-Ansicht löschen? | ✅ freigegeben und umgesetzt 21.10. (Audit-Log W42–W44) |
+| D2 | `M_cockpit_status`: Trigger „nach jedem Log-Eintrag“ entfernen, Zeitplan auf 3×/Tag (07, 13, 19 Uhr), ungeschützte HTML-Ansicht löschen? | ✅ freigegeben, live seit 22.10., 01:02 Berlin (Audit-Log W42–W44). Offen: Cockpit-Seite in Notion beschreibt noch die alten Auslöser (Änderung braucht Freigabe, D6) |
 | **D3** | Voice: Sicherheit herstellen (Agent-Auth + Allowlist, Tool-Schlüssel als Workspace-Secret, HMAC `/postcall`) und den Top-3-Schritt aus dem Agent-Prompt nehmen, bis S5 steht? | ⏸ **verschoben** 21.10. auf Daniels Wunsch. Empfehlung bleibt: umsetzen. Wiedervorlage: vor der nächsten echten Voice-Nutzung, vor S5, spätestens im Weekly Review KW44 |
 | D4 | Speicherort für App-Nutzungssignale (S6): Tageszeile im Notion „Agent Log“ oder Vercel Web Analytics (neuer Dienst, ADR)? | offen; Empfehlung Agent Log, entscheiden nach M2 |
 | D5 | Deploy von Slice 1: Merge von `claude/slice-1-focus-shell` auf den Production-Branch? | offen |
+| D6 | Notion „Agent Cockpit“: Zeile „Status-Kachel“ auf „07:05, 13:05, 19:05“ und Kante `SUB_log → Status-Kachel` im Strukturbild entfernen (nur Seiteninhalt, kein Schema)? | offen; Empfehlung ja |
 
 ## Bewusst offen (Folge von D3, Stand 21.10.)
 

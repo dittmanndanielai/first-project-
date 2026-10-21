@@ -1,6 +1,7 @@
 # Personal OS: Vorgehen, Stand und Kalender-Vorschlag
 
-Stand 14.10.2026 · Aktueller Status: [`personal-os/ROADMAP.md`](personal-os/ROADMAP.md)
+Stand 14.10.2026 · Aktueller Status: [`personal-os/ROADMAP.md`](personal-os/ROADMAP.md). Seit Slice 1 (21.10.) gibt es die
+Digest-Seite, den Digest-Tab und Investments nicht mehr; gelesen wird in Read (`/read`).
 
 ## So arbeiten wir
 

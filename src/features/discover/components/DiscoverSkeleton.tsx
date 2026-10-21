@@ -1,9 +1,9 @@
 // Ladezustand in Kartenform (Eyebrow-, Titel- und Textbalken), kein Spinner.
 export function DiscoverSkeleton() {
   return (
-    <div className="dc" aria-busy="true" aria-label="Discover lädt">
+    <div className="dc" aria-busy="true" aria-label="Read lädt">
       <header className="dc-head">
-        <h1 className="dc-h1">Discover</h1>
+        <h1 className="dc-h1">Read</h1>
         <div className="dc-head-row">
           <div className="dc-seg" aria-hidden="true">
             <button type="button" tabIndex={-1} aria-pressed="true">

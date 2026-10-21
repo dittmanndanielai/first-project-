@@ -13,7 +13,7 @@ import { orderStories, storyToCard } from "./intelligence";
 import type { DiscoverCard, IntelligenceStatus } from "./types";
 
 // Intelligence-Feed aus dem Notion „Digest Archive“, nur lesend (Schreiber ist n8n B_news_digest).
-// Cache: fetch-Cache wie die Digest-Seite (persistiert auf Vercel), 30 Minuten, Tag „digest“.
+// Cache: fetch-Cache (persistiert auf Vercel), TTL.discover = 30 Minuten, Tag „digest“.
 // Bewusst kein Endpunkt zur manuellen Invalidierung. Der ganze Feed kommt mit der Seite; Swipen lädt nichts nach.
 
 type QueryResult = { results: unknown[]; has_more: boolean; next_cursor: string | null };
