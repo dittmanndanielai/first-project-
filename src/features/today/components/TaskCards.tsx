@@ -2,10 +2,11 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { CheckIcon, StarIcon } from "@/components/ui/icons";
-import { deriveToday, isStale } from "@/features/tasks/rules";
+import { Card } from "@/components/ui/Card";
+import { CheckIcon, ExternalIcon, PlusIcon, StarIcon } from "@/components/ui/icons";
+import { attentionFor, deriveToday, FOCUS_LIMIT, isStale, needsAttention, type AttentionItem } from "@/features/tasks/rules";
 import { CheckButton, TaskMeta, TaskRow } from "@/features/tasks/components/TaskRow";
-import { useTasks } from "@/features/tasks/components/TasksProvider";
+import { LIST_LABEL, useTasks } from "@/features/tasks/components/TasksProvider";
 import type { Task, TaskList } from "@/features/tasks/types";
 
 const TABS: { key: TaskList; label: string }[] = [
@@ -14,72 +15,114 @@ const TABS: { key: TaskList; label: string }[] = [
   { key: "later", label: "Later" },
 ];
 
+/** Top 3: höchstens drei aktive Prioritäten (offen, auf Heute) plus eine Zeile Tagesüberblick. */
 export function FocusCard() {
-  const { tasks, toggleFocus } = useTasks();
-  const { focus } = deriveToday(tasks);
-  const done = focus.filter((t) => t.status === "done").length;
-  const feedback =
-    focus.length && done === focus.length
-      ? "Top 3 done. Everything else today is a bonus."
-      : done > 0
-        ? `Nice — ${done} down, ${focus.length - done} to go.`
-        : "";
+  const { tasks, toggleFocus, pickFocus } = useTasks();
+  const { focus, progress } = deriveToday(tasks);
+  const free = FOCUS_LIMIT - focus.length;
 
   return (
-    <section className="card m-focus" style={{ padding: "20px 18px 16px", display: "flex", flexDirection: "column", gap: 10 }} aria-labelledby="focus-h">
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 4px" }}>
-        <h2 id="focus-h" className="card-title">
-          Today&apos;s Focus
-        </h2>
-        <span style={{ fontSize: 12.5, color: "var(--text2)" }}>
-          {done} of {focus.length}
-        </span>
-      </div>
-      {focus.length ? (
-        <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
-          {focus.map((t) => (
-            <div className="row" style={{ padding: "9px 8px" }} key={t.id}>
-              <CheckButton task={t} />
-              <div style={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column", gap: 2 }}>
-                <span className={t.status === "done" ? "title-done" : ""} style={{ fontSize: 14, fontWeight: 500, lineHeight: 1.3 }}>
-                  {t.title}
-                </span>
-                <TaskMeta task={t} />
-              </div>
-              <div className="row-actions">
-                <button type="button" className="mini on" onClick={() => toggleFocus(t)} aria-label="Remove from Top 3">
-                  <StarIcon filled />
-                </button>
-              </div>
+    <Card id="focus-h" title="Top 3" aside={`${focus.length} of ${FOCUS_LIMIT}`} className="m-focus">
+      <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
+        {focus.map((t) => (
+          <div className="row" style={{ padding: "9px 8px" }} key={t.id}>
+            <CheckButton task={t} />
+            <div style={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column", gap: 2 }}>
+              <span style={{ fontSize: 14, fontWeight: 500, lineHeight: 1.3 }}>{t.title}</span>
+              <TaskMeta task={t} />
             </div>
-          ))}
+            <div className="row-actions">
+              <button type="button" className="mini on" onClick={() => toggleFocus(t)} aria-label="Remove from Top 3" title="Remove from Top 3">
+                <StarIcon filled />
+              </button>
+            </div>
+          </div>
+        ))}
+        {free > 0 ? (
+          <button type="button" className="slot-add" onClick={pickFocus}>
+            <PlusIcon size={16} />
+            {focus.length === 0 ? "Choose up to three priorities for today" : `Add a priority (${free} free)`}
+          </button>
+        ) : null}
+      </div>
+      <p className="day-line">
+        {progress.total === 0 ? (
+          "Nothing planned for today yet."
+        ) : progress.left === 0 ? (
+          <>
+            <b>All {progress.done} done</b> · everything else is a bonus
+          </>
+        ) : (
+          <>
+            <b>{progress.left} left</b> today · {progress.done} done
+          </>
+        )}
+      </p>
+    </Card>
+  );
+}
+
+/** Höchstens drei Aufgaben, die eine Entscheidung brauchen. Ohne Treffer keine Karte. */
+export function NeedsAttentionCard() {
+  const { tasks, today } = useTasks();
+  const { items, total } = needsAttention(tasks, today);
+  if (items.length === 0) return null;
+  return (
+    <Card id="attn-h" title="Needs attention" aside={total > items.length ? `${items.length} of ${total}` : undefined} className="m-attention">
+      <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+        {items.map((item) => (
+          <AttentionRow key={item.task.id} item={item} />
+        ))}
+      </div>
+    </Card>
+  );
+}
+
+function AttentionRow({ item }: { item: AttentionItem }) {
+  const { toggleDone, toggleFocus, move, reschedule } = useTasks();
+  const { task, reason, label } = item;
+  const onToday = task.list === "today";
+
+  const done = { key: "done", label: "Done", run: () => toggleDone(task) };
+  const doToday = { key: "today", label: "Do today", run: () => move(task, "today") };
+  const top3 = { key: "top3", label: "Top 3", run: () => toggleFocus(task) };
+  const thisWeek = { key: "week", label: "This week", run: () => reschedule(task) };
+  const later = { key: "later", label: "Later", run: () => move(task, "later") };
+  const unstar = { key: "unstar", label: "Remove from Top 3", run: () => toggleFocus(task) };
+
+  const actions =
+    reason === "focusOffToday"
+      ? [doToday, unstar]
+      : reason === "overdue"
+        ? [done, onToday ? top3 : doToday]
+        : reason === "dueToday"
+          ? [doToday, done]
+          : reason === "postponed"
+            ? [done, onToday ? top3 : doToday, ...(task.list !== "later" ? [later] : [])]
+            : [done, top3, thisWeek];
+
+  return (
+    <div className="attn">
+      <div className="attn-head">
+        <div className="attn-text">
+          <span className="attn-title">{task.title}</span>
+          <span className="attn-why">
+            {label}
+            {onToday || reason === "focusOffToday" ? "" : ` · ${LIST_LABEL[task.list]}`}
+          </span>
         </div>
-      ) : (
-        <div style={{ padding: "22px 10px", textAlign: "center", color: "var(--text2)", fontSize: 13.5, lineHeight: 1.5 }}>
-          No focus tasks yet.
-          <br />
-          Star up to three tasks to set your day.
-        </div>
-      )}
-      {feedback ? (
-        <div
-          style={{
-            margin: "2px 4px 0",
-            padding: "10px 12px",
-            borderRadius: 12,
-            background: "var(--accentSoft)",
-            fontSize: 12.5,
-            display: "flex",
-            alignItems: "center",
-            gap: 8,
-            animation: "rise .35s ease",
-          }}
-        >
-          <CheckIcon size={14} strokeWidth={2.2} className="text-[var(--accent)]" />
-          {feedback}
-        </div>
-      ) : null}
-    </section>
+        <a className="mini" href={task.url} target="_blank" rel="noreferrer" aria-label={`Open ${task.title} in Notion`} title="Open in Notion">
+          <ExternalIcon />
+        </a>
+      </div>
+      <div className="attn-actions">
+        {actions.map((a, i) => (
+          <button key={a.key} type="button" className={`btn btn-sm ${i === 0 ? "btn-primary" : ""}`} onClick={a.run}>
+            {a.label}
+          </button>
+        ))}
+      </div>
+    </div>
   );
 }
 
@@ -101,7 +144,7 @@ export function MyTasksCard() {
         </button>
       </div>
       {reviewing ? (
-        <ReviewMode tasks={view.byList.today.filter((t) => t.status === "open")} />
+        <ReviewMode tasks={view.byList.today.filter((t) => t.status === "open").sort((a, b) => a.createdAt.localeCompare(b.createdAt))} />
       ) : (
         <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
           <div className="seg" role="tablist" aria-label="Timeframe" style={{ alignSelf: "flex-start" }}>
@@ -130,7 +173,7 @@ export function MyTasksCard() {
 
 /** Tagesreview aus dem Design: eine Aufgabe nach der anderen entscheiden. */
 function ReviewMode({ tasks }: { tasks: Task[] }) {
-  const { toggleDone, reschedule, toggleFocus, remove } = useTasks();
+  const { toggleDone, reschedule, toggleFocus, remove, today } = useTasks();
   // Entschiedene IDs merken, damit die Liste nicht springt, wenn Notion nachzieht.
   const [decided, setDecided] = useState<string[]>([]);
   const open = tasks.filter((t) => !decided.includes(t.id));
@@ -163,7 +206,11 @@ function ReviewMode({ tasks }: { tasks: Task[] }) {
       <div style={{ padding: 16, borderRadius: 16, background: "var(--fill)", display: "flex", flexDirection: "column", gap: 6 }}>
         <div style={{ fontSize: 15, fontWeight: 600, lineHeight: 1.3 }}>{task.title}</div>
         <TaskMeta task={task} />
-        {isStale(task) ? <div style={{ fontSize: 12, color: "var(--warn)" }}>Postponed {task.postponed} times. Time to decide.</div> : null}
+        {attentionFor(task, today) ? (
+          <div style={{ fontSize: 12, color: "var(--warn)" }}>{attentionFor(task, today)?.label}. Time to decide.</div>
+        ) : isStale(task) ? (
+          <div style={{ fontSize: 12, color: "var(--warn)" }}>Postponed {task.postponed} times. Time to decide.</div>
+        ) : null}
       </div>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(3, minmax(0, 1fr))", gap: 6 }}>
         <button type="button" className="btn btn-primary" onClick={() => next(() => toggleDone(task))}>

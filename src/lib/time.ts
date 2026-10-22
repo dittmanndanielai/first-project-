@@ -56,6 +56,15 @@ export function addDays(iso: string, days: number): string {
   return new Date(Date.UTC(y, m - 1, d) + days * 86_400_000).toISOString().slice(0, 10);
 }
 
+/** Ganze Kalendertage von `from` bis `to` (YYYY-MM-DD), negativ, wenn `to` früher liegt. */
+export function daysBetween(from: string, to: string): number {
+  const utc = (iso: string) => {
+    const [y, m, d] = iso.slice(0, 10).split("-").map(Number);
+    return Date.UTC(y, m - 1, d);
+  };
+  return Math.round((utc(to) - utc(from)) / 86_400_000);
+}
+
 /** Kalendertag minus n Tage (YYYY-MM-DD). */
 export function minusDays(iso: string, days: number): string {
   return addDays(iso, -days);

@@ -12,7 +12,7 @@ Data Source: `b8065b38-5580-43fc-b022-e8708fc1b680` · API-Version `2025-09-03`
 | `Liste` | select | `Heute`, `Diese Woche`, `Broader Timeframe` | liest, setzt (verschieben, Top 3) | liest, setzt |
 | `Prio` | select | `Hoch`, `Mittel`, `Niedrig` | liest, setzt | liest, setzt |
 | `Status` | select | `offen`, `erledigt` (leer = offen) | liest, setzt | liest, setzt, Hygiene füllt leer → offen |
-| `Fokus` | checkbox | Top 3 für heute, max. 3 offene | liest, setzt | ignoriert (neu seit 12.10.2026) |
+| `Fokus` | checkbox | Top 3 für heute, max. 3 offene auf Heute | liest, setzt; Erledigen und Verlassen von Heute setzen `false` | ignoriert (neu seit 12.10.2026); ein Fokus außerhalb von Heute zählt in der App nicht |
 | `Datum` | date | nur harte Deadlines | liest | setzt (Capture) |
 | `Erledigt am` | date | Tag des Erledigens (Europe/Berlin) | setzt beim Erledigen, leert beim Öffnen | setzt |
 | `reschedule_count` | number | +1 nur beim Verschieben in eine spätere Liste | liest, setzt | liest, setzt |

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { PlusIcon, StarIcon } from "@/components/ui/icons";
-import { deriveToday } from "../rules";
+import { deriveToday, FOCUS_LIMIT } from "../rules";
 import type { Task, TaskList } from "../types";
 import { CheckButton, TaskMeta, TaskRow } from "./TaskRow";
 import { TasksProvider, useTasks } from "./TasksProvider";
@@ -24,7 +24,6 @@ export function TasksBoard({ tasks, today }: { tasks: Task[]; today: string }) {
 function Board() {
   const { tasks, toggleFocus } = useTasks();
   const view = deriveToday(tasks);
-  const focusDone = view.focus.filter((t) => t.status === "done").length;
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
@@ -42,9 +41,9 @@ function Board() {
       <section className="card" style={{ padding: "20px 18px 18px", display: "flex", flexDirection: "column", gap: 14 }} aria-labelledby="tf-h">
         <div style={{ display: "flex", flexWrap: "wrap", alignItems: "baseline", justifyContent: "space-between", gap: 8, padding: "0 4px" }}>
           <h2 id="tf-h" className="card-title" style={{ fontSize: 16 }}>
-            Today&apos;s Focus{" "}
+            Top 3{" "}
             <span style={{ fontSize: 12.5, fontWeight: 400, color: "var(--text2)", marginLeft: 6 }}>
-              {focusDone} of {view.focus.length}
+              {view.focus.length} of {FOCUS_LIMIT}
             </span>
           </h2>
           <span style={{ fontSize: 12, color: "var(--text2)" }}>Star any task below to change your Top 3</span>

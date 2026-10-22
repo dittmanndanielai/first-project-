@@ -400,6 +400,155 @@ a:hover {
   font-weight: 500;
   white-space: nowrap;
 }
+/* Karte mit Kopfzeile (components/ui/Card) */
+.card-pad {
+  padding: 20px 18px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 0 4px;
+}
+.card-aside {
+  font-size: 12.5px;
+  color: var(--text2);
+  white-space: nowrap;
+}
+.btn-sm {
+  height: 28px;
+  padding: 0 11px;
+  font-size: 12.5px;
+}
+/* Today: Top 3 und Needs Attention */
+.slot-add {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 9px 10px;
+  border: 1px dashed var(--line2);
+  border-radius: 12px;
+  background: none;
+  color: var(--text2);
+  font: inherit;
+  font-size: 13.5px;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+.slot-add:hover {
+  background: var(--fill);
+  color: var(--text);
+}
+.day-line {
+  margin: 2px 4px 0;
+  font-size: 12.5px;
+  color: var(--text2);
+}
+.day-line b {
+  color: var(--text);
+  font-weight: 600;
+}
+.attn {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px 12px 12px 14px;
+  border-radius: 14px;
+  background: var(--fill);
+}
+.attn-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+.attn-text {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.attn-title {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.3;
+}
+.attn-why {
+  font-size: 12px;
+  color: var(--warn);
+}
+.attn-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+/* Auswahl-Sheet (components/ui/ChoiceSheet) */
+.sheet {
+  padding: 0;
+  border: 0;
+  border-radius: 22px;
+  background: var(--card);
+  color: var(--text);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.25);
+  width: min(420px, calc(100vw - 32px));
+  max-height: min(560px, 80vh);
+}
+.sheet::backdrop {
+  background: rgba(10, 12, 16, 0.35);
+}
+.sheet-body {
+  padding: 20px 18px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.sheet-msg {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--text2);
+}
+.sheet-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  overflow-y: auto;
+}
+.sheet-choice {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  width: 100%;
+  padding: 10px 12px;
+  border: 0;
+  border-radius: 12px;
+  background: var(--fill);
+  color: var(--text);
+  font: inherit;
+  font-size: 14px;
+  text-align: left;
+  cursor: pointer;
+}
+.sheet-choice:hover {
+  background: var(--accentSoft);
+}
+.sheet-detail {
+  font-size: 12px;
+  color: var(--text2);
+}
+@media (max-width: 760px) {
+  .sheet {
+    width: calc(100vw - 24px);
+    margin: auto auto calc(12px + env(safe-area-inset-bottom));
+  }
+}
 .dot {
   width: 7px;
   height: 7px;
@@ -701,7 +850,7 @@ a:hover {
   .page-header h1 {
     font-size: 28px;
   }
-  /* Today auf dem iPhone wie im Design: Orb, Top 3, Capture, dann der Rest */
+  /* Today auf dem iPhone wie im Design: Orb, Top 3, Capture, dann Needs Attention und der Rest */
   .grid3 > .col {
     display: contents;
   }
@@ -714,17 +863,20 @@ a:hover {
   .m-capture {
     order: 3;
   }
-  .m-tasks {
+  .m-attention {
     order: 4;
   }
-  .m-upcoming {
+  .m-tasks {
     order: 5;
   }
-  .m-progress {
+  .m-upcoming {
     order: 6;
   }
-  .m-law {
+  .m-progress {
     order: 7;
+  }
+  .m-law {
+    order: 8;
   }
   .m-assistant.card {
     background: transparent;

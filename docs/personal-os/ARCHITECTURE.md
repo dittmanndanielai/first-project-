@@ -154,7 +154,7 @@ IDs werden in `ROADMAP.md` referenziert. Status: offen · teilweise · behoben (
 | ID | Befund | Beleg | Status |
 |---|---|---|---|
 | F1 | **Task-Logik dreifach:** `features/tasks/rules.ts`, `SUB_todos_apply` („Aktionen planen“) und `D_daily_todo_call` („Notion-Aktionen planen“, eigene Kopie, ruft `SUB_todos_apply` nicht auf). Die Kopien sind bereits auseinandergelaufen (Prio-Validierung, `datum`, Zuordnung per ID nur in `SUB_todos_apply`) | ✅ Workflow-JSON | offen (S5) |
-| F2 | **Fokus-Drift:** Die App setzt `Fokus = false`, wenn eine Aufgabe Heute verlässt; n8n-„verschieben“ nicht. Eine per Voice verschobene Top-3-Aufgabe bleibt in Top 3 und blockiert das 3er-Limit | ✅ Code beider Seiten (nicht live reproduziert) | offen (S2) |
+| F2 | **Fokus-Drift:** Die App setzt `Fokus = false`, wenn eine Aufgabe Heute verlässt; n8n-„verschieben“ nicht. Eine per Voice verschobene Top-3-Aufgabe bleibt in Top 3 und blockiert das 3er-Limit | ✅ Code beider Seiten (nicht live reproduziert) | in der App abgefangen (S2: Top 3 zählt nur auf Heute, Drift erscheint in „Needs attention“); n8n unverändert |
 | F3 | **Top 3 per Voice geht verloren:** Agent-Prompt Schritt 5 „Lege mit Daniel die Top 3 fest“ und „alles Bestätigte wird eingetragen“, aber das Post-Call-Schema kennt keine Fokus-Aktion | ✅ Prompt + Schema | offen (D3 verschoben) |
 | F4 | **Voice aus der App lädt die Liste vermutlich nicht:** `zugang` fehlt (Abschnitt 5), `/context` verlangt den Schlüssel. Mit der aktuellen Agent-Version (seit 12./13.10.) kein Gespräch mit Tool-Aufruf | ✅ Konfiguration · ❓ Live-Test fehlt | offen (D3 verschoben) |
 | F5 | **Status-Kachel erzeugte die meiste n8n-Last** (Abschnitt 4) und hatte eine ungeschützte, nirgends eingebundene HTML-Ansicht | ✅ | behoben (D2, n8n live) |

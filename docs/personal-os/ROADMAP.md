@@ -4,7 +4,8 @@ Stand 21.10.2026 · Befunde F1–F16 und Belege: [`ARCHITECTURE.md`](ARCHITECTUR
 **Aktuell (22.10.):** D1, D2 und D5 freigegeben. Slice 1 ist auf den Production-Branch
 `claude/personal-os-architecture-nav59w` gemergt (Fast-Forward, Vercel baut automatisch). D2 ist live in n8n.
 **D3 ist auf Daniels Wunsch verschoben. Die damit offenen Risiken stehen unten unter „Bewusst offen“.**
-Nächster Slice: S2.
+S2 (Intelligent Today) umgesetzt auf Branch `claude/s2-intelligent-today`, **nicht deployt** (Freigabe offen).
+D3 bleibt verschoben, D6 wartet auf Freigabe, D7 neu (siehe unten).
 
 ## Leitplanken
 
@@ -30,7 +31,7 @@ mit Header-Auth · Voice-Token-Route und Spike `/voice` · PWA · Digest-Seite �
 | Rang | ID | Vorhaben | Nutzen | Aufwand | Risiko | Abhängig / Freigabe | Befunde |
 |---|---|---|---|---|---|---|---|
 | 1 | **S1** ✅ | **Shell fokussieren:** 4 Ziele (Today, Tasks, Calendar, Read), ein Lesebereich, keine Demo-Inhalte, `check` auf frischem Clone | hoch, täglich sichtbar | S–M | niedrig, nur App, reversibel | D1 ✅ · D5 ✅ deployt 22.10. | F7, F8, F9, F14, F15 |
-| 2 | **S2** | **Today erzwingt Entscheidungen:** Alterssignal „seit n Tagen auf Heute“ (Regel in `rules.ts`, Schwelle 7 Tage), Review-Modus zeigt älteste zuerst, Fokus zählt nur auf Liste Heute (schützt gegen F2) | hoch (Aufgaben liegen bis 16 Tage auf Heute) | S | niedrig | – | F2 |
+| 2 | **S2** ✅ Branch | **Today erzwingt Entscheidungen:** Alterssignal „seit n Tagen auf Heute“ (Regel in `rules.ts`, Schwelle 7 Tage), Review-Modus zeigt älteste zuerst, Fokus zählt nur auf Liste Heute (schützt gegen F2) | hoch (Aufgaben liegen bis 16 Tage auf Heute) | S | niedrig | – | F2 |
 | 3 | **S3** ◐ | **Betrieb und Sicherheit live:** (a) ✅ `M_cockpit_status` ohne Log-Trigger, 3×/Tag, Cockpit-Ansicht gelöscht (D2, Audit-Log W42–W44); (b) ⏸ Agent-Auth an, Tool-Schlüssel als Workspace-Secret, HMAC für `/postcall`, Kosten-Zweig hinter die Prüfung, Top-3-Schritt aus dem Prompt (D3, verschoben) | mittel–hoch | S–M | mittel (Live-Systeme, Audit-Log) | D2 ✅ · D3 ⏸ | F3, F4, F5, F6 |
 | 4 | S4 | **Ein Lernstrom:** Learning-Karten geprüft (`docs/learning-review.md`), Today-Karte aus der Bibliothek statt „48 Laws“, Knowledge (Notion) als dritte Quelle in Read mit Wiedervorlage | mittel–hoch (Lernen, Gedächtnis) | M | niedrig | S1; Daniels Review der 24 Karten; Design-OK | F10 |
 | 5 | S5 | **Ein Task-Vertrag:** `POST /api/tasks/apply` (Header-Auth, nutzt `rules.ts`, Aktionen inkl. `fokus`, `datum`, `umbenennen`, `notiz`); `SUB_todos_apply` und `D_daily_todo_call` rufen ihn auf, ihre Code-Nodes entfallen | mittel (heute gering realisiert, da Voice/Chat ungenutzt) | M | mittel | S3 (Voice funktioniert), Nutzung von Voice/Chat; Freigabe n8n | F1, F2, F3 |
@@ -50,7 +51,7 @@ täglich als Zeitung und Discover nicht (nicht messbar, F16) → dann Read = Dig
 | M | Inhalt | Erfolgskriterium | Status |
 |---|---|---|---|
 | M1 | S1 | 4 Tabs, kein Demo-Inhalt, `check` + `build` grün auf frischem Clone | ✅ verifiziert 21.10., auf Production gemergt 22.10. (D5); Abnahme auf dem iPhone offen |
-| M2 | S2 | Nach 2 Wochen keine offene Aufgabe länger als 7 Tage auf Heute ohne Entscheidung (Weekly Review zählt) | offen |
+| M2 | S2 | Nach 2 Wochen keine offene Aufgabe länger als 7 Tage auf Heute ohne Entscheidung (Weekly Review zählt) | umgesetzt 22.10. (Branch, nicht deployt); Messung nach Deploy |
 | M3 | S3 | n8n-Einstiegs-Ausführungen/Tag −50 % (Basis 26 am 21.10.); Agent nur mit Token; `/postcall` mit falscher Signatur ändert nichts; ein echter Voice-Call lädt die Liste | Lastteil live seit 22.10., 01:02 Berlin (Nachmessung ab 23.10.); Sicherheitsteil verschoben (D3) |
 | M4 | S4 | Eine Lernquelle in der App, alle Karten geprüft, Knowledge wird gelesen | offen |
 | M5 | S5 | Task-Regeln nur noch in `rules.ts`, n8n ohne eigene Notion-Patch-Logik für TODOS | offen, erst bei Voice/Chat-Nutzung |
@@ -99,6 +100,17 @@ iPhone unter der Tab-Bar; `/read` hat auf dem iPhone keinen Avatar-Zugang zu Set
 **Auslieferung:** Freigabe D5 am 22.10., Fast-Forward-Merge auf `claude/personal-os-architecture-nav59w`. Offen:
 Abnahme durch Daniel auf dem iPhone.
 
+## Slice 2: Intelligent Today (22.10., Branch `claude/s2-intelligent-today`)
+
+- **Top 3:** aktiv = offen und auf Heute, höchstens 3 (`isActiveFocus`). Erledigen oder Heute verlassen gibt den Platz frei;
+  Undo nach dem Erledigen holt ihn zurück, wenn Platz ist. Freie Plätze per „Add a priority“, volles Top 3 per „Replace“.
+- **Needs attention:** höchstens 3 Aufgaben, deterministisch (`needsAttention`): überfällig › Top 3 außerhalb von Heute ›
+  heute fällig, nicht auf Heute › 3× verschoben › auf Heute und seit ≥ 7 Tagen offen (Alter seit Anlage, siehe D7).
+  Aktionen: Done, Do today, Top 3, This week, Later, Notion öffnen.
+- **Schnelle Aktionen:** Zeilen mit „Move to Today“ und „Move to …“, Review-Modus älteste zuerst.
+- **Grenze:** Notion speichert nicht, seit wann eine Aufgabe auf Heute liegt; das Signal heißt deshalb „open for n days“.
+- **Prüfung:** `npm run check` (149 Tests, davon 23 Regel-Tests), Build, Smoke-Test im Mock-Modus (Done, Replace, Reload).
+
 ## Entscheidungen (Freigabe Daniel)
 
 | ID | Frage | Entscheidung |
@@ -108,6 +120,7 @@ Abnahme durch Daniel auf dem iPhone.
 | **D3** | Voice: Sicherheit herstellen (Agent-Auth + Allowlist, Tool-Schlüssel als Workspace-Secret, HMAC `/postcall`) und den Top-3-Schritt aus dem Agent-Prompt nehmen, bis S5 steht? | ⏸ **verschoben** 21.10. auf Daniels Wunsch. Empfehlung bleibt: umsetzen. Wiedervorlage: vor der nächsten echten Voice-Nutzung, vor S5, spätestens im Weekly Review KW44 |
 | D4 | Speicherort für App-Nutzungssignale (S6): Tageszeile im Notion „Agent Log“ oder Vercel Web Analytics (neuer Dienst, ADR)? | offen; Empfehlung Agent Log, entscheiden nach M2 |
 | D5 | Deploy von Slice 1: Merge von `claude/slice-1-focus-shell` auf den Production-Branch? | ✅ freigegeben und gemergt 22.10. |
+| D7 | Notion TODOS: Datumsfeld `Heute seit` (additiv). Die App setzt es beim Wechsel nach Heute und leert es beim Verlassen; ohne Wert gilt das Anlagedatum. Erst damit ist „seit n Tagen auf Heute“ exakt (heute nur Alter seit Anlage). n8n bleibt unverändert | offen; Empfehlung ja, nach S2-Deploy |
 | D6 | Notion „Agent Cockpit“: Zeile „Status-Kachel“ auf „07:05, 13:05, 19:05“ und Kante `SUB_log → Status-Kachel` im Strukturbild entfernen (nur Seiteninhalt, kein Schema)? | offen; Empfehlung ja |
 
 ## Bewusst offen (Folge von D3, Stand 21.10.)

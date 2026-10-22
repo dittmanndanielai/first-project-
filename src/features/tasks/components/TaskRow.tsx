@@ -1,9 +1,9 @@
 "use client";
 
-import { CheckIcon, ExternalIcon, RescheduleIcon, StarIcon, TrashIcon } from "@/components/ui/icons";
-import { isStale } from "../rules";
+import { CheckIcon, ExternalIcon, RescheduleIcon, StarIcon, SunIcon, TrashIcon } from "@/components/ui/icons";
+import { isStale, nextList } from "../rules";
 import type { Task } from "../types";
-import { useTasks } from "./TasksProvider";
+import { LIST_LABEL, useTasks } from "./TasksProvider";
 
 const PRIO_LABEL = { high: "High", medium: "Medium", low: "Low" } as const;
 
@@ -40,20 +40,28 @@ export function TaskMeta({ task, extra }: { task: Task; extra?: string }) {
 }
 
 export function RowActions({ task, showDelete = false }: { task: Task; showDelete?: boolean }) {
-  const { toggleFocus, reschedule, remove } = useTasks();
+  const { toggleFocus, reschedule, move, remove } = useTasks();
+  const open = task.status === "open";
+  const later = nextList(task.list);
   return (
     <div className="row-actions">
+      {open && task.list !== "today" ? (
+        <button type="button" className="mini" onClick={() => move(task, "today")} aria-label="Move to Today" title="Move to Today">
+          <SunIcon size={16} />
+        </button>
+      ) : null}
       <button
         type="button"
         className={`mini ${task.focus ? "on" : ""}`}
         onClick={() => toggleFocus(task)}
         aria-label={task.focus ? "Remove from Top 3" : "Add to Top 3"}
+        title={task.focus ? "Remove from Top 3" : "Add to Top 3"}
         aria-pressed={task.focus}
       >
         <StarIcon filled={task.focus} />
       </button>
-      {task.status === "open" ? (
-        <button type="button" className="mini" onClick={() => reschedule(task)} aria-label="Reschedule">
+      {open && later !== task.list ? (
+        <button type="button" className="mini" onClick={() => reschedule(task)} aria-label={`Move to ${LIST_LABEL[later]}`} title={`Move to ${LIST_LABEL[later]}`}>
           <RescheduleIcon />
         </button>
       ) : null}
@@ -62,7 +70,7 @@ export function RowActions({ task, showDelete = false }: { task: Task; showDelet
           <TrashIcon />
         </button>
       ) : null}
-      <a className="mini" href={task.url} target="_blank" rel="noreferrer" aria-label="Open in Notion">
+      <a className="mini" href={task.url} target="_blank" rel="noreferrer" aria-label="Open in Notion" title="Open in Notion">
         <ExternalIcon />
       </a>
     </div>
