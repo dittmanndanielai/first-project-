@@ -150,3 +150,19 @@ export function needsAttention(tasks: Task[], today: string, limit = 3): { items
     .sort((a, b) => REASON_RANK[a.reason] - REASON_RANK[b.reason] || b.days - a.days || a.task.createdAt.localeCompare(b.task.createdAt));
   return { items: all.slice(0, limit), total: all.length };
 }
+
+export type AttentionAction = "done" | "doToday" | "top3" | "unstar" | "thisWeek" | "later";
+
+/**
+ * Feste Reihenfolge der Entscheidungen (Primär, Sekundär, optional Aufschieben):
+ * auf Heute → Done, Top 3; nicht auf Heute → Do today, Done. Aufschieben nur bei liegen gebliebenen
+ * (This week) und oft verschobenen Aufgaben (Later). Top 3 außerhalb von Heute → Do today, Remove from Top 3.
+ */
+export function attentionActions(item: AttentionItem): AttentionAction[] {
+  const { task, reason } = item;
+  if (reason === "focusOffToday") return ["doToday", "unstar"];
+  const base: AttentionAction[] = task.list === "today" ? ["done", "top3"] : ["doToday", "done"];
+  if (reason === "aging") return [...base, "thisWeek"];
+  if (reason === "postponed" && task.list !== "later") return [...base, "later"];
+  return base;
+}

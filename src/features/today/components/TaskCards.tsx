@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { Card } from "@/components/ui/Card";
 import { CheckIcon, ExternalIcon, PlusIcon, StarIcon } from "@/components/ui/icons";
-import { attentionFor, deriveToday, FOCUS_LIMIT, isStale, needsAttention, type AttentionItem } from "@/features/tasks/rules";
+import { attentionActions, attentionFor, deriveToday, FOCUS_LIMIT, isStale, needsAttention, type AttentionAction, type AttentionItem } from "@/features/tasks/rules";
 import { CheckButton, TaskMeta, TaskRow } from "@/features/tasks/components/TaskRow";
 import { LIST_LABEL, useTasks } from "@/features/tasks/components/TasksProvider";
 import type { Task, TaskList } from "@/features/tasks/types";
@@ -18,7 +18,7 @@ const TABS: { key: TaskList; label: string }[] = [
 /** Top 3: höchstens drei aktive Prioritäten (offen, auf Heute) plus eine Zeile Tagesüberblick. */
 export function FocusCard() {
   const { tasks, toggleFocus, pickFocus } = useTasks();
-  const { focus, progress } = deriveToday(tasks);
+  const { focus } = deriveToday(tasks);
   const free = FOCUS_LIMIT - focus.length;
 
   return (
@@ -45,19 +45,6 @@ export function FocusCard() {
           </button>
         ) : null}
       </div>
-      <p className="day-line">
-        {progress.total === 0 ? (
-          "Nothing planned for today yet."
-        ) : progress.left === 0 ? (
-          <>
-            <b>All {progress.done} done</b> · everything else is a bonus
-          </>
-        ) : (
-          <>
-            <b>{progress.left} left</b> today · {progress.done} done
-          </>
-        )}
-      </p>
     </Card>
   );
 }
@@ -66,40 +53,44 @@ export function FocusCard() {
 export function NeedsAttentionCard() {
   const { tasks, today } = useTasks();
   const { items, total } = needsAttention(tasks, today);
-  if (items.length === 0) return null;
   return (
     <Card id="attn-h" title="Needs attention" aside={total > items.length ? `${items.length} of ${total}` : undefined} className="m-attention">
-      <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-        {items.map((item) => (
-          <AttentionRow key={item.task.id} item={item} />
-        ))}
-      </div>
+      {items.length ? (
+        <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+          {items.map((item) => (
+            <AttentionRow key={item.task.id} item={item} />
+          ))}
+        </div>
+      ) : (
+        <p className="empty-line">
+          <CheckIcon size={14} strokeWidth={2.2} /> Nothing waiting for a decision.
+        </p>
+      )}
     </Card>
   );
 }
 
+const ACTION_LABEL: Record<AttentionAction, string> = {
+  done: "Done",
+  doToday: "Do today",
+  top3: "Top 3",
+  unstar: "Remove from Top 3",
+  thisWeek: "This week",
+  later: "Later",
+};
+const ACTION_TONE = ["btn-primary", "", "btn-ghost"]; // Primär, Sekundär, Aufschieben
+
 function AttentionRow({ item }: { item: AttentionItem }) {
   const { toggleDone, toggleFocus, move, reschedule } = useTasks();
   const { task, reason, label } = item;
-  const onToday = task.list === "today";
-
-  const done = { key: "done", label: "Done", run: () => toggleDone(task) };
-  const doToday = { key: "today", label: "Do today", run: () => move(task, "today") };
-  const top3 = { key: "top3", label: "Top 3", run: () => toggleFocus(task) };
-  const thisWeek = { key: "week", label: "This week", run: () => reschedule(task) };
-  const later = { key: "later", label: "Later", run: () => move(task, "later") };
-  const unstar = { key: "unstar", label: "Remove from Top 3", run: () => toggleFocus(task) };
-
-  const actions =
-    reason === "focusOffToday"
-      ? [doToday, unstar]
-      : reason === "overdue"
-        ? [done, onToday ? top3 : doToday]
-        : reason === "dueToday"
-          ? [doToday, done]
-          : reason === "postponed"
-            ? [done, onToday ? top3 : doToday, ...(task.list !== "later" ? [later] : [])]
-            : [done, top3, thisWeek];
+  const run: Record<AttentionAction, () => void> = {
+    done: () => toggleDone(task),
+    doToday: () => move(task, "today"),
+    top3: () => toggleFocus(task),
+    unstar: () => toggleFocus(task),
+    thisWeek: () => reschedule(task),
+    later: () => move(task, "later"),
+  };
 
   return (
     <div className="attn">
@@ -108,7 +99,7 @@ function AttentionRow({ item }: { item: AttentionItem }) {
           <span className="attn-title">{task.title}</span>
           <span className="attn-why">
             {label}
-            {onToday || reason === "focusOffToday" ? "" : ` · ${LIST_LABEL[task.list]}`}
+            {task.list === "today" || reason === "focusOffToday" ? "" : ` · ${LIST_LABEL[task.list]}`}
           </span>
         </div>
         <a className="mini" href={task.url} target="_blank" rel="noreferrer" aria-label={`Open ${task.title} in Notion`} title="Open in Notion">
@@ -116,9 +107,9 @@ function AttentionRow({ item }: { item: AttentionItem }) {
         </a>
       </div>
       <div className="attn-actions">
-        {actions.map((a, i) => (
-          <button key={a.key} type="button" className={`btn btn-sm ${i === 0 ? "btn-primary" : ""}`} onClick={a.run}>
-            {a.label}
+        {attentionActions(item).map((key, i) => (
+          <button key={key} type="button" className={`btn btn-sm ${ACTION_TONE[i]}`} onClick={run[key]}>
+            {ACTION_LABEL[key]}
           </button>
         ))}
       </div>
@@ -134,7 +125,7 @@ export function MyTasksCard() {
   const list = view.byList[tab].slice(0, 6);
 
   return (
-    <section className="card m-tasks" style={{ padding: "20px 18px 14px", display: "flex", flexDirection: "column", gap: 12, flex: 1 }} aria-labelledby="tasks-h">
+    <section className="card m-tasks" style={{ padding: "20px 18px 14px", display: "flex", flexDirection: "column", gap: 12 }} aria-labelledby="tasks-h">
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8, padding: "0 4px" }}>
         <h2 id="tasks-h" className="card-title">
           My Tasks
@@ -213,19 +204,20 @@ function ReviewMode({ tasks }: { tasks: Task[] }) {
         ) : null}
       </div>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(3, minmax(0, 1fr))", gap: 6 }}>
-        <button type="button" className="btn btn-primary" onClick={() => next(() => toggleDone(task))}>
-          Complete
+        {/* Gleiche Reihenfolge wie „Needs attention“: Done, Top 3, Aufschieben; dann Keep und Delete */}
+        <button type="button" className="btn btn-sm btn-primary" onClick={() => next(() => toggleDone(task))}>
+          Done
         </button>
-        <button type="button" className="btn" onClick={() => next()}>
-          Keep
-        </button>
-        <button type="button" className="btn" onClick={() => next(() => reschedule(task))}>
-          Reschedule
-        </button>
-        <button type="button" className="btn" onClick={() => next(() => (task.focus ? true : toggleFocus(task)))}>
+        <button type="button" className="btn btn-sm" onClick={() => next(() => (task.focus ? true : toggleFocus(task)))}>
           Top 3
         </button>
-        <button type="button" className="btn" style={{ gridColumn: "span 2" }} onClick={() => next(() => remove(task))}>
+        <button type="button" className="btn btn-sm" onClick={() => next(() => reschedule(task))}>
+          This week
+        </button>
+        <button type="button" className="btn btn-sm btn-ghost" onClick={() => next()}>
+          Keep
+        </button>
+        <button type="button" className="btn btn-sm btn-ghost" style={{ gridColumn: "span 2" }} onClick={() => next(() => remove(task))}>
           Delete
         </button>
       </div>
@@ -238,9 +230,9 @@ export function ProgressCard() {
   const { progress } = deriveToday(tasks);
   const circumference = 213.6;
   return (
-    <section className="card m-progress" style={{ padding: 20, display: "flex", alignItems: "center", gap: 18 }} aria-labelledby="pr-h">
-      <div style={{ position: "relative", width: 84, height: 84, flex: "none" }}>
-        <svg width="84" height="84" viewBox="0 0 84 84" role="img" aria-label={`${progress.done} of ${progress.total} tasks done`}>
+    <section className="card m-progress" style={{ padding: "16px 18px", display: "flex", alignItems: "center", gap: 16 }} aria-labelledby="pr-h">
+      <div style={{ position: "relative", width: 64, height: 64, flex: "none" }}>
+        <svg width="64" height="64" viewBox="0 0 84 84" role="img" aria-label={`${progress.done} of ${progress.total} tasks done`}>
           <circle cx="42" cy="42" r="34" fill="none" stroke="var(--fill)" strokeWidth="8" />
           <circle
             cx="42"
@@ -256,11 +248,11 @@ export function ProgressCard() {
             style={{ transition: "stroke-dashoffset .8s cubic-bezier(.3,1,.4,1)" }}
           />
         </svg>
-        <div style={{ position: "absolute", inset: 0, display: "grid", placeItems: "center", fontSize: 18, fontWeight: 700, letterSpacing: "-.02em", fontVariantNumeric: "tabular-nums" }}>
+        <div style={{ position: "absolute", inset: 0, display: "grid", placeItems: "center", fontSize: 15, fontWeight: 700, letterSpacing: "-.02em", fontVariantNumeric: "tabular-nums" }}>
           {Math.round(progress.pct * 100)}%
         </div>
       </div>
-      <div style={{ display: "flex", flexDirection: "column", gap: 6, minWidth: 0 }}>
+      <div style={{ display: "flex", flexDirection: "column", gap: 4, minWidth: 0 }}>
         <h2 id="pr-h" className="card-title">
           Daily Progress
         </h2>

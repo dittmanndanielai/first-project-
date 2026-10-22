@@ -1,6 +1,5 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState, useTransition } from "react";
 import { ArrowUpIcon, CheckIcon, PlusIcon } from "@/components/ui/icons";
 import { captureText } from "./actions";
@@ -8,21 +7,18 @@ import { captureText } from "./actions";
 type Status = { kind: "idle" } | { kind: "done"; message: string } | { kind: "error"; message: string };
 
 /**
- * Quick Capture: Freitext → n8n D_todo_capture (Sprachverständnis) → Notion.
- * Tastenkürzel in der App: ⌘K oder ⌘⇧Space. Deep Link: /?capture=1
+ * Quick Capture als Feld (sitzt in der Assistant-Karte auf Today): Freitext → n8n D_todo_capture → Notion.
+ * Tastenkürzel in der App: ⌘K oder ⌘⇧Space. Deep Link: /?capture=1 (Kurzbefehle, „New task“ auf Tasks).
  */
-export function CaptureBar({ autoFocusParam = true }: { autoFocusParam?: boolean }) {
+export function CaptureField() {
   const [text, setText] = useState("");
   const [status, setStatus] = useState<Status>({ kind: "idle" });
   const [pending, startTransition] = useTransition();
   const input = useRef<HTMLInputElement>(null);
-  const params = useSearchParams();
 
   useEffect(() => {
-    if (autoFocusParam && params.get("capture") === "1") input.current?.focus();
-  }, [params, autoFocusParam]);
-
-  useEffect(() => {
+    // Ohne useSearchParams: das Feld braucht so keine eigene Suspense-Grenze und springt nicht nach.
+    if (new URLSearchParams(window.location.search).get("capture") === "1") input.current?.focus();
     const onKey = (e: KeyboardEvent) => {
       const meta = e.metaKey || e.ctrlKey;
       if (meta && (e.key.toLowerCase() === "k" || (e.shiftKey && e.code === "Space"))) {
@@ -51,14 +47,14 @@ export function CaptureBar({ autoFocusParam = true }: { autoFocusParam?: boolean
   }
 
   return (
-    <section className="card m-capture" style={{ padding: 8, display: "flex", flexDirection: "column", gap: 4 }} aria-label="Quick Capture">
-      <form onSubmit={submit} style={{ margin: 0 }}>
+    <div className="capture">
+      <form onSubmit={submit} style={{ margin: 0 }} aria-label="Quick Capture">
         <div className="qc-box">
           <span style={{ color: "var(--text3)", display: "grid" }}>
             <PlusIcon size={18} />
           </span>
           <label htmlFor="qc" className="vh">
-            Capture a thought, task, or idea
+            Add a task, thought, or idea
           </label>
           <input
             id="qc"
@@ -69,31 +65,31 @@ export function CaptureBar({ autoFocusParam = true }: { autoFocusParam?: boolean
             maxLength={1500}
             value={text}
             onChange={(e) => setText(e.target.value)}
-            placeholder="Capture a thought, task, or idea…"
+            placeholder="Add a task, thought, or idea…"
           />
           <span className="hide-sm" style={{ fontSize: 11.5, color: "var(--text3)", letterSpacing: ".04em" }}>
             ⌘K
           </span>
-          <button className="send" type="submit" disabled={!text.trim() || pending} aria-label="Capture">
+          <button className="send" type="submit" disabled={!text.trim() || pending} aria-label="Add">
             <ArrowUpIcon />
           </button>
         </div>
       </form>
       {pending ? (
-        <div style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 12.5, color: "var(--text2)", padding: "2px 16px 8px" }}>
+        <div className="capture-status">
           <span className="spin" />
           Saving…
         </div>
       ) : status.kind === "done" ? (
-        <div style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 12.5, color: "var(--pos)", padding: "2px 16px 8px", animation: "rise .3s ease" }} role="status">
+        <div className="capture-status" style={{ color: "var(--pos)", animation: "rise .3s ease" }} role="status">
           <CheckIcon size={14} strokeWidth={2.2} />
           {status.message}
         </div>
       ) : status.kind === "error" ? (
-        <div style={{ fontSize: 12.5, color: "var(--danger)", padding: "2px 16px 8px" }} role="alert">
+        <div className="capture-status" style={{ color: "var(--danger)" }} role="alert">
           {status.message}
         </div>
       ) : null}
-    </section>
+    </div>
   );
 }

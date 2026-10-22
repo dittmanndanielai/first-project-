@@ -488,6 +488,87 @@ a:hover {
   flex-wrap: wrap;
   gap: 6px;
 }
+/* Assistant mit Quick Capture (Today) */
+.asst {
+  padding: 18px 18px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  overflow: hidden;
+}
+.asst-hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  text-align: center;
+  padding: 6px 0 2px;
+}
+.asst-orb {
+  display: block;
+  border-radius: 50%;
+  flex: none;
+}
+.asst-title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 650;
+  letter-spacing: -0.02em;
+}
+.asst-sub {
+  margin: 3px 0 0;
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--text2);
+}
+.asst-talk-sm {
+  display: none;
+}
+.asst-actions {
+  display: flex;
+  justify-content: center;
+}
+.capture {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.capture .qc-box {
+  background: var(--fill);
+}
+.capture .qc-box:focus-within {
+  background: var(--card);
+}
+.capture-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 6px;
+  font-size: 12.5px;
+  color: var(--text2);
+}
+.empty-line {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  padding: 2px 4px 4px;
+  font-size: 13px;
+  color: var(--text2);
+}
+/* Law: unterstützend, kompakt */
+.law {
+  padding: 16px 18px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.law-text {
+  margin: 0;
+  font-size: 19px;
+  line-height: 1.18;
+  text-wrap: balance;
+}
 /* Auswahl-Sheet (components/ui/ChoiceSheet) */
 .sheet {
   padding: 0;
@@ -796,9 +877,9 @@ a:hover {
 }
 .grid3 {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1.32fr) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.18fr) minmax(0, 0.9fr);
   gap: 20px;
-  align-items: stretch;
+  align-items: start;
 }
 .cols3 {
   display: grid;
@@ -812,13 +893,35 @@ a:hover {
   gap: 20px;
   min-width: 0;
 }
+/* Unter 1180 px eine Spalte: Assistant mit Capture, Top 3, Needs attention, My Tasks, dann Kontext */
 @media (max-width: 1180px) {
   .grid3 {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
   }
-  .col-center {
-    order: -1;
-    grid-column: 1 / -1;
+  .grid3 > .col {
+    display: contents;
+  }
+  .m-assistant {
+    order: 1;
+  }
+  .m-focus {
+    order: 2;
+  }
+  .m-attention {
+    order: 3;
+  }
+  .m-tasks {
+    order: 4;
+  }
+  .m-upcoming {
+    order: 5;
+  }
+  .m-progress {
+    order: 6;
+  }
+  .m-law {
+    order: 7;
   }
 }
 @media (max-width: 980px) {
@@ -850,47 +953,44 @@ a:hover {
   .page-header h1 {
     font-size: 28px;
   }
-  /* Today auf dem iPhone wie im Design: Orb, Top 3, Capture, dann Needs Attention und der Rest */
-  .grid3 > .col {
-    display: contents;
+  .grid3 {
+    gap: 14px;
   }
-  .m-assistant {
-    order: 1;
+  /* Assistant auf dem iPhone kompakt: Orb links, Text, Talk; darunter Capture */
+  .asst {
+    padding: 14px 14px 12px;
+    gap: 12px;
   }
-  .m-focus {
-    order: 2;
+  .asst-head {
+    display: none;
   }
-  .m-capture {
-    order: 3;
+  .asst-hero {
+    flex-direction: row;
+    text-align: left;
+    gap: 12px;
+    padding: 0;
   }
-  .m-attention {
-    order: 4;
+  .asst-copy {
+    flex: 1;
+    min-width: 0;
   }
-  .m-tasks {
-    order: 5;
+  .asst-title {
+    font-size: 16px;
   }
-  .m-upcoming {
-    order: 6;
+  .asst-sub {
+    font-size: 12.5px;
   }
-  .m-progress {
-    order: 7;
+  .asst .orb {
+    --s: 52px !important;
   }
-  .m-law {
-    order: 8;
+  .asst .orb-glow {
+    display: none;
   }
-  .m-assistant.card {
-    background: transparent;
-    border: 0;
-    box-shadow: none;
-    padding: 0 0 4px !important;
-    overflow: visible !important;
+  .asst-talk-sm {
+    display: inline-flex;
   }
-  .m-assistant .orb {
-    --s: 148px !important;
-  }
-  .m-assistant .orb-stage {
-    height: 196px !important;
-    margin-top: 0 !important;
+  .asst-actions {
+    display: none;
   }
   .tabbar {
     position: fixed;

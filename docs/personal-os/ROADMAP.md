@@ -110,6 +110,11 @@ Abnahme durch Daniel auf dem iPhone.
 - **Schnelle Aktionen:** Zeilen mit „Move to Today“ und „Move to …“, Review-Modus älteste zuerst.
 - **Grenze:** Notion speichert nicht, seit wann eine Aufgabe auf Heute liegt; das Signal heißt deshalb „open for n days“.
 - **Prüfung:** `npm run check` (149 Tests, davon 23 Regel-Tests), Build, Smoke-Test im Mock-Modus (Done, Replace, Reload).
+- **Feinschliff (Feedback 22.10.):** Spalten nach Bedeutung: links Top 3 + Needs attention, Mitte Assistant mit Quick
+  Capture + My Tasks, rechts Termine, Fortschritt, Law (kompakt); Spalten wachsen nur mit ihrem Inhalt. Quick Capture sitzt
+  im Assistant-Modul unter dem Orb (eine Eingabe, ⌘K und `/?capture=1` bleiben). Aktionsreihenfolge zentral in
+  `attentionActions`: auf Heute Done › Top 3, sonst Do today › Done, Aufschieben zuletzt. iPhone: Assistant 138 px statt
+  ~600 px, Top 3 im ersten Bildschirm. 152 Tests, Build grün.
 
 ## Entscheidungen (Freigabe Daniel)
 

@@ -65,16 +65,16 @@ function TodaySkeleton() {
       <HeaderSkeleton />
       <div className="grid3">
         <div className="col">
-          <div className="card skeleton" style={{ height: 230 }} />
-          <div className="card skeleton" style={{ height: 360 }} />
+          <div className="card skeleton m-focus" style={{ height: 260 }} />
+          <div className="card skeleton m-attention" style={{ height: 320 }} />
         </div>
         <div className="col col-center">
-          <div className="card skeleton" style={{ height: 62 }} />
-          <div className="card skeleton" style={{ height: 520 }} />
+          <div className="card skeleton m-assistant" style={{ height: 300 }} />
+          <div className="card skeleton m-tasks" style={{ height: 380 }} />
         </div>
         <div className="col">
-          <div className="card skeleton" style={{ height: 300 }} />
-          <div className="card skeleton" style={{ height: 124 }} />
+          <div className="card skeleton m-upcoming" style={{ height: 300 }} />
+          <div className="card skeleton m-progress" style={{ height: 96 }} />
         </div>
       </div>
     </>

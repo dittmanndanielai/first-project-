@@ -1,7 +1,5 @@
 "use client";
 
-import { Suspense } from "react";
-import { CaptureBar } from "@/features/capture/CaptureBar";
 import { TasksProvider } from "@/features/tasks/components/TasksProvider";
 import type { Task } from "@/features/tasks/types";
 import { FocusCard, MyTasksCard, NeedsAttentionCard, ProgressCard } from "./TaskCards";
@@ -15,7 +13,11 @@ type Props = {
   lawIndex: number;
 };
 
-/** Raster der Today-Seite wie im Design: links Top 3, Needs Attention, Aufgaben; Mitte Capture + Orb; rechts Termine, Fortschritt, Law. */
+/**
+ * Today in drei ausgewogenen Spalten: links Entscheidungen (Top 3, Needs attention), Mitte Eingabe und Arbeit
+ * (Assistant mit Quick Capture, My Tasks), rechts Kontext (Termine, Fortschritt, Law). Spalten wachsen nur mit ihrem
+ * Inhalt. Unter 1180 px eine Spalte in der Reihenfolge der CSS-Klassen `m-*`.
+ */
 export function TodayBoard({ tasks, today, calendar, lawIndex }: Props) {
   return (
     <TasksProvider tasks={tasks} today={today}>
@@ -23,13 +25,10 @@ export function TodayBoard({ tasks, today, calendar, lawIndex }: Props) {
         <div className="col">
           <FocusCard />
           <NeedsAttentionCard />
-          <MyTasksCard />
         </div>
         <div className="col col-center">
-          <Suspense fallback={null}>
-            <CaptureBar />
-          </Suspense>
           <AssistantCard />
+          <MyTasksCard />
         </div>
         <div className="col">
           {calendar}

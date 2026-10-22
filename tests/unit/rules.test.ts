@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import {
+  attentionActions,
   attentionFor,
   deriveToday,
   FocusFullError,
@@ -200,5 +201,32 @@ describe("Needs attention", () => {
     );
     expect(items.map((i) => i.task.id)).toEqual(["od5", "od1", "post"]);
     expect(total).toBe(4);
+  });
+});
+
+describe("Needs attention: feste Reihenfolge der Aktionen", () => {
+  const today = "2026-10-22";
+  const fresh = "2026-10-21T08:00:00.000Z";
+  const actions = (t: Task) => {
+    const item = attentionFor(t, today);
+    if (!item) throw new Error("kein Treffer");
+    return attentionActions(item);
+  };
+
+  it("auf Heute: Done zuerst, dann Top 3", () => {
+    expect(actions(task({ deadline: "2026-10-20", createdAt: fresh }))).toEqual(["done", "top3"]);
+    expect(actions(task({ createdAt: "2026-09-01T08:00:00.000Z" }))).toEqual(["done", "top3", "thisWeek"]);
+    expect(actions(task({ postponed: 3, createdAt: fresh }))).toEqual(["done", "top3", "later"]);
+  });
+
+  it("nicht auf Heute: Do today zuerst, dann Done", () => {
+    expect(actions(task({ deadline: "2026-10-20", list: "week", createdAt: fresh }))).toEqual(["doToday", "done"]);
+    expect(actions(task({ deadline: today, list: "week", createdAt: fresh }))).toEqual(["doToday", "done"]);
+    expect(actions(task({ postponed: 4, list: "later", createdAt: fresh }))).toEqual(["doToday", "done"]);
+    expect(actions(task({ postponed: 3, list: "week", createdAt: fresh }))).toEqual(["doToday", "done", "later"]);
+  });
+
+  it("Top 3 außerhalb von Heute: zurückholen oder entfernen", () => {
+    expect(actions(task({ focus: true, list: "week", createdAt: fresh }))).toEqual(["doToday", "unstar"]);
   });
 });

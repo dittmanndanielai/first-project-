@@ -63,7 +63,8 @@ ElevenLabs = Voice. Keine eigene Datenbank.
 - Verbindliche Referenz: `design/personal-os.html` (7 Boards). Nicht ungefragt umgestalten.
 - UI-Texte englisch wie im Design; Notion-Werte deutsch nur in `notion-map.ts`. Ausnahme: Discover-Inhalte deutsch
   (`docs/discover.md`).
-- iPhone (≤ 760 px): Floating Tab Bar, Reihenfolge Orb › Top 3 › Capture (CSS-Klassen `m-*`).
+- Today unter 1180 px eine Spalte: Assistant mit Quick Capture › Top 3 › Needs attention › My Tasks › Kontext (CSS-Klassen
+  `m-*`). iPhone (≤ 760 px): Floating Tab Bar, Assistant kompakt (Orb links, Capture darunter).
 - Neue oder angefasste UI nutzt Bausteine aus `src/components/ui/` statt Inline-Styles (F11).
 
 ## Benennung
